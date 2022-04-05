@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
                           height: 20,
                         ),
                         Text(
-                          "Welcome back, login to continue",
+                          "Welcome back, Login to continue",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[700],
