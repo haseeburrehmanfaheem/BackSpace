@@ -1,3 +1,4 @@
+import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -110,7 +111,7 @@ class SignupPage extends StatelessWidget {
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
-                          onPressed: () {
+                          onPressed: () async {
                             // print("hello world");
                             // if()
                             // print(nameController.text);
@@ -131,6 +132,10 @@ class SignupPage extends StatelessWidget {
                                   ),
                                 ),
                               );
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => BottomNavigation()));
                             }
                           },
                           color: Colors.black,
