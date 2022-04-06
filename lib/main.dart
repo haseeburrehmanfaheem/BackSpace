@@ -1,4 +1,5 @@
 import 'package:backspace/pages/homepage.dart';
+import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: BottomNavigation(),
     );
   }
 }
