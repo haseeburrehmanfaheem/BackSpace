@@ -1,3 +1,4 @@
+import 'package:backspace/Services/AuthenticationServices.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 
 class SignupPage extends StatelessWidget {
+  // final AuthenticationServices _auth = AuthenticationServices();
   GlobalKey<FormState> formkey1 = GlobalKey<FormState>();
   GlobalKey<FormState> formkey2 = GlobalKey<FormState>();
   GlobalKey<FormState> formkey3 = GlobalKey<FormState>();
@@ -111,8 +113,8 @@ class SignupPage extends StatelessWidget {
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
-                          onPressed: () async {
-                            // print("hello world");
+                          onPressed: () {
+                            print("hello world");
                             // if()
                             // print(nameController.text);
                             // print(emailController.text);
@@ -121,21 +123,23 @@ class SignupPage extends StatelessWidget {
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.white,
-                                  content: Text(
-                                    'Validation Successful',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              );
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => BottomNavigation()));
+                              // createUser();
+                              print("Zeerak penchod");
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(
+                              //     backgroundColor: Colors.white,
+                              //     content: Text(
+                              //       'Validation Successful',
+                              //       style: TextStyle(
+                              //         color: Colors.black,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // );
+                              // Navigator.pushReplacement(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (_) => BottomNavigation()));
                             }
                           },
                           color: Colors.black,
@@ -184,6 +188,16 @@ class SignupPage extends StatelessWidget {
       ),
     );
   }
+
+  // void createUser() async {
+  //   dynamic result = await _auth.createNewUser(
+  //       emailController.text, password2Controller.text);
+  //   if (result == null) {
+  //     print("Email is not valid");
+  //   } else {
+  //     print(result.toString());
+  //   }
+  // }
 }
 
 Widget makeInput(
