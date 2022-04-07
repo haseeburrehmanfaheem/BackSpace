@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
+      // home: Home(),
       home: BottomNavigation(),
     );
   }

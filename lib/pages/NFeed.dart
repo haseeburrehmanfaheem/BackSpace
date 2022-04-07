@@ -24,7 +24,7 @@ class Feed extends StatelessWidget {
               const Text('News Feed', style: TextStyle(fontFamily: "Poppins")),
           actions: [
             const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Icon(Icons.search, color: Colors.black)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),

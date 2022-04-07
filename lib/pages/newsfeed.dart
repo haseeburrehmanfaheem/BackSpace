@@ -10,6 +10,8 @@ import 'package:backspace/pages/Messages.dart';
 import 'package:backspace/pages/Instructor.dart';
 
 class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
+
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
@@ -44,6 +46,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         unselectedFontSize: 14,
         // type: BottomNavigation
         onTap: OnTappedBar,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         items: const [
           BottomNavigationBarItem(
