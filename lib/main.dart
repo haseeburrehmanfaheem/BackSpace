@@ -2,9 +2,25 @@ import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart'; // new
+import 'package:firebase_core/firebase_core.dart'; // new
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart'; // new
+
+import 'firebase_options.dart'; // new
+import 'src/authentication.dart'; // new
+// import 'src/widgets.dart';
+
 void main() {
   runApp(MyApp());
 }
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   // const Myapp({Key? key}) : super(key: key);
@@ -14,12 +30,47 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
-      // home: Home(),
-      home: BottomNavigation(),
+      home: Home(),
+      // home: BottomNavigation(),
     );
   }
 }
 
+// class App extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//       // Initialize FlutterFire
+//       future: Firebase.initializeApp(),
+//       builder: (context, snapshot) {
+//         // Check for errors
+//         if (snapshot.hasError) {
+//           // return SomethingWentWrong();
+//         }
+
+//         // Once complete, show your application
+//         if (snapshot.connectionState == ConnectionState.done) {
+//           return MyApp();
+//         }
+
+//         // Otherwise, show something whilst waiting for initialization to complete
+//         // return Loading();
+//         return loading();
+//       },
+//     );
+//   }
+// }
+
+class loading extends StatelessWidget {
+  const loading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text("Hello world"),
+    );
+  }
+}
 
 // class MyApp extends StatelessWidget {
 //   const MyApp({Key? key}) : super(key: key);
