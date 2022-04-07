@@ -42,6 +42,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         showUnselectedLabels: true,
         selectedFontSize: 14,
         unselectedFontSize: 14,
+        // type: BottomNavigation
         onTap: OnTappedBar,
         currentIndex: _currentIndex,
         items: const [
@@ -74,45 +75,57 @@ class _BottomNavigationState extends State<BottomNavigation> {
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          ListTile(
-              leading: Icon(Icons.build_rounded),
-              title: Text('Edit Profile'),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditProfile()));
-              }),
-          ListTile(
-              leading: Icon(Icons.live_help_outlined),
-              title: Text('FAQs'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const FAQ()));
-              }),
-          ListTile(
-              leading: Icon(Icons.fmd_good),
-              title: Text('Lums Map'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Map()));
-              }),
-          ListTile(
-              leading: Icon(Icons.follow_the_signs),
-              title: Text('Freshman Guide'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Guide()));
-              }),
-          ListTile(
-            leading: Icon(Icons.power_settings_new, color: Colors.red),
-            title: Text('Logout'),
-          ),
-        ],
+    return Container(
+      // height: 100,
+      margin: EdgeInsets.only(top: 22),
+      height: MediaQuery.of(context).size.height * 0.90,
+      // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
+      // width: 50,
+      child: Drawer(
+        
+        child: ListView(
+          // padding: EdgeInsets.zero,
+          padding: EdgeInsets.only(top: 50),
+          // padding: EdgeInsets.only(top: 10),
+          // margin: EdgeInsets.all(80),
+          children: <Widget>[
+            Text('Backspace', style: TextStyle(fontSize: 30,),),
+            ListTile(
+                leading: Icon(Icons.build_rounded),
+                title: Text('Edit Profile'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EditProfile()));
+                }),
+            ListTile(
+                leading: Icon(Icons.live_help_outlined),
+                title: Text('FAQs'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const FAQ()));
+                }),
+            ListTile(
+                leading: Icon(Icons.fmd_good),
+                title: Text('Lums Map'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Map()));
+                }),
+            ListTile(
+                leading: Icon(Icons.follow_the_signs),
+                title: Text('Freshman Guide'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Guide()));
+                }),
+            ListTile(
+              leading: Icon(Icons.power_settings_new, color: Colors.red),
+              title: Text('Logout' , style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        ),
       ),
     );
   }
