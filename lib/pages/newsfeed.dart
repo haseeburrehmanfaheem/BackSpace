@@ -3,6 +3,8 @@ import 'package:backspace/pages/FAQ.dart';
 import 'package:backspace/pages/Guide.dart';
 import 'package:backspace/pages/LumsMap.dart';
 import 'package:backspace/pages/NFeed.dart';
+import 'package:backspace/pages/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/Subspace.dart';
 import 'package:backspace/pages/FindWork.dart';
@@ -85,14 +87,18 @@ class MyDrawer extends StatelessWidget {
       // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
       // width: 50,
       child: Drawer(
-        
         child: ListView(
           // padding: EdgeInsets.zero,
           padding: EdgeInsets.only(top: 50),
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.all(80),
           children: <Widget>[
-            Text('Backspace', style: TextStyle(fontSize: 30,),),
+            Text(
+              'Backspace',
+              style: TextStyle(
+                fontSize: 30,
+              ),
+            ),
             ListTile(
                 leading: Icon(Icons.build_rounded),
                 title: Text('Edit Profile'),
@@ -124,8 +130,18 @@ class MyDrawer extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const Guide()));
                 }),
             ListTile(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => const Guide()));
+                Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(builder: (context) => Home()));
+              },
               leading: Icon(Icons.power_settings_new, color: Colors.red),
-              title: Text('Logout' , style: TextStyle(color: Colors.red),),
+              title: Text(
+                'Logout',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         ),

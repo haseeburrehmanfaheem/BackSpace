@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       } else {
         print('User is signed in!');
         // signout ki line
-        FirebaseAuth.instance.signOut();
+        // FirebaseAuth.instance.signOut();
       }
     });
     return MaterialApp(
