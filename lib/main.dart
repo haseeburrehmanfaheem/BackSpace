@@ -1,3 +1,4 @@
+import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
@@ -45,12 +46,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
-      home: Home(),
-      // home: BottomNavigation(),
+      // home: Home(),
+      home: EditProfile(),
     );
   }
 }
-
 
 // class App extends StatelessWidget {
 //   @override
