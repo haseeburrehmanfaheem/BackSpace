@@ -119,7 +119,11 @@ class _LoginState extends State<Login> {
                             // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
-                                 login(emailController.text, passwordController.text);
+                                 login(emailController.text, passwordController.text, context);
+                                //  Navigator.pushReplacement(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (_) => BottomNavigation()));
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     backgroundColor: Colors.white,
@@ -132,10 +136,10 @@ class _LoginState extends State<Login> {
                               //   ),
                               // );
                             }
-                            Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => BottomNavigation()));
+                            // Navigator.pushReplacement(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (_) => BottomNavigation()));
                             
                           },
                           color: Colors.black,
@@ -189,12 +193,16 @@ class _LoginState extends State<Login> {
 }
 
 
-login(emailAddress, password) async {
+login(emailAddress, password, context) async {
     try {
     final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailAddress,
       password: password
     );
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+        builder: (_) => BottomNavigation()));
     print('The user has been logged in');
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {

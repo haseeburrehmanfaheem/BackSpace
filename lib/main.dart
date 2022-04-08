@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 
+
       home: Home(),
       // FirebaseAuth.instance.signOut();
       // home: BottomNavigation(),
