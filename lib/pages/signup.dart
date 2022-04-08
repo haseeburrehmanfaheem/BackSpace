@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'login.dart';
 
@@ -18,6 +19,8 @@ class SignupPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController password1Controller = TextEditingController();
   final TextEditingController password2Controller = TextEditingController();
+
+  CollectionReference users = FirebaseFirestore.instance.collection('UserData');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +128,7 @@ class SignupPage extends StatelessWidget {
                               // String val = 
                               signUp(emailController.text,
                                   password1Controller.text);
+                              addUser(emailController.text, password1Controller.text, nameController.text);
                                   // print(val);
                                   // if(val == ""){
                                   //   print("val ");
@@ -141,10 +145,10 @@ class SignupPage extends StatelessWidget {
                               //     ),
                               //   ),
                               // );
-                              // Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (_) => BottomNavigation()));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => BottomNavigation()));
                             }
                           },
                           color: Colors.black,
@@ -194,7 +198,23 @@ class SignupPage extends StatelessWidget {
     );
   }
 
+  // Future<void>
+   addUser(emailID, password1, name) {
+      // Call the user's CollectionReference to add a new user
+      // return 
+      users
+          .add({
+          "email": emailID,
+          "password": password1,
+          "username": name
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+          return;
+    }
+
   signUp(emailAddress, password) async {
+    // CollectionReference users = FirebaseFirestore.instance.collection('UserData');
     print(emailAddress);
     print(password);
     try {
@@ -203,6 +223,18 @@ class SignupPage extends StatelessWidget {
         email: emailAddress,
         password: password,
       );
+      // .then((value) async {
+      //   await users.add({
+      //     "email": emailController.text,
+      //     "pasword": password1Controller.text,
+      //     "username": nameController.text
+      //     });
+      //   // await FirebaseFirestore.instance.collection('UserData').doc(value.user!.uid).set({
+      //   //   "email": value.user!.email,
+      //   //   "pasword": password1Controller.text,
+      //   //   "username": value.user!.displayName
+      //   //   });
+      // });
       
     } on FirebaseAuthException catch (e) {
       // print(Errors.show(e.code));
