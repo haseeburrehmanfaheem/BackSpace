@@ -20,35 +20,6 @@ class Feed extends StatelessWidget {
             icon: const Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-          title:
-              const Text('News Feed', style: TextStyle(fontFamily: "Poppins")),
-          actions: [
-            const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: Icon(Icons.search, color: Colors.black)),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: IconButton(
-                  icon: Icon(Icons.notifications_outlined),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Noti()),
-                    );
-                  },
-                ))
-          ],
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-        ),
-        body: ListView(
-          children: <Widget>[
-            Expanded(
-              child: Post(),
-            ),
-            AddPost()
-          ],
-
         ),
         title: const Text('News Feed', style: TextStyle(fontFamily: "Poppins")),
         actions: [
@@ -72,14 +43,15 @@ class Feed extends StatelessWidget {
       ),
       body: ListView(
         children: const <Widget>[
-          Post(),
+          Expanded(
+            child: Post(),
+          ),
+          AddPost(),
         ],
       ),
     );
   }
 }
-
-
 
 class AddPost extends StatelessWidget {
   const AddPost({Key? key}) : super(key: key);
@@ -89,16 +61,16 @@ class AddPost extends StatelessWidget {
     return (
         // alignment: Alignment.bottomRight,
         Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: TextField(
               //cursorColor: Theme.of(context).cursorColor,
               // maxLength: 20,
 
               decoration: InputDecoration(
                 hintText: "Add Post",
-                fillColor: Color(0xfff9f9fa),
+                fillColor: const Color(0xfff9f9fa),
                 filled: true,
-                suffixIcon: Icon(Icons.camera_alt_outlined),
+                suffixIcon: const Icon(Icons.camera_alt_outlined),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -164,7 +136,6 @@ class _PostFooter extends State<PostFooter> {
         ),
         const Text('Comment', style: TextStyle(fontFamily: "Poppins")),
       ],
-
     );
   }
 }
