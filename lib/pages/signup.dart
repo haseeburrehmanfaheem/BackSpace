@@ -127,13 +127,9 @@ class SignupPage extends StatelessWidget {
                               // Future<dynamic> 
                               // String val = 
                               signUp(emailController.text,
-                                  password1Controller.text);
-                              addUser(emailController.text, password1Controller.text, nameController.text);
-                                  // print(val);
-                                  // if(val == ""){
-                                  //   print("val ");
-                                  //   print(val);
-                                  // } 
+                                  password1Controller.text, nameController.text, context);
+                              // addUser(emailController.text, password1Controller.text, nameController.text);
+
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     backgroundColor: Colors.white,
@@ -145,10 +141,10 @@ class SignupPage extends StatelessWidget {
                               //     ),
                               //   ),
                               // );
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => BottomNavigation()));
+                              // Navigator.pushReplacement(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (_) => BottomNavigation()));
                             }
                           },
                           color: Colors.black,
@@ -199,21 +195,29 @@ class SignupPage extends StatelessWidget {
   }
 
   // Future<void>
-   addUser(emailID, password1, name) {
+   addUser(emailID, password1, name, context) {
       // Call the user's CollectionReference to add a new user
       // return 
       users
           .add({
           "email": emailID,
-          "password": password1,
-          "username": name
+          // "password": password1,
+          "username": name,
+          "roles": "user",
+          "about": "",
           })
-          .then((value) => print("User Added"))
+          .then((value) {
+            Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (_) => BottomNavigation()));
+          }
+          )
           .catchError((error) => print("Failed to add user: $error"));
           return;
     }
 
-  signUp(emailAddress, password) async {
+  signUp(emailAddress, password,name, context) async {
     // CollectionReference users = FirebaseFirestore.instance.collection('UserData');
     print(emailAddress);
     print(password);
@@ -223,40 +227,17 @@ class SignupPage extends StatelessWidget {
         email: emailAddress,
         password: password,
       );
-      // .then((value) async {
-      //   await users.add({
-      //     "email": emailController.text,
-      //     "pasword": password1Controller.text,
-      //     "username": nameController.text
-      //     });
-      //   // await FirebaseFirestore.instance.collection('UserData').doc(value.user!.uid).set({
-      //   //   "email": value.user!.email,
-      //   //   "pasword": password1Controller.text,
-      //   //   "username": value.user!.displayName
-      //   //   });
-      // });
+      addUser(emailAddress, password, name, context);
       
     } on FirebaseAuthException catch (e) {
       // print(Errors.show(e.code));
       // print(e.message);
       String? x  = e.message;
       Fluttertoast.showToast(msg: x!, gravity: ToastGravity.TOP);
-      // return Errors.show(e.code);
-      // if (e.code == 'weak-password') {
-      //   // print(Errors.show())
-      //   print('The password provided is too weak.');
-      //   // errValue = "The password provided is too weak.";
-      // } else if (e.code == 'email-already-in-use') {
-      //   print('The account already exists for that email.');
-      //   // this.error =
-      //   //  = "The account already exists for that email." setState((){})
-      //   // return "The account already exists for that email.";
-      //   // errValue = "The account already exists for that email.";
-      // }
     } 
-    // catch (e) {
-    //   print(e);
-    // }
+    catch (e) {
+      print(e);
+    }
   }
 }
 
