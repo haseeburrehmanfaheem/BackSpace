@@ -1,6 +1,7 @@
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'; // new
 import 'package:firebase_core/firebase_core.dart'; // new
@@ -12,7 +13,15 @@ import 'firebase_options.dart'; // new
 import 'src/authentication.dart'; // new
 // import 'src/widgets.dart';
 
-void main() {
+// void main() {
+//   runApp(MyApp());
+// }
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -24,9 +33,15 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // const Myapp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
@@ -35,6 +50,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 // class App extends StatelessWidget {
 //   @override
