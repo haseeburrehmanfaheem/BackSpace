@@ -1,6 +1,9 @@
+import 'package:backspace/pages/newsfeed.dart';
 import 'package:backspace/pages/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'homepage.dart';
 
@@ -116,18 +119,24 @@ class _LoginState extends State<Login> {
                             // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.white,
-                                  content: Text(
-                                    'Validation Successful',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              );
+                                 login(emailController.text, passwordController.text);
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(
+                              //     backgroundColor: Colors.white,
+                              //     content: Text(
+                              //       'Validation Successful',
+                              //       style: TextStyle(
+                              //         color: Colors.black,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // );
                             }
+                            Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => BottomNavigation()));
+                            
                           },
                           color: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -176,5 +185,22 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+}
+
+
+login(emailAddress, password) async {
+    try {
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailAddress,
+      password: password
+    );
+    print('The user has been logged in');
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      Fluttertoast.showToast(msg: "These credentials do not match our records", gravity: ToastGravity.TOP);
+    } else if (e.code == 'wrong-password') {
+      Fluttertoast.showToast(msg: "These credentials do not match our records.", gravity: ToastGravity.TOP);
+    }
   }
 }

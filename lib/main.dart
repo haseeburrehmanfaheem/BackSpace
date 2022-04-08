@@ -41,13 +41,20 @@ class MyApp extends StatelessWidget {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
+        // signout ki line
+        FirebaseAuth.instance.signOut();
+
       }
     });
     return MaterialApp(
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
-      // home: Home(),
-      home: BottomNavigation(),
+
+
+      home: Home(),
+      // FirebaseAuth.instance.signOut();
+      // home: BottomNavigation(),
+
     );
   }
 }
