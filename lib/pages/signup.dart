@@ -2,11 +2,11 @@ import 'package:backspace/Services/AuthenticationServices.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login.dart';
 
 class SignupPage extends StatelessWidget {
-  // final AuthenticationServices _auth = AuthenticationServices();
   GlobalKey<FormState> formkey1 = GlobalKey<FormState>();
   GlobalKey<FormState> formkey2 = GlobalKey<FormState>();
   GlobalKey<FormState> formkey3 = GlobalKey<FormState>();
@@ -42,7 +42,6 @@ class SignupPage extends StatelessWidget {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            // child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -115,16 +114,13 @@ class SignupPage extends StatelessWidget {
                           height: 60,
                           onPressed: () {
                             print("hello world");
-                            // if()
-                            // print(nameController.text);
-                            // print(emailController.text);
-                            // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
-                              // createUser();
-                              print("Zeerak penchod");
+                              signUp(emailController.text,
+                                  password1Controller.text);
+                              // print("Zeerak penchod");
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     backgroundColor: Colors.white,
@@ -189,15 +185,26 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  // void createUser() async {
-  //   dynamic result = await _auth.createNewUser(
-  //       emailController.text, password2Controller.text);
-  //   if (result == null) {
-  //     print("Email is not valid");
-  //   } else {
-  //     print(result.toString());
-  //   }
-  // }
+  void signUp(emailAddress, password) async {
+    print(emailAddress);
+    print(password);
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+      
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
 
 Widget makeInput(
