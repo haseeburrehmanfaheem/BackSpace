@@ -1,8 +1,10 @@
 import 'package:backspace/Services/AuthenticationServices.dart';
+import 'package:backspace/model/errors.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'login.dart';
 
@@ -114,13 +116,20 @@ class SignupPage extends StatelessWidget {
                           height: 60,
                           onPressed: () {
                             print("hello world");
+                            // String val = "";
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
+                              // Future<dynamic> 
+                              // String val = 
                               signUp(emailController.text,
                                   password1Controller.text);
-                              // print("Zeerak penchod");
+                                  // print(val);
+                                  // if(val == ""){
+                                  //   print("val ");
+                                  //   print(val);
+                                  // } 
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     backgroundColor: Colors.white,
@@ -185,7 +194,7 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  void signUp(emailAddress, password) async {
+  signUp(emailAddress, password) async {
     print(emailAddress);
     print(password);
     try {
@@ -196,14 +205,26 @@ class SignupPage extends StatelessWidget {
       );
       
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
+      // print(Errors.show(e.code));
+      // print(e.message);
+      String? x  = e.message;
+      Fluttertoast.showToast(msg: x!, gravity: ToastGravity.TOP);
+      // return Errors.show(e.code);
+      // if (e.code == 'weak-password') {
+      //   // print(Errors.show())
+      //   print('The password provided is too weak.');
+      //   // errValue = "The password provided is too weak.";
+      // } else if (e.code == 'email-already-in-use') {
+      //   print('The account already exists for that email.');
+      //   // this.error =
+      //   //  = "The account already exists for that email." setState((){})
+      //   // return "The account already exists for that email.";
+      //   // errValue = "The account already exists for that email.";
+      // }
+    } 
+    // catch (e) {
+    //   print(e);
+    // }
   }
 }
 
@@ -236,6 +257,13 @@ Widget makeInput(
           ),
           controller: controllerObj,
           validator: (value) {
+            // final FirebaseAuth auth = FirebaseAuth.instance;
+            // final user = auth.currentUser;
+            // final emailid = user!.email;
+            // String emailID = user.email;
+            // print(emailid);
+            
+            // final User user = await FirebaseAuth.instance.currentUser;
             if (label == "Confirm Password") {
               if (value == null || value.isEmpty) {
                 return 'Please enter the password again';
