@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       } else {
         print('User is signed in!');
         // signout ki line
-        FirebaseAuth.instance.signOut();
+        // FirebaseAuth.instance.signOut();
 
       }
     });
@@ -50,11 +50,9 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 
-
       home: Home(),
       // FirebaseAuth.instance.signOut();
       // home: BottomNavigation(),
-
     );
   }
 }

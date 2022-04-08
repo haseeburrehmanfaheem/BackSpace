@@ -124,8 +124,8 @@ class SignupPage extends StatelessWidget {
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
-                              // Future<dynamic> 
-                              // String val = 
+                              // Future<dynamic>
+                              // String val =
                               signUp(emailController.text,
                                   password1Controller.text, nameController.text, context);
                               // addUser(emailController.text, password1Controller.text, nameController.text);
@@ -197,7 +197,7 @@ class SignupPage extends StatelessWidget {
   // Future<void>
    addUser(emailID, password1, name, context) {
       // Call the user's CollectionReference to add a new user
-      // return 
+      // return
       users
           .add({
           "email": emailID,
@@ -205,6 +205,8 @@ class SignupPage extends StatelessWidget {
           "username": name,
           "roles": "user",
           "about": "",
+          // "pimage" =
+
           })
           .then((value) {
             Navigator.pushReplacement(
@@ -228,13 +230,13 @@ class SignupPage extends StatelessWidget {
         password: password,
       );
       addUser(emailAddress, password, name, context);
-      
+
     } on FirebaseAuthException catch (e) {
       // print(Errors.show(e.code));
       // print(e.message);
       String? x  = e.message;
       Fluttertoast.showToast(msg: x!, gravity: ToastGravity.TOP);
-    } 
+    }
     catch (e) {
       print(e);
     }
@@ -275,7 +277,7 @@ Widget makeInput(
             // final emailid = user!.email;
             // String emailID = user.email;
             // print(emailid);
-            
+
             // final User user = await FirebaseAuth.instance.currentUser;
             if (label == "Confirm Password") {
               if (value == null || value.isEmpty) {
