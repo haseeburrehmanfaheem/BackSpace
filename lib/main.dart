@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
       // home: Home(),
-      home: EditProfile(),
+      home: BottomNavigation(),
     );
   }
 }
