@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +39,7 @@ class MyCustomForm extends StatelessWidget {
     if (user != null) {
       s = user?.email;
     }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -46,26 +47,25 @@ class MyCustomForm extends StatelessWidget {
           future: getUsername(s),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              String y;
               return Text(
-                snapshot.data ?? " ",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 13,
-                  color: const Color(0xff000000),
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.left,
+                snapshot.data ?? "hello",
+                //cursorColor: Theme.of(context).cursorColor,
+                // maxLength: 20,
               );
             } else {
-              return Text(
-                "Loading data...",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 13,
-                  color: const Color(0xff000000),
-                  fontWeight: FontWeight.w700,
+              return TextFormField(
+                initialValue: s,
+                //cursorColor: Theme.of(context).cursorColor,
+                // maxLength: 20,
+                decoration: InputDecoration(
+                  fillColor: Color(0xfff9f9fa),
+                  filled: true,
+                  //icon: Icon(Icons.favorite),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xff000000)),
+                  ),
                 ),
-                textAlign: TextAlign.left,
               );
             }
           },
@@ -95,7 +95,7 @@ class MyCustomForm extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
           child: Text(
             "Your Name",
@@ -107,18 +107,39 @@ class MyCustomForm extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: TextFormField(
-            initialValue: s,
-            //cursorColor: Theme.of(context).cursorColor,
-            // maxLength: 20,
-            decoration: InputDecoration(
-              fillColor: Color(0xfff9f9fa),
-              filled: true,
-              //icon: Icon(Icons.favorite),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff000000)),
-              ),
-            ),
+          child: FutureBuilder<String>(
+            future: getUsername(s),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return TextFormField(
+                  initialValue: snapshot.data ?? "hello",
+                  //cursorColor: Theme.of(context).cursorColor,
+                  // maxLength: 20,
+                  decoration: InputDecoration(
+                    fillColor: Color(0xfff9f9fa),
+                    filled: true,
+                    //icon: Icon(Icons.favorite),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff000000)),
+                    ),
+                  ),
+                );
+              } else {
+                return TextFormField(
+                  initialValue: s,
+                  //cursorColor: Theme.of(context).cursorColor,
+                  // maxLength: 20,
+                  decoration: InputDecoration(
+                    fillColor: Color(0xfff9f9fa),
+                    filled: true,
+                    //icon: Icon(Icons.favorite),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff000000)),
+                    ),
+                  ),
+                );
+              }
+            },
           ),
         ),
         const Padding(
