@@ -58,17 +58,17 @@ class MyCustomForm extends StatelessWidget {
                 color: Colors.black87),
           ),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        ),
-        OutlineButton(
-          child: const Text(
-            "Upload",
-            style: TextStyle(fontSize: 20.0),
+          child: MaterialButton(
+            child: const Text(
+              "Upload",
+              style: TextStyle(fontSize: 10.0),
+            ),
+            onPressed: () {},
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          onPressed: () {},
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -151,38 +151,44 @@ class MyCustomForm extends StatelessWidget {
             },
           ),
         ),
-        MaterialButton(
-          minWidth: double.infinity,
-          height: 60,
-          onPressed: () async {
-            if (NameController != null && AboutController != null) {
-              await UpdateNameAbout(NameController.text, AboutController.text);
-            }
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => EditProfile()));
+        Padding(
+          padding: EdgeInsets.only(left: 24, top: 80, right: 24),
+          child: MaterialButton(
+            minWidth: double.infinity,
+            height: 60,
+            onPressed: () async {
+              if (NameController != null && AboutController != null) {
+                await UpdateNameAbout(
+                    NameController.text, AboutController.text);
+              }
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => EditProfile()));
 
-            // print("hello world");
-            // String val = "";
-            // if (formkey1.currentState!.validate() &&
-            //     formkey2.currentState!.validate() &&
-            //     formkey3.currentState!.validate() &&
-            //     formkey4.currentState!.validate()) {
-            //   // Future<dynamic>
-            //   // String val =
-            //   signUp(
-            //       emailController.text,
-            //       password1Controller.text,
-            //       nameController.text,
-            //       context);
-            // }
-          },
-          color: Colors.black,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          child: const Text(
-            "Update",
-            style: TextStyle(
-                fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
+              // print("hello world");
+              // String val = "";
+              // if (formkey1.currentState!.validate() &&
+              //     formkey2.currentState!.validate() &&
+              //     formkey3.currentState!.validate() &&
+              //     formkey4.currentState!.validate()) {
+              //   // Future<dynamic>
+              //   // String val =
+              //   signUp(
+              //       emailController.text,
+              //       password1Controller.text,
+              //       nameController.text,
+              //       context);
+              // }
+            },
+            color: Colors.black,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+            child: const Text(
+              "Save Changes",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Colors.white),
+            ),
           ),
         ),
       ],
