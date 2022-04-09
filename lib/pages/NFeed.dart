@@ -2,6 +2,7 @@ import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/helper/demo_values.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
@@ -46,36 +47,65 @@ class Feed extends StatelessWidget {
           Expanded(
             child: Post(),
           ),
-          AddPost(),
+          AddPostForm(),
         ],
       ),
     );
   }
 }
 
-class AddPost extends StatelessWidget {
-  const AddPost({Key? key}) : super(key: key);
+class AddPostForm extends StatefulWidget {
+  const AddPostForm({Key? key}) : super(key: key);
+
+  @override
+  AddPostFormState createState() => AddPostFormState();
+}
+
+class AddPostFormState extends State<AddPostForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  // Future pickImage() async {
+  //   ImagePicker.pickImage(source: ImageSource.camera);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return (
-        // alignment: Alignment.bottomRight,
-        Padding(
+    return (Form(
+        key: _formKey,
+        child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: TextField(
-              //cursorColor: Theme.of(context).cursorColor,
-              // maxLength: 20,
-
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Enter Text';
+                }
+                return null;
+              },
               decoration: InputDecoration(
                 hintText: "Add Post",
                 fillColor: const Color(0xfff9f9fa),
                 filled: true,
-                suffixIcon: const Icon(Icons.camera_alt_outlined),
+                suffixIcon: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween, // added line
+                  mainAxisSize: MainAxisSize.min, // added line
+                  children: <Widget>[
+                    IconButton(
+                        onPressed: () {}, //Open Gallery here
+                        icon: const Icon(Icons.camera_alt_outlined)),
+                    IconButton(
+                        onPressed: () {}, //Open Gallery here
+                        icon: const Icon(Icons.photo)),
+                    IconButton(
+                        onPressed: () {}, //Open Gallery here
+                        icon: const Icon(Icons.arrow_forward)),
+                  ],
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-            )));
+            ))));
   }
 }
 

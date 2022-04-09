@@ -13,7 +13,8 @@ class UserIconName extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(backgroundImage: AssetImage(userImage)),
-      title: Text(username),
+      title:
+          Text(username, style: const TextStyle(fontWeight: FontWeight.bold)),
       trailing: Text(postTime),
     );
   }
