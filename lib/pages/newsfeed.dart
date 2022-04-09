@@ -97,7 +97,6 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
-
     return Container(
       // height: 100,
       margin: const EdgeInsets.only(top: 22),
@@ -119,7 +118,6 @@ class _MyDrawer extends State<MyDrawer> {
                   return Text(
                     snapshot.data ?? " ",
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 13,
                       color: const Color(0xff000000),
                       fontWeight: FontWeight.w700,
@@ -130,7 +128,6 @@ class _MyDrawer extends State<MyDrawer> {
                   return Text(
                     "Loading data...",
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 13,
                       color: const Color(0xff000000),
                       fontWeight: FontWeight.w700,
