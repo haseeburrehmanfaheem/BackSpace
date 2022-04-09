@@ -97,22 +97,6 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
-    // var string1;
-    // var x1 = FirebaseFirestore.instance.collection('UserData').get();
-    // var x2 = x1.then((QuerySnapshot querySnapshot) {
-      // querySnapshot.docs.forEach((doc) {
-        // if (doc["email"] == s) {
-          // print(doc["username"]);
-          // return (doc["username"]);
-        // }
-      // });
-    // });
-    // print("hello");
-    // print(s);
-
-    // var username = getUsername(s).then((value) => {print(value)});
-    // var username = getUsername(s);
-    // print(username);
 
     return Container(
       // height: 100,
