@@ -2,11 +2,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 
 class EditProfile extends StatelessWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  EditProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +30,16 @@ class EditProfile extends StatelessWidget {
 }
 
 class MyCustomForm extends StatelessWidget {
+  final TextEditingController NameController = TextEditingController();
+
+  final TextEditingController AboutController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser;
   final CollectionReference cl =
       FirebaseFirestore.instance.collection('UserData');
 
   @override
   Widget build(BuildContext context) {
+    // UpdateNameAbout("haseeb ur rehman", "new about");
     String? s = "backspace";
     if (user != null) {
       s = user?.email;
@@ -88,9 +93,10 @@ class MyCustomForm extends StatelessWidget {
                   snapshot.data?.data()["username"],
                 );
                 return TextFormField(
-                  initialValue: txt.data,
+                  // initialValue: txt.data,
+                  controller: NameController,
                   decoration: InputDecoration(
-                    //labelText: txt.data,
+                    labelText: txt.data,
                     fillColor: Color(0xfff9f9fa),
                     filled: true,
                     //icon: Icon(Icons.favorite),
@@ -127,9 +133,10 @@ class MyCustomForm extends StatelessWidget {
                   snapshot.data?.data()["about"],
                 );
                 return TextFormField(
-                  initialValue: txt.data,
+                  // initialValue: txt.data,
+                  controller: AboutController,
                   decoration: InputDecoration(
-                    //labelText: txt.data,
+                    labelText: txt.data,
                     fillColor: Color(0xfff9f9fa),
                     filled: true,
                     //icon: Icon(Icons.favorite),
@@ -142,6 +149,40 @@ class MyCustomForm extends StatelessWidget {
                 return Text("Loading..");
               }
             },
+          ),
+        ),
+        MaterialButton(
+          minWidth: double.infinity,
+          height: 60,
+          onPressed: () async {
+            if (NameController != null && AboutController != null) {
+              await UpdateNameAbout(NameController.text, AboutController.text);
+            }
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => EditProfile()));
+
+            // print("hello world");
+            // String val = "";
+            // if (formkey1.currentState!.validate() &&
+            //     formkey2.currentState!.validate() &&
+            //     formkey3.currentState!.validate() &&
+            //     formkey4.currentState!.validate()) {
+            //   // Future<dynamic>
+            //   // String val =
+            //   signUp(
+            //       emailController.text,
+            //       password1Controller.text,
+            //       nameController.text,
+            //       context);
+            // }
+          },
+          color: Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          child: const Text(
+            "Update",
+            style: TextStyle(
+                fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
           ),
         ),
       ],
@@ -159,4 +200,19 @@ Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername(email) async {
   // print(ref.docs[0]["username"]);
   var s = ref.docs[0];
   return s;
+}
+
+Future<void> UpdateNameAbout(name, about) async {
+  final user = FirebaseAuth.instance.currentUser;
+  var ref = await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: user?.email)
+      .get();
+  ref.docs[0].reference.update({'about': about, 'username': name});
+
+  // final ref = FirebaseDatabase.instance.reference();
+  // print("Hello");
+  // if(ref)
+  // print(ref.docs[0]["username"]);
+  // var s = ref.docs[0].reference.update({'about': "cuntttttttttt world hehe!!"});
 }
