@@ -4,6 +4,7 @@ import 'package:backspace/pages/Guide.dart';
 import 'package:backspace/pages/LumsMap.dart';
 import 'package:backspace/pages/NFeed.dart';
 import 'package:backspace/pages/homepage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/Subspace.dart';
@@ -77,15 +78,58 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }
 }
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
+
+  @override
+  _MyDrawer createState() => _MyDrawer();
+}
+
+class _MyDrawer extends State<MyDrawer> {
+  final user = FirebaseAuth.instance.currentUser;
+  final CollectionReference cl =
+      FirebaseFirestore.instance.collection('UserData');
+
   @override
   Widget build(BuildContext context) {
+    String? s = "backspace";
+    if (user != null) {
+      s = user?.email;
+    }
+
+    var string1;
+    var x1 = FirebaseFirestore.instance.collection('UserData').get();
+    var x2 = x1.then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc["email"] == s) {
+          // print(doc["username"]);
+          return (doc["username"]);
+        }
+      });
+    });
+    print("hello");
+    // print(s);
+
+    var username = getUsername(s).then((value) => {print(value)});
+    // var username = getUsername(s);
+    print(username);
+    //     .then
+    //     ((QuerySnapshot querySnapshot) {
+    //   querySnapshot.docs.forEach((doc) {
+    //     if (doc["email"] == s) {
+    //        (doc["username"]);
+    //     }
+    //   });
+    // });
+    print(string1);
+    // print(s2);
     return Container(
       // height: 100,
-      margin: EdgeInsets.only(top: 22),
+      margin: const EdgeInsets.only(top: 22),
       height: MediaQuery.of(context).size.height * 0.90,
       // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
       // width: 50,
+
       child: Drawer(
         child: ListView(
           // padding: EdgeInsets.zero,
@@ -93,14 +137,59 @@ class MyDrawer extends StatelessWidget {
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.all(80),
           children: <Widget>[
-            Text(
+            FutureBuilder<String>(
+              future: getUsername("23100044@lums.edu.pk"),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data ?? " ",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 13,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  );
+                } else {
+                  return Text(
+                    "Loading data...",
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 13,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  );
+                }
+              },
+            ),
+            // Expanded(
+            //   child: StreamBuilder(
+            //     stream: cl.snapshots(),
+            //     // initialData: initialData,
+            //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //       return ListView(
+            //         children: snapshot.data.docs
+            //             .map<Widget>((e) => {
+            //                   ListTile(
+            //                     title: e["username"],
+            //                   )
+            //                 })
+            //             .toList(),
+            //       );
+            //     },
+            //   ),
+            // ),
+            const Text(
               'Backspace',
               style: TextStyle(
                 fontSize: 30,
               ),
             ),
             ListTile(
-                leading: Icon(Icons.build_rounded),
+                leading: const Icon(Icons.build_rounded),
                 title: Text('Edit Profile'),
                 onTap: () {
                   Navigator.push(
@@ -137,8 +226,8 @@ class MyDrawer extends StatelessWidget {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(builder: (context) => Home()));
               },
-              leading: Icon(Icons.power_settings_new, color: Colors.red),
-              title: Text(
+              leading: const Icon(Icons.power_settings_new, color: Colors.red),
+              title: const Text(
                 'Logout',
                 style: TextStyle(color: Colors.red),
               ),
@@ -148,4 +237,17 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<String> getUsername(email) async {
+  var ref = await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: "23100044@lums.edu.pk")
+      .get();
+  // final ref = FirebaseDatabase.instance.reference();
+  print("Hello");
+  // if(ref)
+  // print(ref.docs[0]["username"]);
+  var s = ref.docs[0]["username"];
+  return s ?? " ";
 }
