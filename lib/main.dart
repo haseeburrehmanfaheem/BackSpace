@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'; // new
 import 'package:firebase_core/firebase_core.dart'; // new
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart'; // new
@@ -46,6 +47,12 @@ class MyApp extends StatelessWidget {
       }
     });
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context)
+              .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+        ),
+      ),
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 

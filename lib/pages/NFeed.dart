@@ -21,7 +21,7 @@ class Feed extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('News Feed', style: TextStyle(fontFamily: "Poppins")),
+        title: const Text('News Feed'),
         actions: [
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),

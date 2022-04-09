@@ -80,12 +80,12 @@ class MyCustomForm extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: FutureBuilder<String>(
+          child: FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
             future: getUsername(s),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Text txt = Text(
-                  snapshot.data ?? "hello",
+                  snapshot.data?.data()["username"],
                 );
                 return TextFormField(
                   initialValue: txt.data,
@@ -117,19 +117,31 @@ class MyCustomForm extends StatelessWidget {
                 color: Colors.black87),
           ),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: TextField(
-            //cursorColor: Theme.of(context).cursorColor,
-            // maxLength: 20,
-            decoration: InputDecoration(
-              fillColor: Color(0xfff9f9fa),
-              filled: true,
-              //icon: Icon(Icons.favorite),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff000000)),
-              ),
-            ),
+          child: FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
+            future: getUsername(s),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                Text txt = Text(
+                  snapshot.data?.data()["about"],
+                );
+                return TextFormField(
+                  initialValue: txt.data,
+                  decoration: InputDecoration(
+                    //labelText: txt.data,
+                    fillColor: Color(0xfff9f9fa),
+                    filled: true,
+                    //icon: Icon(Icons.favorite),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xff000000)),
+                    ),
+                  ),
+                );
+              } else {
+                return Text("Loading..");
+              }
+            },
           ),
         ),
       ],
@@ -137,7 +149,7 @@ class MyCustomForm extends StatelessWidget {
   }
 }
 
-Future<String> getUsername(email) async {
+Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername(email) async {
   var ref = await FirebaseFirestore.instance
       .collection("UserData")
       .where("email", isEqualTo: email)
@@ -145,6 +157,6 @@ Future<String> getUsername(email) async {
   // final ref = FirebaseDatabase.instance.reference();
   // if(ref)
   // print(ref.docs[0]["username"]);
-  var s = ref.docs[0]["username"];
-  return s ?? " ";
+  var s = ref.docs[0];
+  return s;
 }
