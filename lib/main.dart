@@ -35,6 +35,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // const Myapp({Key? key}) : super(key: key);
+  var userr = false;
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
+        userr = true;
         // signout ki line
         // FirebaseAuth.instance.signOut();
       }
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 
-      home: Home(),
+      home: userr ? BottomNavigation() : Home(),
       // FirebaseAuth.instance.signOut();
       // home: BottomNavigation(),
     );
