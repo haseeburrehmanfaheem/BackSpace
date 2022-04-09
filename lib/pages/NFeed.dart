@@ -17,7 +17,7 @@ class Feed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
