@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
+
         a = true;
         // signout ki line
         // FirebaseAuth.instance.signOut();
