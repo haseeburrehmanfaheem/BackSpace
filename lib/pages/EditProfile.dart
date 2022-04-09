@@ -106,7 +106,7 @@ class MyCustomForm extends StatelessWidget {
                   ),
                 );
               } else {
-                return Text("Loading..");
+                return Text("Loading...");
               }
             },
           ),
@@ -146,7 +146,7 @@ class MyCustomForm extends StatelessWidget {
                   ),
                 );
               } else {
-                return Text("Loading..");
+                return Text("Loading...");
               }
             },
           ),
