@@ -21,7 +21,7 @@ class SignupPage extends StatelessWidget {
   final TextEditingController password2Controller = TextEditingController();
 
   CollectionReference users = FirebaseFirestore.instance.collection('UserData');
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,23 +133,6 @@ class SignupPage extends StatelessWidget {
                                   password1Controller.text,
                                   nameController.text,
                                   context);
-                              // addUser(emailController.text, password1Controller.text, nameController.text);
-
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     backgroundColor: Colors.white,
-                              //     content: Text(
-                              //       'Validation Successful',
-                              //       style: TextStyle(
-                              //         color: Colors.black,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // );
-                              // Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (_) => BottomNavigation()));
                             }
                           },
                           color: Colors.black,
