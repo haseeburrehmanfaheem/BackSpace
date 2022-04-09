@@ -5,6 +5,7 @@ import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/helper/demo_values.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
@@ -12,6 +13,7 @@ import '../components/newsFeed/post-header/user-icon-name.dart';
 final usersRef = FirebaseFirestore.instance.collection('UserData'); //database reference object
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,20 @@ class Feed extends StatelessWidget {
         ),
         title: const Text('News Feed'),
         actions: [
-          const Padding(
+          Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(Icons.search, color: Colors.black)),
+              child: IconButton(
+                onPressed: () {
+                  showSearch(
+                    context: context, 
+                    delegate: MyDelegate(),);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const Noti()),
+                  // );
+                }, 
+                icon: Icon(Icons.search, color: Colors.black))),
+              // Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -139,6 +152,13 @@ class _timeline extends State<timeline> {
 //     print(allData);
 // }
 
+newPage (context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Noti()),
+  );
+}
+
 
 
 
@@ -192,6 +212,9 @@ class _PostFooter extends State<PostFooter> {
         IconButton(
           icon: const Icon(Icons.favorite),
           onPressed: () {
+            // showSearch(
+            //   context: context, 
+            //   delegate: CustomSearchDelegate(),);
             // Set State for Likes and update db.
           },
         ),
@@ -283,6 +306,66 @@ class AddPostFormState extends State<AddPostForm> {
             ))));
   }
 }
+
+class MyDelegate extends SearchDelegate {
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+    onPressed: () => close(context, null), 
+    icon: Icon(Icons.arrow_back));
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+    IconButton(
+      onPressed: () {
+        if(query.isEmpty){
+          close(context, null);
+        }
+        else {
+          query = '';
+        }
+        // query = '';
+      }, 
+      icon: Icon(Icons.clear))
+  ];
+
+  @override
+  Widget buildResults(BuildContext context) => Center(
+    child: Text(
+      query,
+      style: const TextStyle(fontSize: 20,),
+    ),
+  ); 
+    // TODO: implement buildResults
+    // throw UnimplementedError();
+  
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestions = [
+      // 'Zeerak1',
+      // 'Zeerak2',
+      // 'Zeerak3',
+      // 'Zeerak4',
+    ];
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        final sug = suggestions[index];
+        return ListTile(
+          title: Text(sug),
+          onTap: () {
+            query = sug;
+            showResults(context);
+          } ,
+        );
+      },
+    );
+    // TODO: implement buildSuggestions
+    // throw UnimplementedError();
+  }
+}
+
 
 
 
