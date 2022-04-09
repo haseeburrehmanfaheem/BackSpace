@@ -97,32 +97,23 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
-    var string1;
-    var x1 = FirebaseFirestore.instance.collection('UserData').get();
-    var x2 = x1.then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (doc["email"] == s) {
+    // var string1;
+    // var x1 = FirebaseFirestore.instance.collection('UserData').get();
+    // var x2 = x1.then((QuerySnapshot querySnapshot) {
+      // querySnapshot.docs.forEach((doc) {
+        // if (doc["email"] == s) {
           // print(doc["username"]);
-          return (doc["username"]);
-        }
-      });
-    });
-    print("hello");
+          // return (doc["username"]);
+        // }
+      // });
+    // });
+    // print("hello");
     // print(s);
 
-    var username = getUsername(s).then((value) => {print(value)});
+    // var username = getUsername(s).then((value) => {print(value)});
     // var username = getUsername(s);
-    print(username);
-    //     .then
-    //     ((QuerySnapshot querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) {
-    //     if (doc["email"] == s) {
-    //        (doc["username"]);
-    //     }
-    //   });
-    // });
-    print(string1);
-    // print(s2);
+    // print(username);
+
     return Container(
       // height: 100,
       margin: const EdgeInsets.only(top: 22),
@@ -138,7 +129,7 @@ class _MyDrawer extends State<MyDrawer> {
           // margin: EdgeInsets.all(80),
           children: <Widget>[
             FutureBuilder<String>(
-              future: getUsername("23100044@lums.edu.pk"),
+              future: getUsername(s),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Text(
@@ -242,10 +233,10 @@ class _MyDrawer extends State<MyDrawer> {
 Future<String> getUsername(email) async {
   var ref = await FirebaseFirestore.instance
       .collection("UserData")
-      .where("email", isEqualTo: "23100044@lums.edu.pk")
+      .where("email", isEqualTo: email)
       .get();
   // final ref = FirebaseDatabase.instance.reference();
-  print("Hello");
+  // print("Hello");
   // if(ref)
   // print(ref.docs[0]["username"]);
   var s = ref.docs[0]["username"];
