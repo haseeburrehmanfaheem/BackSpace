@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/FAQ.dart';
 import 'package:backspace/pages/Guide.dart';
@@ -97,7 +99,6 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
-
     return Container(
       // height: 100,
       margin: const EdgeInsets.only(top: 22),
@@ -112,33 +113,36 @@ class _MyDrawer extends State<MyDrawer> {
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.all(80),
           children: <Widget>[
-            FutureBuilder<String>(
-              future: getUsername(s),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data ?? " ",
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 13,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.left,
-                  );
-                } else {
-                  return Text(
-                    "Loading data...",
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 13,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.left,
-                  );
-                }
-              },
+            Padding(
+              padding: EdgeInsets.only(left: 1, top: 20),
+              child: CircleAvatar(
+                  radius: 40.0,
+                  backgroundImage: AssetImage("assets/images/Map.png")),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: FutureBuilder<String>(
+                future: getUsername(s),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data ?? " ",
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.black.withOpacity(.50),
+                      ),
+                    );
+                  } else {
+                    return Text(
+                      "Loading data...",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black.withOpacity(.50),
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
             // Expanded(
             //   child: StreamBuilder(
@@ -157,20 +161,25 @@ class _MyDrawer extends State<MyDrawer> {
             //     },
             //   ),
             // ),
-            const Text(
-              'Backspace',
-              style: TextStyle(
-                fontSize: 30,
+            Padding(
+              padding: EdgeInsets.only(left: 10, bottom: 20),
+              child: Text(
+                s!,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
+            ),
+            Divider(
+              height: 1,
+              thickness: 1,
             ),
             ListTile(
                 leading: const Icon(Icons.build_rounded),
                 title: Text('Edit Profile'),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  EditProfile()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditProfile()));
                 }),
             ListTile(
                 leading: Icon(Icons.live_help_outlined),
