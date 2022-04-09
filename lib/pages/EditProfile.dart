@@ -34,23 +34,11 @@ class MyCustomForm extends StatelessWidget {
 
   CollectionReference users = FirebaseFirestore.instance.collection('UserData');
 
-  // Future<void> updateUser() {
-  //   return users
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .update({'about': "hello world hehe!!"})
-  //       .then((value) => print("User Updated"))
-  //       .catchError((error) => print("Failed to update user: $error"));
-  // }
-
   Future<void> getUsername(email) async {
     var ref = await FirebaseFirestore.instance
         .collection("UserData")
         .where("email", isEqualTo: email)
         .get();
-    // final ref = FirebaseDatabase.instance.reference();
-    // print("Hello");
-    // if(ref)
-    // print(ref.docs[0]["username"]);
     var s =
         ref.docs[0].reference.update({'about': "cuntttttttttt world hehe!!"});
     // print(s);
@@ -59,8 +47,6 @@ class MyCustomForm extends StatelessWidget {
   // updateUser();
   @override
   Widget build(BuildContext context) {
-    // print(FirebaseAuth.instance.currentUser!.uid);
-    // updateUser();
     getUsername("23100044@lums.edu.pk");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,12 +89,9 @@ class MyCustomForm extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: TextField(
-            //cursorColor: Theme.of(context).cursorColor,
-            // maxLength: 20,
             decoration: InputDecoration(
               fillColor: Color(0xfff9f9fa),
               filled: true,
-              //icon: Icon(Icons.favorite),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xff000000)),
               ),
@@ -142,6 +125,34 @@ class MyCustomForm extends StatelessWidget {
             ),
           ),
         ),
+        MaterialButton(
+          minWidth: double.infinity,
+          height: 60,
+          onPressed: () {
+            print("hello world");
+            // String val = "";
+            // if (formkey1.currentState!.validate() &&
+            //     formkey2.currentState!.validate() &&
+            //     formkey3.currentState!.validate() &&
+            //     formkey4.currentState!.validate()) {
+            //   // Future<dynamic>
+            //   // String val =
+            //   signUp(
+            //       emailController.text,
+            //       password1Controller.text,
+            //       nameController.text,
+            //       context);
+            // }
+          },
+          color: Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          child: const Text(
+            "Update",
+            style: TextStyle(
+                fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
+          ),
+        )
       ],
     );
   }
