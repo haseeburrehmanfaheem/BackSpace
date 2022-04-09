@@ -97,6 +97,7 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
+
     return Container(
       // height: 100,
       margin: const EdgeInsets.only(top: 22),
@@ -219,7 +220,7 @@ Future<String> getUsername(email) async {
       .where("email", isEqualTo: email)
       .get();
   // final ref = FirebaseDatabase.instance.reference();
-  print("Hello");
+  // print("Hello");
   // if(ref)
   // print(ref.docs[0]["username"]);
   var s = ref.docs[0]["username"];

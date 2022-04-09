@@ -21,6 +21,8 @@ class SignupPage extends StatelessWidget {
   final TextEditingController password2Controller = TextEditingController();
 
   CollectionReference users = FirebaseFirestore.instance.collection('UserData');
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,10 +126,13 @@ class SignupPage extends StatelessWidget {
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
-                              // Future<dynamic> 
-                              // String val = 
-                              signUp(emailController.text,
-                                  password1Controller.text, nameController.text, context);
+                              // Future<dynamic>
+                              // String val =
+                              signUp(
+                                  emailController.text,
+                                  password1Controller.text,
+                                  nameController.text,
+                                  context);
                               // addUser(emailController.text, password1Controller.text, nameController.text);
 
                               // ScaffoldMessenger.of(context).showSnackBar(
@@ -195,29 +200,25 @@ class SignupPage extends StatelessWidget {
   }
 
   // Future<void>
-   addUser(emailID, password1, name, context) {
-      // Call the user's CollectionReference to add a new user
-      // return 
-      users
-          .add({
-          "email": emailID,
-          // "password": password1,
-          "username": name,
-          "roles": "user",
-          "about": "",
-          })
-          .then((value) {
-            Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (_) => BottomNavigation()));
-          }
-          )
-          .catchError((error) => print("Failed to add user: $error"));
-          return;
-    }
+  addUser(emailID, password1, name, context) {
+    // Call the user's CollectionReference to add a new user
+    // return
+    // users.
 
-  signUp(emailAddress, password,name, context) async {
+    users.add({
+      "email": emailID,
+      // "password": password1,
+      "username": name,
+      "roles": "user",
+      "about": "",
+    }).then((value) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => BottomNavigation()));
+    }).catchError((error) => print("Failed to add user: $error"));
+    return;
+  }
+
+  signUp(emailAddress, password, name, context) async {
     // CollectionReference users = FirebaseFirestore.instance.collection('UserData');
     print(emailAddress);
     print(password);
@@ -228,14 +229,12 @@ class SignupPage extends StatelessWidget {
         password: password,
       );
       addUser(emailAddress, password, name, context);
-      
     } on FirebaseAuthException catch (e) {
       // print(Errors.show(e.code));
       // print(e.message);
-      String? x  = e.message;
+      String? x = e.message;
       Fluttertoast.showToast(msg: x!, gravity: ToastGravity.TOP);
-    } 
-    catch (e) {
+    } catch (e) {
       print(e);
     }
   }
@@ -275,7 +274,7 @@ Widget makeInput(
             // final emailid = user!.email;
             // String emailID = user.email;
             // print(emailid);
-            
+
             // final User user = await FirebaseAuth.instance.currentUser;
             if (label == "Confirm Password") {
               if (value == null || value.isEmpty) {
