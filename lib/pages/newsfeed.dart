@@ -170,7 +170,7 @@ class _MyDrawer extends State<MyDrawer> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EditProfile()));
+                          builder: (context) =>  EditProfile()));
                 }),
             ListTile(
                 leading: Icon(Icons.live_help_outlined),
