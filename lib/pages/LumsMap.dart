@@ -20,9 +20,17 @@ class Map extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: const Center(
-          child: Text('Hello World'),
+        body: Center(
+          child: ClipRect(
+            child: InteractiveViewer(
+              child: Image.asset('assets/images/Map.png'),
+            ),
+            
+          ),
+          
         ),
+          
+        
       ),
     );
   }
