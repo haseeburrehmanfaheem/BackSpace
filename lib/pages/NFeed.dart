@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:backspace/pages/Notification.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:sticky_float_button/sticky_float_button.dart';
 
-
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 
@@ -19,11 +20,44 @@ final usersRef = FirebaseFirestore.instance
     .collection('UserData'); //database reference object
 
 class Feed extends StatelessWidget {
-  const Feed({Key? key}) : super(key: key);
+  // const Feed({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List timelinePosts =[];
+
+
+// getFollowing() async {
+//     QuerySnapshot snapshot = await followersRef
+//         .document(currentUser.id)
+//         .collection('userFollowing')
+//         .getDocuments();
+//     setState(() {
+//       followingList = snapshot.documents.map((doc) => doc.documentID).toList();
+//       print(followingList);
+//     });
+//   }
+
+// getTimeline()async{
+
+// List posts = [];
+//    for( int i=0; i< followingList.length; i++)
+// {
+//     QuerySnapshot snapshot = await postsRef
+//         .collections('posts/${followingList[i]}/userPosts')
+//         .orderBy('timestamp', descending: true)
+//         .getDocuments();
+//     posts+= snapshot.data.documents.map((doc) => {'id':doc.documentID,...doc.data}).toList();
+// }
+//     setState(() {
+//       timelinePosts = timeLinePosts + posts;
+//     });
+//   }
+
+    // var postsData =  GetAllPostsContent();
+
     return Scaffold(
+      // GetAllPostsContent();
       backgroundColor: Color(0xffDADADA),
       drawer: const MyDrawer(),
       appBar: AppBar(
@@ -65,24 +99,77 @@ class Feed extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: ListView(
-        children: const <Widget>[
-          Post(
-            userName: "Bill Gates",
-            userimage: "assets/images/bill-gates.jpg",
-            time: "5 min",
-            //PostImg: "",
-          ),
 
-          Post(
-            userName: "Bill Gates",
-            userimage: "assets/images/bill-gates.jpg",
-            time: "5 min",
-            PostImg: "assets/images/keys.jpg",
-          ),
-          AddPostForm(),
-          // AddPost(),
+      body: ListView(
+        children: <Widget>[
+          // for(var i=0;i<5;i++){   Post(
+          //           userName: "Bill Gates",
+          //           userimage: "assets/images/bill-gates.jpg",
+          //           time: "5 min",
+          //           //PostImg: "",
+          //         ),},
+            // list.
+            FutureBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
+                future: GetAllPostsContent(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    // Text txt = Text(
+                    //   snapshot.data?.data()["about"],
+                    return CircularProgressIndicator();
+                  } else {
+                    // final data = (snapshot.data as String);
+                    //email
+                    //post content
+                    //post image
+                    //
+                    // int l = snapshot.data?.length();
+                    // for (var i = 0; i < snapshot.data?.length;)
+                    // snapshot.data?.forEach((element) {
+                    //   Post(
+                    //     userName: "Bill Gates",
+                    //     userimage: "assets/images/bill-gates.jpg",
+                    //     time: "5 min",
+                    //     PostImg: "",
+                    //   );
+                    // });
+                    return Text("data");
+                  }
+
+
+                  // return Post(
+                  //   userName: "Bill Gates",
+                  //   userimage: "assets/images/bill-gates.jpg",
+                  //   time: "5 min",
+                  //   PostImg: "",
+                  // );
+                }
+          // }
+                //   Post(
+                //     userName: "Bill Gates",
+                //     userimage: "assets/images/bill-gates.jpg",
+                //     time: "5 min",
+                //     //PostImg: "",
+                //   ),
+
+                //   Post(
+                //     userName: "Bill Gates",
+                //     userimage: "assets/images/bill-gates.jpg",
+                //     time: "5 min",
+                //     PostImg: "assets/images/keys.jpg",
+                //   ),
+
+                //   // AddPostForm(),
+                //   // AddPost(),
+                ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddPostPage()));
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.grey,
       ),
     );
   }
@@ -182,9 +269,15 @@ class _PostFooter extends State<PostFooter> {
 }
 
 class AddPostForm extends StatefulWidget {
+  final TextEditingController postcontentController;
+
   final Function(File)? changeState;
 
-  const AddPostForm({Key? key, this.changeState}) : super(key: key);
+  const AddPostForm({
+    Key? key,
+    this.changeState,
+    required this.postcontentController,
+  }) : super(key: key);
 
   @override
   AddPostFormState createState() => AddPostFormState();
@@ -218,6 +311,7 @@ class AddPostFormState extends State<AddPostForm> {
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
+      widget.changeState!(imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -235,10 +329,8 @@ class AddPostFormState extends State<AddPostForm> {
             children: <Widget>[
               Expanded(
                 child: TextFormField(
+                  controller: widget.postcontentController,
                   onTap: () {},
-                  // keyboardType: TextInputType.multiline,
-                  // minLines: 1,
-                  // maxLines: null,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Enter Text';
@@ -257,10 +349,7 @@ class AddPostFormState extends State<AddPostForm> {
               ),
               IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddPostPage()),
-                    );
+                    handleTakephoto();
                   }, //Open Camera here
                   icon: const Icon(Icons.camera_alt_outlined)),
               IconButton(
@@ -328,4 +417,35 @@ class MyDelegate extends SearchDelegate {
     // TODO: implement buildSuggestions
     // throw UnimplementedError();
   }
+}
+
+Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+    GetAllPostsContent() async {
+  var posts = await FirebaseFirestore.instance.collection("Posts").get();
+  // posts.docs.forEach((element) async {
+  //   // print(element);
+  //   print(element["content"]);
+  //   var users = await FirebaseFirestore.instance
+  //       .collection("UserData")
+  //       .where("email", isEqualTo: element["email"])
+  //       .get();
+  //   print(users.docs[0]["email"]);
+  //   posts.docs[0]["username"].;
+  //   // = users.docs[0]["username"];
+
+  //   // element["username"] = "print("\n")";
+  // });
+  // posts.forEach((s)=>print(s));
+  // var s = ref.docs;
+  return posts.docs;
+}
+
+NameImage(email) async {
+  var posts = await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
+  String s = posts.docs[0]["username"];
+  String d = posts.docs[0]["imageURL"];
+  return [posts.docs[0]["username"], posts.docs[0]["imageURL"]];
 }
