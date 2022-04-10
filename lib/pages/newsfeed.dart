@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:backspace/pages/Subspace.dart';
 import 'package:backspace/pages/FindWork.dart';
 import 'package:backspace/pages/Messages.dart';
-import 'package:backspace/pages/Instructor.dart';
+import 'package:backspace/pages/InstructorProfile.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
