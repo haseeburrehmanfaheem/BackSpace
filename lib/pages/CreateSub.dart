@@ -3,8 +3,8 @@
 import 'package:backspace/pages/Admindrawer.dart';
 import 'package:flutter/material.dart';
 
-class Event extends StatelessWidget {
-  const Event({Key? key}) : super(key: key);
+class CreateSub extends StatelessWidget {
+  const CreateSub({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

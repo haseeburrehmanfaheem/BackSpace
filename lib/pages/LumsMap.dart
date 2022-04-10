@@ -32,8 +32,7 @@ void _handleDoubleTap() {
           icon: Icon(Icons.chevron_left),
           onPressed: () => Navigator.pop(context, false),
         ),
-
-
+      ),
         body: Center(
           child: ClipRect(
             child: GestureDetector(
@@ -49,7 +48,7 @@ void _handleDoubleTap() {
             
           ),
         ),
-      ),
+      // ),
     );
   }
 }
