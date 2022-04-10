@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:backspace/pages/Notification.dart';
+import 'package:backspace/pages/add-post.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:backspace/helper/demo_values.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sticky_float_button/sticky_float_button.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
@@ -18,7 +18,6 @@ final usersRef = FirebaseFirestore.instance
 
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,17 +36,18 @@ class Feed extends StatelessWidget {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: IconButton(
-                onPressed: () {
-                  showSearch(
-                    context: context, 
-                    delegate: MyDelegate(),);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const Noti()),
-                  // );
-                }, 
-                icon: Icon(Icons.search, color: Colors.black))),
-              // Icon(Icons.search, color: Colors.black)),
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(),
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const Noti()),
+                    // );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
+          // Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -151,7 +151,7 @@ class _timeline extends State<timeline> {
 //     print(allData);
 // }
 
-newPage (context) {
+newPage(context) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => const Noti()),
@@ -204,7 +204,7 @@ class _PostFooter extends State<PostFooter> {
           icon: const Icon(Icons.favorite),
           onPressed: () {
             // showSearch(
-            //   context: context, 
+            //   context: context,
             //   delegate: CustomSearchDelegate(),);
             // Set State for Likes and update db.
           },
@@ -224,7 +224,9 @@ class _PostFooter extends State<PostFooter> {
 }
 
 class AddPostForm extends StatefulWidget {
-  const AddPostForm({Key? key}) : super(key: key);
+  final Function(File)? changeState;
+
+  const AddPostForm({Key? key, this.changeState}) : super(key: key);
 
   @override
   AddPostFormState createState() => AddPostFormState();
@@ -243,6 +245,7 @@ class AddPostFormState extends State<AddPostForm> {
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
+      widget.changeState!(imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -265,79 +268,82 @@ class AddPostFormState extends State<AddPostForm> {
   @override
   Widget build(BuildContext context) {
     return (Form(
-        key: _formKey,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-            child: TextFormField(
-              // keyboardType: TextInputType.multiline,
-              // minLines: 1,
-              // maxLines: null,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter Text';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: "Add Post",
-                fillColor: const Color(0xfff9f9fa),
-                filled: true,
-                suffixIcon: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // added line
-                  mainAxisSize: MainAxisSize.min, // added line
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: handleTakephoto, //Open Camera here
-                        icon: const Icon(Icons.camera_alt_outlined)),
-                    IconButton(
-                        onPressed: handleChoosefromgallery, //Open Gallery here
-                        icon: const Icon(Icons.photo)),
-                    IconButton(
-                        onPressed: () {}, //post the post
-                        icon: const Icon(Icons.arrow_forward)),
-                  ],
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+        child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+            // mainAxisSize: MainAxisSize.min, // added line
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                  onTap: () {},
+                  // keyboardType: TextInputType.multiline,
+                  // minLines: 1,
+                  // maxLines: null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Text';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Add Post",
+                    fillColor: const Color(0xfff9f9fa),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                 ),
               ),
-            ))));
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddPostPage()),
+                    );
+                  }, //Open Camera here
+                  icon: const Icon(Icons.camera_alt_outlined)),
+              IconButton(
+                  onPressed: handleChoosefromgallery, //Open Gallery here
+                  icon: const Icon(Icons.photo)),
+            ]),
+      ),
+    ));
   }
 }
-
 
 class MyDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
-    onPressed: () => close(context, null), 
-    icon: Icon(Icons.arrow_back));
+      onPressed: () => close(context, null), icon: Icon(Icons.arrow_back));
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
-    IconButton(
-      onPressed: () {
-        if(query.isEmpty){
-          close(context, null);
-        }
-        else {
-          query = '';
-        }
-        // query = '';
-      }, 
-      icon: Icon(Icons.clear))
-  ];
+        IconButton(
+            onPressed: () {
+              if (query.isEmpty) {
+                close(context, null);
+              } else {
+                query = '';
+              }
+              // query = '';
+            },
+            icon: Icon(Icons.clear))
+      ];
 
   @override
   Widget buildResults(BuildContext context) => Center(
-    child: Text(
-      query,
-      style: const TextStyle(fontSize: 20,),
-    ),
-  ); 
-    // TODO: implement buildResults
-    // throw UnimplementedError();
-  
+        child: Text(
+          query,
+          style: const TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      );
+  // TODO: implement buildResults
+  // throw UnimplementedError();
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -357,7 +363,7 @@ class MyDelegate extends SearchDelegate {
           onTap: () {
             query = sug;
             showResults(context);
-          } ,
+          },
         );
       },
     );
