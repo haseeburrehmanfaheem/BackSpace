@@ -16,7 +16,7 @@ class AddPostPage extends StatefulWidget {
 
 class _AddPostPageState extends State<AddPostPage> {
   File? image;
-  CollectionReference users = FirebaseFirestore.instance.collection('');
+  CollectionReference users = FirebaseFirestore.instance.collection('posts');
   void changeState(imgSrc) {
     setState(() => image = imgSrc);
   }
