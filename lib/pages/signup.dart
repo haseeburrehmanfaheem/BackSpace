@@ -22,7 +22,6 @@ class SignupPage extends StatelessWidget {
 
   CollectionReference users = FirebaseFirestore.instance.collection('UserData');
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,26 +56,32 @@ class SignupPage extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 40, bottom: 10, top: 10),
+                          child: Row(children: [
+                            Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ]),
                         ),
-                        const SizedBox(
-                          height: 20,
+                        Padding(
+                          padding: EdgeInsets.only(left: 40, bottom: 40),
+                          child: Row(children: [
+                            Text(
+                              "Create an Account with your LUMS email",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black.withOpacity(0.50),
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ]),
                         ),
-                        Text(
-                          "Create an Account with your LUMS email",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        )
                       ],
                     ),
                     Padding(
@@ -85,23 +90,31 @@ class SignupPage extends StatelessWidget {
                         children: [
                           makeInput(
                               label: "Email",
+                              icons: Icon(Icons.email, color: Colors.black),
                               controllerObj: emailController,
                               fk: formkey1),
                           makeInput(
                               label: "Name",
+                              icons: Icon(Icons.person, color: Colors.black),
                               controllerObj: nameController,
                               fk: formkey2),
                           makeInput(
                               label: "Password",
+                              icons: Icon(Icons.lock, color: Colors.black),
                               obsureText: true,
                               controllerObj: password1Controller,
                               fk: formkey3),
-                          makeInput(
-                              label: "Confirm Password",
-                              obsureText: true,
-                              controllerObj: password2Controller,
-                              fk: formkey4,
-                              p1controller: password1Controller)
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 40,
+                              ),
+                              child: makeInput(
+                                  label: "Confirm Password",
+                                  icons: Icon(Icons.lock, color: Colors.black),
+                                  obsureText: true,
+                                  controllerObj: password2Controller,
+                                  fk: formkey4,
+                                  p1controller: password1Controller)),
                         ],
                       ),
                     ),
@@ -109,13 +122,6 @@ class SignupPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Container(
                         padding: const EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            border: const Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black))),
                         child: MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
@@ -139,7 +145,7 @@ class SignupPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40)),
                           child: const Text(
-                            "Sign Up",
+                            "SIGN  UP",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
@@ -152,23 +158,31 @@ class SignupPage extends StatelessWidget {
                       height: 20,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Already have an account?"),
+                        Padding(
+                          padding: EdgeInsets.only(left: 45),
+                          child: const Text("Already have an account?"),
+                        ),
                         TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline),
-                            primary: Colors.black,
-                          ),
+                          // style: TextButton.styleFrom(
+                          //   textStyle: const TextStyle(
+                          //       // fontSize: 16,
+                          //       // fontWeight: FontWeight.w600,
+                          //       //decoration: TextDecoration.underline
+                          //       ),
+                          //   primary: Colors.black,
+                          // ),
                           onPressed: () {
                             // print("Container clicked");
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (_) => Login()));
                           },
-                          child: const Text('Log in'),
+                          child: const Text('Log in',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  decoration: TextDecoration.underline)),
                         ),
                       ],
                     ),
@@ -224,14 +238,19 @@ class SignupPage extends StatelessWidget {
 }
 
 Widget makeInput(
-    {label, obsureText = false, controllerObj, fk, p1controller = null}) {
+    {label,
+    icons,
+    obsureText = false,
+    controllerObj,
+    fk,
+    p1controller = null}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
         label,
         style: const TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
+            fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black87),
       ),
       const SizedBox(
         height: 5,
@@ -240,15 +259,18 @@ Widget makeInput(
         key: fk,
         child: TextFormField(
           obscureText: obsureText,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.grey,
-              ),
+          decoration: InputDecoration(
+            prefixIcon: Align(
+              widthFactor: 2,
+              heightFactor: 1.0,
+              child: icons,
             ),
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+            fillColor: Color(0xfff9f9fa),
+            filled: true,
+            //icon: Icon(Icons.favorite),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff000000)),
+            ),
           ),
           controller: controllerObj,
           validator: (value) {
