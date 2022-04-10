@@ -94,8 +94,8 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: assets\fonts\Poppins-Black.ttf
-        - asset: assets\fonts\Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

@@ -1,8 +1,13 @@
 // ignore_for_file: deprecated_member_use, prefer_const_constructors
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 
@@ -29,6 +34,83 @@ class EditProfile extends StatelessWidget {
   }
 }
 
+Future handleChoosefromgallery() async {
+  try {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    File imageTemp = File(image.path);
+    final user = FirebaseAuth.instance.currentUser;
+    var ref = await FirebaseFirestore.instance
+        .collection("UserData")
+        .where("email", isEqualTo: user?.email)
+        .get();
+    if (user != null) {
+      String? e = user.email;
+
+      final ref2 = FirebaseStorage.instance
+          .ref()
+          .child("UserImages")
+          .child(e! + "_image.jpg");
+
+      ref2.putFile(imageTemp);
+      // print("HERREER");
+      String URL = await ref2.getDownloadURL();
+
+      ref.docs[0].reference.update({'imageURL': URL});
+      print("HOGIAAAA");
+    }
+    // setState(() => this.image = imageTemp);
+  } on PlatformException catch (e) {
+    print('Failed to pick image: $e');
+  }
+}
+
+Widget buildEditIcon() => buildCircle(
+      color: Colors.white,
+      all: 3,
+      child: buildCircle(
+        color: Colors.black.withOpacity(0.5),
+        all: 8,
+        child: IconButton(
+          icon: Icon(Icons.camera_alt_rounded),
+          onPressed: handleChoosefromgallery,
+          color: Colors.white,
+          // size: 20,
+        ),
+      ),
+    );
+
+Widget buildCircle({
+  required Widget child,
+  required double all,
+  required Color color,
+}) =>
+    ClipOval(
+      child: Container(
+        padding: EdgeInsets.all(all),
+        color: color,
+        child: child,
+      ),
+    );
+
+Widget buildImage(s) {
+  return ClipOval(
+    child: Material(
+      color: Colors.transparent,
+      child: Ink.image(
+        image: NetworkImage(s),
+        fit: BoxFit.cover,
+        width: 128,
+        height: 128,
+        child: InkWell(),
+      ),
+    ),
+  );
+}
+
+// "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5"
 class MyCustomForm extends StatelessWidget {
   final TextEditingController NameController = TextEditingController();
 
@@ -60,15 +142,54 @@ class MyCustomForm extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: MaterialButton(
-            child: const Text(
-              "Upload",
-              style: TextStyle(fontSize: 10.0),
-            ),
-            onPressed: () {},
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          child: FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
+            future: getUsername(s),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                String url = snapshot.data?.data()["imageURL"];
+                return Stack(
+                  // initialValue: txt.data,
+                  children: [
+                    buildImage(url),
+                    Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
+                  ],
+                );
+              } else {
+                return Text("Loading...");
+              }
+            },
           ),
+
+          //  Stack(
+          //   children: [
+          //     buildImage("hehe"),
+          //     Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
+          //   ],
+          // ),
+          //
+          // ClipOval(
+          //   child: Material(
+          //     color: Colors.transparent,
+          //     child: Ink.image(
+          //       image: NetworkImage(
+          //           "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5"),
+          //       fit: BoxFit.cover,
+          //       width: 128,
+          //       height: 128,
+          //       child: InkWell(),
+          //     ),
+          //   ),
+          // )
+
+          // MaterialButton(
+          //   child: const Text(
+          //     "Upload",
+          //     style: TextStyle(fontSize: 10.0),
+          //   ),
+          //   onPressed: () {},
+          //   shape:
+          //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          // ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -201,9 +322,7 @@ Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername(email) async {
       .collection("UserData")
       .where("email", isEqualTo: email)
       .get();
-  // final ref = FirebaseDatabase.instance.reference();
-  // if(ref)
-  // print(ref.docs[0]["username"]);
+
   var s = ref.docs[0];
   return s;
 }

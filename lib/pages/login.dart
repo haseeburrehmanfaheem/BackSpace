@@ -1,9 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:backspace/pages/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'homepage.dart';
 
@@ -50,67 +53,73 @@ class _LoginState extends State<Login> {
             width: double.infinity,
             // child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text(
+                    Padding(
+                      padding: EdgeInsets.only(left: 30, bottom: 10, top: 10),
+                      child: Row(children: [
+                        Text(
                           "Login",
                           style: TextStyle(
                             fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Welcome back, Login to continue",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        )
-                      ],
+                      ]),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: EdgeInsets.only(left: 30, bottom: 40),
+                      child: Row(children: [
+                        Text(
+                          "Welcome back, login to continue",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black.withOpacity(0.50),
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                      ),
                       child: Column(
                         children: [
-                          makeInput(
-                              label: "Email",
-                              controllerObj: emailController,
-                              fk: formkey1),
-                          makeInput(
-                              label: "Password",
-                              obsureText: true,
-                              controllerObj: passwordController,
-                              fk: formkey2),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            child: makeInput(
+                                label: "Email",
+                                icons: Icon(Icons.email, color: Colors.black),
+                                controllerObj: emailController,
+                                fk: formkey1),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 40,
+                            ),
+                            child: makeInput(
+                                label: "Password",
+                                icons: Icon(Icons.lock, color: Colors.black),
+                                obsureText: true,
+                                controllerObj: passwordController,
+                                fk: formkey2),
+                          )
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
                         padding: const EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                          
-                          // prefixIcon: prefixIcon??Icon(Icons.done),
-                            borderRadius: BorderRadius.circular(40),
-                            border: Border(
-                                bottom: BorderSide(color: Colors.black),
-                                top: BorderSide(color: Colors.black),
-                                right: BorderSide(color: Colors.black),
-                                left: BorderSide(color: Colors.black))),
                         child: MaterialButton(
                           minWidth: double.infinity,
-                          height: 60,
+                          height: 50,
                           onPressed: () {
                             // print("hello world");
                             // if()
@@ -119,11 +128,12 @@ class _LoginState extends State<Login> {
                             // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
-                                 login(emailController.text, passwordController.text, context);
-                                //  Navigator.pushReplacement(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (_) => BottomNavigation()));
+                              login(emailController.text,
+                                  passwordController.text, context);
+                              //  Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (_) => BottomNavigation()));
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     backgroundColor: Colors.white,
@@ -140,7 +150,6 @@ class _LoginState extends State<Login> {
                             //       context,
                             //       MaterialPageRoute(
                             //           builder: (_) => BottomNavigation()));
-                            
                           },
                           color: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -148,7 +157,7 @@ class _LoginState extends State<Login> {
                           child: const Text(
                             "LOGIN",
                             style: TextStyle(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w400,
                                 fontSize: 16,
                                 color: Colors.white),
                           ),
@@ -159,17 +168,21 @@ class _LoginState extends State<Login> {
                       height: 20,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text("Don't have an account?"),
+                        Padding(
+                          padding: EdgeInsets.only(left: 35),
+                          child: const Text("Don't have an account?"),
+                        ),
                         TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline),
-                            primary: Colors.black,
-                          ),
+                          // style: TextButton.styleFrom(
+                          //   textStyle: const TextStyle(
+                          //       // fontSize: 16,
+                          //       // fontWeight: FontWeight.w600,
+                          //       //decoration: TextDecoration.underline
+                          //       ),
+                          //   primary: Colors.black,
+                          // ),
                           onPressed: () {
                             // print("Container clicked");
                             Navigator.pushReplacement(
@@ -177,7 +190,11 @@ class _LoginState extends State<Login> {
                                 MaterialPageRoute(
                                     builder: (_) => SignupPage()));
                           },
-                          child: const Text('Sign up'),
+                          child: const Text('Sign up',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  decoration: TextDecoration.underline)),
                         ),
                       ],
                     ),
@@ -192,23 +209,22 @@ class _LoginState extends State<Login> {
   }
 }
 
-
 login(emailAddress, password, context) async {
-    try {
-    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailAddress,
-      password: password
-    );
+  try {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: emailAddress, password: password);
     Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-        builder: (_) => BottomNavigation()));
+        context, MaterialPageRoute(builder: (_) => BottomNavigation()));
     print('The user has been logged in');
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      Fluttertoast.showToast(msg: "These credentials do not match our records", gravity: ToastGravity.TOP);
+      Fluttertoast.showToast(
+          msg: "These credentials do not match our records",
+          gravity: ToastGravity.TOP);
     } else if (e.code == 'wrong-password') {
-      Fluttertoast.showToast(msg: "These credentials do not match our records.", gravity: ToastGravity.TOP);
+      Fluttertoast.showToast(
+          msg: "These credentials do not match our records.",
+          gravity: ToastGravity.TOP);
     }
   }
 }
