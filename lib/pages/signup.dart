@@ -1,6 +1,9 @@
+// import 'dart:html';
+
 import 'package:backspace/Services/AuthenticationServices.dart';
 import 'package:backspace/model/errors.dart';
 import 'package:backspace/pages/newsfeed.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -197,13 +200,22 @@ class SignupPage extends StatelessWidget {
   }
 
   // Future<void>
-  addUser(emailID, password1, name, context) {
+  addUser(emailID, password1, name, context) async {
     // Call the user's CollectionReference to add a new user
     // return
     // users.
+    // final ref = await FirebaseStorage.instance
+    //     .ref()
+    //     .child("UserImages")
+    //     .child("default.png");
 
+    // File s = AssetImage("assets/images/bill-gates.jpg");
+    // await ref.putFile()
+    // var url = await ref.getDownloadURL();
     users.add({
       "email": emailID,
+      "imageURL":
+          "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5",
       // "password": password1,
       "username": name,
       "roles": "user",
