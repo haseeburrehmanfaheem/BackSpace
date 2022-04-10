@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:backspace/pages/login.dart';
 import 'package:backspace/pages/signup.dart';
 import 'package:flutter/cupertino.dart';
