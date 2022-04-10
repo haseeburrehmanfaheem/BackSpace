@@ -8,7 +8,7 @@ import 'package:backspace/helper/demo_values.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sticky_float_button/sticky_float_button.dart';
+//import 'package:sticky_float_button/sticky_float_button.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
@@ -19,11 +19,10 @@ final usersRef = FirebaseFirestore.instance
 class Feed extends StatelessWidget {
   const Feed({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffDADADA),
       drawer: const MyDrawer(),
       appBar: AppBar(
         leading: Builder(
@@ -37,17 +36,18 @@ class Feed extends StatelessWidget {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: IconButton(
-                onPressed: () {
-                  showSearch(
-                    context: context, 
-                    delegate: MyDelegate(),);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const Noti()),
-                  // );
-                }, 
-                icon: Icon(Icons.search, color: Colors.black))),
-              // Icon(Icons.search, color: Colors.black)),
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(),
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const Noti()),
+                    // );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
+          // Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -65,74 +65,20 @@ class Feed extends StatelessWidget {
       ),
       body: ListView(
         children: const <Widget>[
-          Post(),
-          // AddPost(),
-        ],
-      ),
-    );
-  }
-}
-
-class timeline extends StatefulWidget {
-  @override
-  _timeline createState() => _timeline();
-}
-
-class _timeline extends State<timeline> {
-  @override
-  void initState() {
-    getUsers();
-    super.initState();
-  }
-
-  Future<void> getUsers() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await usersRef.get();
-
-    // Get data from docs and convert map to List
-    querySnapshot.docs.forEach((doc) {
-      print(doc.id);
-    });
-    //  final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-
-    // print(allData);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: MyDrawer(),
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+          Post(
+            userName: "Bill Gates",
+            userimage: "assets/images/bill-gates.jpg",
+            time: "5 min",
+            //PostImg: "",
           ),
-        ),
-        title: const Text('News Feed', style: TextStyle(fontFamily: "Poppins")),
-        actions: [
-          const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(Icons.search, color: Colors.black)),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                icon: const Icon(Icons.notifications_outlined),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Noti()),
-                  );
-                },
-              ))
-        ],
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-      ),
-      body: ListView(
-        children: const <Widget>[
-          Post(),
+
+          Post(
+            userName: "Bill Gates",
+            userimage: "assets/images/bill-gates.jpg",
+            time: "5 min",
+            PostImg: "assets/images/keys.jpg",
+          ),
+          AddPostForm(),
           // AddPost(),
         ],
       ),
@@ -151,7 +97,7 @@ class _timeline extends State<timeline> {
 //     print(allData);
 // }
 
-newPage (context) {
+newPage(context) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => const Noti()),
@@ -159,10 +105,16 @@ newPage (context) {
 }
 
 class Post extends StatelessWidget {
-  const Post({
-    Key? key,
-  }) : super(key: key);
-  static const String _username = 'Sana Arshad';
+  final String userName;
+  final String userimage;
+  final String time;
+  final String? PostImg;
+
+  const Post(
+      {required this.userName,
+      required this.userimage,
+      required this.time,
+      this.PostImg});
 
   @override
   Widget build(BuildContext context) {
@@ -170,15 +122,16 @@ class Post extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          const UserIconName(
-            userImage: DemoValues.userImage,
-            username: _username,
-            postTime: DemoValues.postTime,
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          UserIconName(
+            userImage: userimage,
+            username: userName,
+            postTime: time,
           ),
           const PostBody(postSummary: DemoValues.postSummary),
-          Image.asset('assets/images/keys.jpg'),
+          if (PostImg != null) Image.asset(PostImg!),
+          Divider(height: 1),
           const PostFooter(),
-          const AddPostForm(),
         ],
       ),
     );
@@ -196,27 +149,30 @@ class PostFooter extends StatefulWidget {
 class _PostFooter extends State<PostFooter> {
   @override
   Widget build(BuildContext context) {
+    var x = 1;
     return ButtonBar(
-      alignment: MainAxisAlignment.start,
+      alignment: MainAxisAlignment.center,
       children: [
-        const Padding(padding: EdgeInsets.only(left: 20.0)),
         IconButton(
-          icon: const Icon(Icons.favorite),
+          icon: const Icon(Icons.thumb_up_alt_outlined),
           onPressed: () {
             // showSearch(
-            //   context: context, 
+            //   context: context,
             //   delegate: CustomSearchDelegate(),);
             // Set State for Likes and update db.
           },
         ),
-        const Text('Like', style: TextStyle(fontFamily: "Poppins")),
+        Text(x.toString()),
+        const Padding(padding: EdgeInsets.only(right: 70)),
         const Padding(padding: EdgeInsets.only(left: 70.0)),
-        IconButton(
-          icon: const Icon(Icons.add_comment),
-          onPressed: () {
-            // pass
-          },
-        ),
+        Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: const Icon(Icons.comment),
+              onPressed: () {
+                // pass
+              },
+            )),
         const Text('Comment', style: TextStyle(fontFamily: "Poppins")),
       ],
     );
@@ -306,38 +262,36 @@ class AddPostFormState extends State<AddPostForm> {
   }
 }
 
-
 class MyDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
-    onPressed: () => close(context, null), 
-    icon: Icon(Icons.arrow_back));
+      onPressed: () => close(context, null), icon: Icon(Icons.arrow_back));
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
-    IconButton(
-      onPressed: () {
-        if(query.isEmpty){
-          close(context, null);
-        }
-        else {
-          query = '';
-        }
-        // query = '';
-      }, 
-      icon: Icon(Icons.clear))
-  ];
+        IconButton(
+            onPressed: () {
+              if (query.isEmpty) {
+                close(context, null);
+              } else {
+                query = '';
+              }
+              // query = '';
+            },
+            icon: Icon(Icons.clear))
+      ];
 
   @override
   Widget buildResults(BuildContext context) => Center(
-    child: Text(
-      query,
-      style: const TextStyle(fontSize: 20,),
-    ),
-  ); 
-    // TODO: implement buildResults
-    // throw UnimplementedError();
-  
+        child: Text(
+          query,
+          style: const TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      );
+  // TODO: implement buildResults
+  // throw UnimplementedError();
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -357,7 +311,7 @@ class MyDelegate extends SearchDelegate {
           onTap: () {
             query = sug;
             showResults(context);
-          } ,
+          },
         );
       },
     );
