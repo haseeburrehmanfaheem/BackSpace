@@ -76,50 +76,51 @@ class Message extends StatelessWidget {
       required this.posttext});
   @override
   Widget build(BuildContext context) {
-    return Card(
-        clipBehavior: Clip.antiAlias,
+    return Container(
+        //clipBehavior: Clip.antiAlias,
         child: Column(children: [
-          const Padding(padding: EdgeInsets.only(top: 10)),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      const Padding(padding: EdgeInsets.only(top: 10, left: 0)),
+      Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage(userImg),
-                      radius: 30,
-                    ),
-                    Padding(
-                        padding: EdgeInsets.only(left: 10, top: 0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600)),
-                            Text(posttext,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500)),
-                          ],
-                        )),
-                  ],
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                CircleAvatar(
+                  backgroundImage: AssetImage(userImg),
+                  radius: 30,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 15, top: 5),
-                  child: Text(
-                    Time,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
+                    padding: EdgeInsets.only(left: 10, top: 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(name,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                        Text(posttext,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w500)),
+                      ],
+                    )),
               ],
             ),
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 10)),
-          Divider(height: 1),
-        ]));
+            Padding(
+              padding: EdgeInsets.only(right: 15, top: 5),
+              child: Text(
+                Time,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        ),
+      ),
+      const Padding(padding: EdgeInsets.only(bottom: 10)),
+      Divider(height: 1),
+    ]));
     // elevation: 5,
     //)
   }

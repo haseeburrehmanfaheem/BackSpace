@@ -5,7 +5,7 @@ part 'posts.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Post {
   @Collection<Post>('post')
-  final usersRef = PostCollectionReference();
+  //final usersRef = PostCollectionReference();
   Post({
     required this.postId,
     required this.userEmail,

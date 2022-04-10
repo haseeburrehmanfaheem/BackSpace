@@ -1,3 +1,4 @@
+import 'package:backspace/pages/AddEvent.dart';
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
       //home: a ? BottomNavigation() : Home(),
 
       // FirebaseAuth.instance.signOut();
-      home: BottomNavigation(),
+      home: Event(),
     );
   }
 }
