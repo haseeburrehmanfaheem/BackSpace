@@ -25,22 +25,14 @@ void _handleDoubleTap() {
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.chevron_left),
-            onPressed: () => Navigator.pop(context, false),
-          ),
-          title:
-              const Text('Lums Map', style: TextStyle(fontFamily: "Poppins")),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () => Navigator.pop(context, false),
         ),
+
 
         body: Center(
           child: ClipRect(
@@ -56,12 +48,8 @@ void _handleDoubleTap() {
             ),
             
           ),
-    
         ),
-          
-        
       ),
     );
   }
 }
-

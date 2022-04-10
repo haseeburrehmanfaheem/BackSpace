@@ -2,6 +2,7 @@
 // import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 // part 'posts.g.dart';
 
+
 // @JsonSerializable(explicitToJson: true)
 // class Post {
 //   @Collection<Post>('post')
@@ -15,6 +16,7 @@
 //     required this.postLikes,
 //     this.postImage,
 //   });
+
 
 //   final int postId;
 //   final String userEmail;
