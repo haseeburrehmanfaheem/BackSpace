@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/FAQ.dart';
 import 'package:backspace/pages/Guide.dart';
@@ -97,7 +99,6 @@ class _MyDrawer extends State<MyDrawer> {
       s = user?.email;
     }
 
-
     return Container(
       // height: 100,
       margin: const EdgeInsets.only(top: 22),
@@ -112,33 +113,66 @@ class _MyDrawer extends State<MyDrawer> {
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.all(80),
           children: <Widget>[
-            FutureBuilder<String>(
-              future: getUsername(s),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data ?? " ",
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 13,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.left,
-                  );
-                } else {
-                  return Text(
-                    "Loading data...",
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 13,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.left,
-                  );
-                }
-              },
+            Padding(
+                padding: EdgeInsets.only(left: 1, top: 20),
+                child:
+                    FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
+                  future: getUsername(s),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      String s = snapshot.data?.data()["imageURL"];
+                      return Column(
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.fill,
+                            child: CircleAvatar(
+                                radius: 40.0, backgroundImage: NetworkImage(s)),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Text("Loading...");
+                    }
+                  },
+                )
+
+                // Column(
+                //   children: [
+                //     FittedBox(
+                //       fit: BoxFit.fill,
+                //       child: CircleAvatar(
+                //           radius: 40.0,
+                //           backgroundImage: NetworkImage(
+                //               "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5")),
+                //     ),
+                //   ],
+                // )
+                // ,
+                ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: FutureBuilder<String>(
+                future: getUsername1(s),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data ?? " ",
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.black.withOpacity(.50),
+                      ),
+                    );
+                  } else {
+                    return Text(
+                      "Loading data...",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black.withOpacity(.50),
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
             // Expanded(
             //   child: StreamBuilder(
@@ -157,20 +191,25 @@ class _MyDrawer extends State<MyDrawer> {
             //     },
             //   ),
             // ),
-            const Text(
-              'Backspace',
-              style: TextStyle(
-                fontSize: 30,
+            Padding(
+              padding: EdgeInsets.only(left: 10, bottom: 20),
+              child: Text(
+                s!,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
+            ),
+            Divider(
+              height: 1,
+              thickness: 1,
             ),
             ListTile(
                 leading: const Icon(Icons.build_rounded),
                 title: Text('Edit Profile'),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EditProfile()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditProfile()));
                 }),
             ListTile(
                 leading: Icon(Icons.live_help_outlined),
@@ -183,8 +222,8 @@ class _MyDrawer extends State<MyDrawer> {
                 leading: Icon(Icons.fmd_good),
                 title: Text('Lums Map'),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Map()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Map1()));
                 }),
             ListTile(
                 leading: Icon(Icons.follow_the_signs),
@@ -214,15 +253,21 @@ class _MyDrawer extends State<MyDrawer> {
   }
 }
 
-Future<String> getUsername(email) async {
+Future<String> getUsername1(email) async {
   var ref = await FirebaseFirestore.instance
       .collection("UserData")
       .where("email", isEqualTo: email)
       .get();
-  // final ref = FirebaseDatabase.instance.reference();
-  // print("Hello");
-  // if(ref)
-  // print(ref.docs[0]["username"]);
   var s = ref.docs[0]["username"];
   return s ?? " ";
 }
+
+// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername5(email) async {
+//   var ref = await FirebaseFirestore.instance
+//       .collection("UserData")
+//       .where("email", isEqualTo: email)
+//       .get();
+
+//   var s = ref.docs[0];
+//   return s;
+// }

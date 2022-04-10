@@ -47,6 +47,10 @@ dependencies:
   get: ^4.6.1
 
   image_picker: ^0.8.5
+  flutter_rating_bar: ^4.0.0
+  firebase_storage: ^10.2.11
+  cloud_firestore_odm: ^1.0.0-dev.11
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +62,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.8
+  cloud_firestore_odm_generator: ^1.0.0-dev.11
+  json_serializable: ^6.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -89,11 +96,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

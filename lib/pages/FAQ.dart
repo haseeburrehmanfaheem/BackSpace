@@ -15,7 +15,7 @@ class FAQ extends StatelessWidget {
               icon: Icon(Icons.chevron_left),
               onPressed: () => Navigator.pop(context, false),
             ),
-            title: const Text('FAQs', style: TextStyle(fontFamily: "Poppins")),
+            title: const Text('FAQs', style: TextStyle()),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           ),
@@ -37,7 +37,10 @@ class TextFAQ extends StatelessWidget {
           child: Text(
             "What is a Subspace?",
             style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
           ),
         ),
         Padding(
@@ -47,7 +50,7 @@ class TextFAQ extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff323232)),
+                color: Color(0xff79747E)),
           ),
         ),
       ],

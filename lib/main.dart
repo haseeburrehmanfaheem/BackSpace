@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'; // new
 import 'package:firebase_core/firebase_core.dart'; // new
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart'; // new
@@ -26,14 +27,9 @@ void main() async {
   runApp(MyApp());
 }
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-
 class MyApp extends StatelessWidget {
   // const Myapp({Key? key}) : super(key: key);
+  bool a = false;
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
@@ -41,15 +37,24 @@ class MyApp extends StatelessWidget {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
+
+        a = true;
         // signout ki line
         // FirebaseAuth.instance.signOut();
       }
     });
     return MaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context)
+              .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+        ),
+      ),
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 
-      home: Home(),
+      home: a ? BottomNavigation() : Home(),
+
       // FirebaseAuth.instance.signOut();
       // home: BottomNavigation(),
     );
