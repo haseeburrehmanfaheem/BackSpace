@@ -201,17 +201,6 @@ class SignupPage extends StatelessWidget {
 
   // Future<void>
   addUser(emailID, password1, name, context) async {
-    // Call the user's CollectionReference to add a new user
-    // return
-    // users.
-    // final ref = await FirebaseStorage.instance
-    //     .ref()
-    //     .child("UserImages")
-    //     .child("default.png");
-
-    // File s = AssetImage("assets/images/bill-gates.jpg");
-    // await ref.putFile()
-    // var url = await ref.getDownloadURL();
     users.add({
       "email": emailID,
       "imageURL":
