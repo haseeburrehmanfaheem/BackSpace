@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^0.8.5
   flutter_rating_bar: ^4.0.0
   sticky_float_button: ^0.0.3
+  firebase_storage: ^10.2.11
 
 dev_dependencies:
   flutter_test:
@@ -94,8 +95,8 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: assets\fonts\Poppins-Black.ttf
-        - asset: assets\fonts\Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/FAQ.dart';
@@ -114,15 +114,45 @@ class _MyDrawer extends State<MyDrawer> {
           // margin: EdgeInsets.all(80),
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(left: 1, top: 20),
-              child: CircleAvatar(
-                  radius: 40.0,
-                  backgroundImage: AssetImage("assets/images/Map.png")),
-            ),
+                padding: EdgeInsets.only(left: 1, top: 20),
+                child:
+                    FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
+                  future: getUsername(s),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      String s = snapshot.data?.data()["imageURL"];
+                      return Column(
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.fill,
+                            child: CircleAvatar(
+                                radius: 40.0, backgroundImage: NetworkImage(s)),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Text("Loading...");
+                    }
+                  },
+                )
+
+                // Column(
+                //   children: [
+                //     FittedBox(
+                //       fit: BoxFit.fill,
+                //       child: CircleAvatar(
+                //           radius: 40.0,
+                //           backgroundImage: NetworkImage(
+                //               "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5")),
+                //     ),
+                //   ],
+                // )
+                // ,
+                ),
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: FutureBuilder<String>(
-                future: getUsername(s),
+                future: getUsername1(s),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Text(
@@ -192,8 +222,8 @@ class _MyDrawer extends State<MyDrawer> {
                 leading: Icon(Icons.fmd_good),
                 title: Text('Lums Map'),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Map()));
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Map1()));
                 }),
             ListTile(
                 leading: Icon(Icons.follow_the_signs),
@@ -223,15 +253,21 @@ class _MyDrawer extends State<MyDrawer> {
   }
 }
 
-Future<String> getUsername(email) async {
+Future<String> getUsername1(email) async {
   var ref = await FirebaseFirestore.instance
       .collection("UserData")
       .where("email", isEqualTo: email)
       .get();
-  // final ref = FirebaseDatabase.instance.reference();
-  // print("Hello");
-  // if(ref)
-  // print(ref.docs[0]["username"]);
   var s = ref.docs[0]["username"];
   return s ?? " ";
 }
+
+// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername5(email) async {
+//   var ref = await FirebaseFirestore.instance
+//       .collection("UserData")
+//       .where("email", isEqualTo: email)
+//       .get();
+
+//   var s = ref.docs[0];
+//   return s;
+// }
