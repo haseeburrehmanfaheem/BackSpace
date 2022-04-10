@@ -61,7 +61,7 @@ class SignupPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding:
-                              EdgeInsets.only(left: 40, bottom: 10, top: 10),
+                              EdgeInsets.only(left: 30, bottom: 10, top: 10),
                           child: Row(children: [
                             Text(
                               "Sign Up",
@@ -73,7 +73,7 @@ class SignupPage extends StatelessWidget {
                           ]),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, bottom: 40),
+                          padding: EdgeInsets.only(left: 30, bottom: 40),
                           child: Row(children: [
                             Text(
                               "Create an Account with your LUMS email",
@@ -88,7 +88,7 @@ class SignupPage extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Column(
                         children: [
                           makeInput(
@@ -122,12 +122,12 @@ class SignupPage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
                         padding: const EdgeInsets.only(top: 3, left: 3),
                         child: MaterialButton(
                           minWidth: double.infinity,
-                          height: 60,
+                          height: 50,
                           onPressed: () {
                             print("hello world");
                             // String val = "";
@@ -158,13 +158,13 @@ class SignupPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 45),
+                          padding: EdgeInsets.only(left: 35),
                           child: const Text("Already have an account?"),
                         ),
                         TextButton(

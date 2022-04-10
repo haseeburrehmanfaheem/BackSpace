@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
                 Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 40, bottom: 10, top: 10),
+                      padding: EdgeInsets.only(left: 30, bottom: 10, top: 10),
                       child: Row(children: [
                         Text(
                           "Login",
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
                       ]),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 40, bottom: 40),
+                      padding: EdgeInsets.only(left: 30, bottom: 40),
                       child: Row(children: [
                         Text(
                           "Welcome back, login to continue",
@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
+                        horizontal: 30,
                       ),
                       child: Column(
                         children: [
@@ -114,12 +114,12 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: Container(
                         padding: const EdgeInsets.only(top: 3, left: 3),
                         child: MaterialButton(
                           minWidth: double.infinity,
-                          height: 60,
+                          height: 50,
                           onPressed: () {
                             // print("hello world");
                             // if()
@@ -171,7 +171,7 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 45),
+                          padding: EdgeInsets.only(left: 35),
                           child: const Text("Don't have an account?"),
                         ),
                         TextButton(
