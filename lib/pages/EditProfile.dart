@@ -41,6 +41,7 @@ Future handleChoosefromgallery() async {
     if (image == null) return;
 
     File imageTemp = File(image.path);
+
     final user = FirebaseAuth.instance.currentUser;
     var ref = await FirebaseFirestore.instance
         .collection("UserData")
@@ -54,8 +55,7 @@ Future handleChoosefromgallery() async {
           .child("UserImages")
           .child(e! + "_image.jpg");
 
-      ref2.putFile(imageTemp);
-      // print("HERREER");
+      await ref2.putFile(imageTemp);
       String URL = await ref2.getDownloadURL();
 
       ref.docs[0].reference.update({'imageURL': URL});
