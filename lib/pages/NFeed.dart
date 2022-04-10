@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:backspace/pages/Notification.dart';
+import 'package:backspace/pages/add-post.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:sticky_float_button/sticky_float_button.dart';
+
 
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
@@ -180,7 +182,9 @@ class _PostFooter extends State<PostFooter> {
 }
 
 class AddPostForm extends StatefulWidget {
-  const AddPostForm({Key? key}) : super(key: key);
+  final Function(File)? changeState;
+
+  const AddPostForm({Key? key, this.changeState}) : super(key: key);
 
   @override
   AddPostFormState createState() => AddPostFormState();
@@ -199,6 +203,7 @@ class AddPostFormState extends State<AddPostForm> {
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
+      widget.changeState!(imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -221,44 +226,49 @@ class AddPostFormState extends State<AddPostForm> {
   @override
   Widget build(BuildContext context) {
     return (Form(
-        key: _formKey,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-            child: TextFormField(
-              // keyboardType: TextInputType.multiline,
-              // minLines: 1,
-              // maxLines: null,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Enter Text';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: "Add Post",
-                fillColor: const Color(0xfff9f9fa),
-                filled: true,
-                suffixIcon: Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween, // added line
-                  mainAxisSize: MainAxisSize.min, // added line
-                  children: <Widget>[
-                    IconButton(
-                        onPressed: handleTakephoto, //Open Camera here
-                        icon: const Icon(Icons.camera_alt_outlined)),
-                    IconButton(
-                        onPressed: handleChoosefromgallery, //Open Gallery here
-                        icon: const Icon(Icons.photo)),
-                    IconButton(
-                        onPressed: () {}, //post the post
-                        icon: const Icon(Icons.arrow_forward)),
-                  ],
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+        child: Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+            // mainAxisSize: MainAxisSize.min, // added line
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                  onTap: () {},
+                  // keyboardType: TextInputType.multiline,
+                  // minLines: 1,
+                  // maxLines: null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter Text';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Add Post",
+                    fillColor: const Color(0xfff9f9fa),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                 ),
               ),
-            ))));
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddPostPage()),
+                    );
+                  }, //Open Camera here
+                  icon: const Icon(Icons.camera_alt_outlined)),
+              IconButton(
+                  onPressed: handleChoosefromgallery, //Open Gallery here
+                  icon: const Icon(Icons.photo)),
+            ]),
+      ),
+    ));
   }
 }
 
