@@ -20,9 +20,18 @@ class Map1 extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: SingleChildScrollView(
-          child: Image.asset('assets/images/Map.png'),
+
+        body: Center(
+          child: ClipRect(
+            child: InteractiveViewer(
+              child: Image.asset('assets/images/Map.png'),
+            ),
+            
+          ),
+    
         ),
+          
+        
       ),
     );
   }
