@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   form_field_validator: ^1.0.1
+  animated_theme_switcher: ^2.0.5
   # firebase_auth: ^1.1.4
   # firebase_core: ^1.1.1
 
