@@ -7,10 +7,9 @@ class PostBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
       child: Text(
         postSummary,
-        style: const TextStyle(fontFamily: "Poppins"),
       ),
     );
   }
