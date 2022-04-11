@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/add-post.dart';
@@ -21,12 +22,10 @@ final usersRef = FirebaseFirestore.instance
 
 class Feed extends StatelessWidget {
   // const Feed({Key? key}) : super(key: key);
-
+  var posts;
   @override
   Widget build(BuildContext context) {
-    List timelinePosts =[];
-
-
+    List timelinePosts = [];
 // getFollowing() async {
 //     QuerySnapshot snapshot = await followersRef
 //         .document(currentUser.id)
@@ -100,69 +99,65 @@ class Feed extends StatelessWidget {
         foregroundColor: Colors.black,
       ),
 
-      body: ListView(
-        children: <Widget>[
-          // for(var i=0;i<5;i++){   Post(
-          //           userName: "Bill Gates",
-          //           userimage: "assets/images/bill-gates.jpg",
-          //           time: "5 min",
-          //           //PostImg: "",
-          //         ),},
-            // list.
-            FutureBuilder<List<QueryDocumentSnapshot<Map<String, dynamic>>>>(
-                future: GetAllPostsContent(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    // Text txt = Text(
-                    //   snapshot.data?.data()["about"],
-                    return CircularProgressIndicator();
-                  } else {
-                    // final data = (snapshot.data as String);
-                    //email
-                    //post content
-                    //post image
-                    //
-                    // int l = snapshot.data?.length();
-                    // for (var i = 0; i < snapshot.data?.length;)
-                    // snapshot.data?.forEach((element) {
-                    //   Post(
-                    //     userName: "Bill Gates",
-                    //     userimage: "assets/images/bill-gates.jpg",
-                    //     time: "5 min",
-                    //     PostImg: "",
-                    //   );
-                    // });
-                    return Text("data");
-                  }
+      // body: ListView(
+      // children: <Widget>[
+      // for(var i=0;i<5;i++){   Post(
+      //           userName: "Bill Gates",
+      //           userimage: "assets/images/bill-gates.jpg",
+      //           time: "5 min",
+      //           //PostImg: "",
+      //         ),},
+      // list.
+      body: FutureBuilder(
+          future: completePost(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Text("");
+            }
 
+            final posts = snapshot.data;
 
-                  // return Post(
-                  //   userName: "Bill Gates",
-                  //   userimage: "assets/images/bill-gates.jpg",
-                  //   time: "5 min",
-                  //   PostImg: "",
-                  // );
-                }
+            return Column(
+              children: <Widget>[
+                for (var post in posts)
+                  Post(
+                    userName: post["username"],
+                    userimage: post["userImageURL"],
+                    time: "5 min",
+                    //PostImg: "",
+                  ),
+              ],
+            );
+            // return Text("data");
+          }
+
+          // return Post(
+          //   userName: "Bill Gates",
+          //   userimage: "assets/images/bill-gates.jpg",
+          //   time: "5 min",
+          //   PostImg: "",
+          // );
+
           // }
-                //   Post(
-                //     userName: "Bill Gates",
-                //     userimage: "assets/images/bill-gates.jpg",
-                //     time: "5 min",
-                //     //PostImg: "",
-                //   ),
+          // Post(
+          //   userName: "Bill Gates",
+          //   userimage: "assets/images/bill-gates.jpg",
+          //   time: "5 min",
+          //   //PostImg: "",
+          // ),
 
-                //   Post(
-                //     userName: "Bill Gates",
-                //     userimage: "assets/images/bill-gates.jpg",
-                //     time: "5 min",
-                //     PostImg: "assets/images/keys.jpg",
-                //   ),
+          //   Post(
+          //     userName: "Bill Gates",
+          //     userimage: "assets/images/bill-gates.jpg",
+          //     time: "5 min",
+          //     PostImg: "assets/images/keys.jpg",
+          //   ),
 
-                //   // AddPostForm(),
-                //   // AddPost(),
-                ),
-        ],
-      ),
+          //   // AddPostForm(),
+          //   // AddPost(),
+          ),
+      // ],
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -218,7 +213,7 @@ class Post extends StatelessWidget {
             postTime: time,
           ),
           const PostBody(postSummary: DemoValues.postSummary),
-          if (PostImg != null) Image.asset(PostImg!),
+          if (PostImg != null) Image.network(PostImg!),
           Divider(height: 1),
           const PostFooter(),
         ],
@@ -440,6 +435,38 @@ Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
   return posts.docs;
 }
 
+completePost() async {
+  final posts = await GetAllPostsContent();
+  List<Map<String, dynamic>> completePosts = [];
+  for (var post in posts) {
+    final postWithUserData = await mapUserToPost(post);
+    completePosts.add(postWithUserData);
+  }
+  return completePosts;
+}
+
+mapUserToPost(post) async {
+  final userData = await getUserData(post["email"]);
+  Map<String, dynamic> postsMap = {
+    "username": userData.docs[0]["username"],
+    "userImageURL": userData.docs[0]["imageURL"],
+    "subspace": post["subspace"],
+    "content": post["content"],
+    "created_at": post["created_at"],
+    "email": post["email"],
+    "likes": post["likes"],
+    "postImageURL": post["imageURL"],
+  };
+  return postsMap;
+}
+
+getUserData(email) async {
+  return await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
+}
+
 NameImage(email) async {
   var posts = await FirebaseFirestore.instance
       .collection("UserData")
@@ -449,3 +476,6 @@ NameImage(email) async {
   String d = posts.docs[0]["imageURL"];
   return [posts.docs[0]["username"], posts.docs[0]["imageURL"]];
 }
+
+//row user future post call
+//

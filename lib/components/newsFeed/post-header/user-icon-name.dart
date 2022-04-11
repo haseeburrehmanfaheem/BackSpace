@@ -12,7 +12,9 @@ class UserIconName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(backgroundImage: AssetImage(userImage)),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(userImage),
+      ),
       title: Padding(
         padding: EdgeInsets.only(left: 5),
         child:
