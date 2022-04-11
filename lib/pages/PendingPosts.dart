@@ -12,7 +12,7 @@ class Pending extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffDADADA),
         drawer: AdminDrawer(),
         appBar: AppBar(
           leading: Builder(
@@ -79,11 +79,13 @@ class Post extends StatelessWidget {
             postTime: time,
           ),
           Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 10, left: 15),
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Text(Posttxt,
-                  style: const TextStyle(fontWeight: FontWeight.w500)),
-            ]),
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 5),
+            child: PostBody(postSummary: Posttxt),
+            // child:
+            //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            //   Text(Posttxt,
+            //       style: const TextStyle(fontWeight: FontWeight.w500)),
+            // ]),
           ),
           if (PostImg != null) Image.asset(PostImg!),
           Divider(height: 1),
@@ -126,7 +128,7 @@ class _PostFooter extends State<PostFooter> {
             alignment: Alignment.centerRight,
             child: OutlineButton(
               child: Text(
-                "Rejected",
+                "Reject",
                 style: TextStyle(fontSize: 20.0, color: Colors.red),
               ),
               highlightedBorderColor: Colors.red,
