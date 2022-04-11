@@ -3,8 +3,10 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:backspace/pages/Messages.dart';
 import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/add-post.dart';
+import 'package:backspace/pages/comments.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -311,7 +313,8 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: SingleChildScrollView(
+      body: 
+      SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -325,6 +328,8 @@ class _PostscommentState extends State<Postscomment> {
               PostImg: widget.PostImg,
               functionalComment: false,
             ),
+            // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
+            // DisplayComments(comments, profileImage, name),
             FutureBuilder(
                 future: getAllComments(widget.post_id),
                 builder: (context, AsyncSnapshot snapshot) {
@@ -335,7 +340,8 @@ class _PostscommentState extends State<Postscomment> {
                   return Column(
                     children: <Widget>[
                       for (var comment in comments)
-                        Text(comment["commentContent"]),
+                        CommentsDisplay(userImg: comment["userimageURL"], name: comment["username"], Time: "", posttext: comment["commentContent"])
+                        // Text(comment["commentContent"]),
                     ],
                   );
                 }),
@@ -380,6 +386,8 @@ class _PostscommentState extends State<Postscomment> {
     );
   }
 
+
+
   updateCommentInDB(comment, postDocID) async {
     CollectionReference comments =
         await FirebaseFirestore.instance.collection('Comments');
@@ -413,6 +421,17 @@ class _PostscommentState extends State<Postscomment> {
     // return s;
   }
 }
+
+// class DisplayComments extends StatelessWidget {
+//   const DisplayComments({ Key? key }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+      
+//     );
+//   }
+// }
 
 updatelikesintable(likes, documentID, alreadyliked) {
   var posts = FirebaseFirestore.instance.collection('Posts');
