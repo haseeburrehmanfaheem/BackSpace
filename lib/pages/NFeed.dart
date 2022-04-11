@@ -313,8 +313,7 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: 
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -340,8 +339,12 @@ class _PostscommentState extends State<Postscomment> {
                   return Column(
                     children: <Widget>[
                       for (var comment in comments)
-                        CommentsDisplay(userImg: comment["userimageURL"], name: comment["username"], Time: "", posttext: comment["commentContent"])
-                        // Text(comment["commentContent"]),
+                        CommentsDisplay(
+                            userImg: comment["userimageURL"],
+                            name: comment["username"],
+                            Time: "",
+                            posttext: comment["commentContent"])
+                      // Text(comment["commentContent"]),
                     ],
                   );
                 }),
@@ -369,6 +372,7 @@ class _PostscommentState extends State<Postscomment> {
                           // print(commentController.text);
                           await updateCommentInDB(
                               commentController.text, widget.post_id);
+                          commentController.clear();
                           // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
                         }
                       },
@@ -385,8 +389,6 @@ class _PostscommentState extends State<Postscomment> {
       ),
     );
   }
-
-
 
   updateCommentInDB(comment, postDocID) async {
     CollectionReference comments =
@@ -428,7 +430,7 @@ class _PostscommentState extends State<Postscomment> {
 //   @override
 //   Widget build(BuildContext context) {
 //     return Container(
-      
+
 //     );
 //   }
 // }
