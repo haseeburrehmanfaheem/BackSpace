@@ -7,9 +7,12 @@ class PostBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
-      child: Text(
-        postSummary,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 14),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          postSummary,
+        ),
       ),
     );
   }

@@ -117,13 +117,16 @@ class Feed extends StatelessWidget {
 
             final posts = snapshot.data;
 
-            return Column(
+            return ListView(
               children: <Widget>[
                 for (var post in posts)
                   Post(
                     userName: post["username"],
                     userimage: post["userImageURL"],
                     time: "5 min",
+                    postcontent: post["content"],
+                    PostImg: post["postImageURL"],
+                    likes: post["likes"],
                     //PostImg: "",
                   ),
               ],
@@ -193,12 +196,16 @@ class Post extends StatelessWidget {
   final String userimage;
   final String time;
   final String? PostImg;
+  final String postcontent;
+  final int likes;
 
   const Post(
       {required this.userName,
       required this.userimage,
       required this.time,
-      this.PostImg});
+      this.PostImg,
+      required this.postcontent,
+      required this.likes});
 
   @override
   Widget build(BuildContext context) {
@@ -212,10 +219,12 @@ class Post extends StatelessWidget {
             username: userName,
             postTime: time,
           ),
-          const PostBody(postSummary: DemoValues.postSummary),
-          if (PostImg != null) Image.network(PostImg!),
+          PostBody(postSummary: postcontent),
+          if (PostImg != null && PostImg != "") Image.network(PostImg!),
           Divider(height: 1),
-          const PostFooter(),
+          PostFooter(
+            likes: likes,
+          ),
         ],
       ),
     );
@@ -224,25 +233,35 @@ class Post extends StatelessWidget {
 
 // Display Like and Comment Post Footer Bar
 class PostFooter extends StatefulWidget {
-  const PostFooter({Key? key}) : super(key: key);
+  var likes;
+  PostFooter({Key? key, required this.likes}) : super(key: key);
 
   @override
   _PostFooter createState() => _PostFooter();
 }
 
 class _PostFooter extends State<PostFooter> {
+  bool clicked_once = false;
   @override
   Widget build(BuildContext context) {
-    var x = 1;
+    var x = widget.likes;
+    print(x);
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: [
         IconButton(
           icon: const Icon(Icons.thumb_up_alt_outlined),
           onPressed: () {
+            clicked_once = !clicked_once;
+            updateLikes();
+            // if(clicked_once){
+            //   updateLikes();
+            // }
+
             // showSearch(
             //   context: context,
-            //   delegate: CustomSearchDelegate(),);
+            //   delegate: CustomSearchDelegate(),
+            // );
             // Set State for Likes and update db.
           },
         ),
@@ -254,12 +273,22 @@ class _PostFooter extends State<PostFooter> {
             child: IconButton(
               icon: const Icon(Icons.comment),
               onPressed: () {
+                // print("Mustansar tatto");
                 // pass
               },
             )),
         const Text('Comment', style: TextStyle(fontFamily: "Poppins")),
       ],
     );
+  }
+
+  updateLikes() {
+    setState(() => {
+          if (clicked_once)
+            {widget.likes = widget.likes + 1}
+          else
+            {widget.likes = widget.likes - 1}
+        });
   }
 }
 
@@ -479,3 +508,5 @@ NameImage(email) async {
 
 //row user future post call
 //
+
+
