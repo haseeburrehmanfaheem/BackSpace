@@ -1,5 +1,6 @@
 import 'package:backspace/pages/AddEvent.dart';
 import 'package:backspace/pages/EditProfile.dart';
+import 'package:backspace/pages/ViewProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,8 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
+      
+      // home: ViewProfile()
 
       home: a ? BottomNavigation() : Home(),
 

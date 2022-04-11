@@ -29,7 +29,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> _children = [
     Feed(),
     Instructor(),
-    UserProfile(),
+    // UserProfile(),
+    FindWork(),
     SubSpace(),
     Messages()
   ];

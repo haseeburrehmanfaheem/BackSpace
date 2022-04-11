@@ -379,7 +379,8 @@ class AddPostFormState extends State<AddPostForm> {
               IconButton(
                   onPressed: handleChoosefromgallery, //Open Gallery here
                   icon: const Icon(Icons.photo)),
-            ]),
+            ]
+            ),
       ),
     ));
   }
