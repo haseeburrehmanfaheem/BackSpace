@@ -33,10 +33,10 @@ class CommentsDisplay extends StatelessWidget {
       required this.posttext});
   @override
   Widget build(BuildContext context) {
-    return 
-    // Container(
+    return
+        // Container(
         //clipBehavior: Clip.antiAlias,
-        // child: 
+        // child:
         Column(children: [
       const Padding(padding: EdgeInsets.only(top: 10, left: 0)),
       Container(
@@ -48,11 +48,14 @@ class CommentsDisplay extends StatelessWidget {
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
                 CircleAvatar(
-                  backgroundImage: AssetImage(userImg),
+                  backgroundImage: NetworkImage(userImg),
                   radius: 30,
                 ),
                 Padding(
-                    padding: EdgeInsets.only(left: 10, right: MediaQuery.of(context).size.width / 10,), 
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: MediaQuery.of(context).size.width / 10,
+                    ),
                     // EdgeInsets.only(left: 10, top: 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -62,9 +65,9 @@ class CommentsDisplay extends StatelessWidget {
                             style:
                                 const TextStyle(fontWeight: FontWeight.w600)),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width/ 2,
+                          width: MediaQuery.of(context).size.width / 2,
                           child: Text(posttext,
-                          // maxLines: 4,
+                              // maxLines: 4,
                               style:
                                   const TextStyle(fontWeight: FontWeight.w500)),
                         ),
@@ -85,8 +88,8 @@ class CommentsDisplay extends StatelessWidget {
       const Padding(padding: EdgeInsets.only(bottom: 10)),
       Divider(height: 1),
     ]
-    // )
-    );
+            // )
+            );
     // elevation: 5,
     //)
   }
