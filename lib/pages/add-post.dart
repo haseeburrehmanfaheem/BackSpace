@@ -9,6 +9,8 @@ import 'package:backspace/pages/Notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'newsfeed.dart';
+
 class AddPostPage extends StatefulWidget {
   const AddPostPage({Key? key}) : super(key: key);
 
@@ -66,7 +68,8 @@ class _AddPostPageState extends State<AddPostPage> {
                   }
                   addDataToPost(emailID, URL, postcontentController.text,
                       context, myDateTime);
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => BottomNavigation()));
                   // save content and likes and jkadnfknadkjfna
                 },
                 child: const Text("Post",
