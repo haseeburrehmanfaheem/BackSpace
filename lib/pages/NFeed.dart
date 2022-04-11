@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:backspace/helper/demo_values.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:sticky_float_button/sticky_float_button.dart';
 
@@ -114,53 +115,24 @@ class Feed extends StatelessWidget {
             if (!snapshot.hasData) {
               return Text("");
             }
-
             final posts = snapshot.data;
-
             return ListView(
               children: <Widget>[
                 for (var post in posts)
-                  Post(
-                    userName: post["username"],
-                    userimage: post["userImageURL"],
-                    time: "5 min",
-                    postcontent: post["content"],
-                    PostImg: post["postImageURL"],
-                    likes: post["likes"],
-                    //PostImg: "",
-                  ),
+                  if (post["subspace"] == null)
+                    Post(
+                      userName: post["username"],
+                      userimage: post["userImageURL"],
+                      time: "5 min",
+                      postcontent: post["content"],
+                      PostImg: post["postImageURL"],
+                      likes: post["likes"],
+                      postID: post["postID"],
+                      functionalComment: true,
+                    ),
               ],
             );
-            // return Text("data");
-          }
-
-          // return Post(
-          //   userName: "Bill Gates",
-          //   userimage: "assets/images/bill-gates.jpg",
-          //   time: "5 min",
-          //   PostImg: "",
-          // );
-
-          // }
-          // Post(
-          //   userName: "Bill Gates",
-          //   userimage: "assets/images/bill-gates.jpg",
-          //   time: "5 min",
-          //   //PostImg: "",
-          // ),
-
-          //   Post(
-          //     userName: "Bill Gates",
-          //     userimage: "assets/images/bill-gates.jpg",
-          //     time: "5 min",
-          //     PostImg: "assets/images/keys.jpg",
-          //   ),
-
-          //   // AddPostForm(),
-          //   // AddPost(),
-          ),
-      // ],
-      // ),
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -198,6 +170,8 @@ class Post extends StatelessWidget {
   final String? PostImg;
   final String postcontent;
   final int likes;
+  final String postID;
+  final bool functionalComment;
 
   const Post(
       {required this.userName,
@@ -205,7 +179,9 @@ class Post extends StatelessWidget {
       required this.time,
       this.PostImg,
       required this.postcontent,
-      required this.likes});
+      required this.likes,
+      required this.postID,
+      required this.functionalComment});
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +200,13 @@ class Post extends StatelessWidget {
           Divider(height: 1),
           PostFooter(
             likes: likes,
+            post_id: postID,
+            userName: userName,
+            userimage: userimage,
+            time: time,
+            PostImg: PostImg,
+            postcontent: postcontent,
+            functionalComment: functionalComment,
           ),
         ],
       ),
@@ -233,8 +216,28 @@ class Post extends StatelessWidget {
 
 // Display Like and Comment Post Footer Bar
 class PostFooter extends StatefulWidget {
-  var likes;
-  PostFooter({Key? key, required this.likes}) : super(key: key);
+  int likes;
+  var post_id;
+
+  final String userName;
+  final String userimage;
+  final String time;
+  final String? PostImg;
+  final String postcontent;
+  final bool functionalComment;
+  // final int likes;
+  // final String postID;
+  PostFooter(
+      {Key? key,
+      required this.likes,
+      required this.post_id,
+      required this.userName,
+      required this.userimage,
+      required this.time,
+      required this.PostImg,
+      required this.postcontent,
+      required this.functionalComment})
+      : super(key: key);
 
   @override
   _PostFooter createState() => _PostFooter();
@@ -253,16 +256,8 @@ class _PostFooter extends State<PostFooter> {
           icon: const Icon(Icons.thumb_up_alt_outlined),
           onPressed: () {
             clicked_once = !clicked_once;
+            updatelikesintable(widget.likes, widget.post_id, !clicked_once);
             updateLikes();
-            // if(clicked_once){
-            //   updateLikes();
-            // }
-
-            // showSearch(
-            //   context: context,
-            //   delegate: CustomSearchDelegate(),
-            // );
-            // Set State for Likes and update db.
           },
         ),
         Text(x.toString()),
@@ -273,6 +268,20 @@ class _PostFooter extends State<PostFooter> {
             child: IconButton(
               icon: const Icon(Icons.comment),
               onPressed: () {
+                if (widget.functionalComment) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Postscomment(
+                              likes: widget.likes,
+                              post_id: widget.post_id,
+                              userName: widget.userName,
+                              userimage: widget.userimage,
+                              time: widget.time,
+                              PostImg: widget.PostImg,
+                              postcontent: widget.postcontent)));
+                }
+                //
                 // print("Mustansar tatto");
                 // pass
               },
@@ -290,6 +299,69 @@ class _PostFooter extends State<PostFooter> {
             {widget.likes = widget.likes - 1}
         });
   }
+}
+
+class Postscomment extends StatefulWidget {
+  int likes;
+  var post_id;
+  final String userName;
+  final String userimage;
+  final String time;
+  final String? PostImg;
+  final String postcontent;
+  Postscomment(
+      {Key? key,
+      required this.likes,
+      required this.post_id,
+      required this.userName,
+      required this.userimage,
+      required this.time,
+      required this.PostImg,
+      required this.postcontent})
+      : super(key: key);
+  // print()
+  @override
+  State<Postscomment> createState() => _PostscommentState();
+}
+
+class _PostscommentState extends State<Postscomment> {
+  @override
+  Widget build(BuildContext context) {
+    // print()
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.pop(context, false),
+        ),
+        title: const Text("Comments",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+            )),
+      ),
+      body: Post(
+        userName: widget.userName,
+        userimage: widget.userimage,
+        time: widget.time,
+        postcontent: widget.postcontent,
+        likes: widget.likes,
+        postID: widget.post_id,
+        functionalComment: false,
+      ),
+    );
+  }
+}
+
+updatelikesintable(likes, documentID, alreadyliked) {
+  var posts = FirebaseFirestore.instance.collection('Posts');
+  posts.doc(documentID) // <-- Doc ID where data should be updated.
+      .update({'likes': alreadyliked ? likes - 1 : likes + 1}).then(
+          (value) => {print('likes updated to ${likes + 1}')});
 }
 
 class AddPostForm extends StatefulWidget {
@@ -485,7 +557,9 @@ mapUserToPost(post) async {
     "email": post["email"],
     "likes": post["likes"],
     "postImageURL": post["imageURL"],
+    "postID": post.id
   };
+  // print(post.id);
   return postsMap;
 }
 
