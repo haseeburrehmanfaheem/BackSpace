@@ -344,14 +344,48 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: Post(
-        userName: widget.userName,
-        userimage: widget.userimage,
-        time: widget.time,
-        postcontent: widget.postcontent,
-        likes: widget.likes,
-        postID: widget.post_id,
-        functionalComment: false,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        
+        children: [
+          Post(
+            userName: widget.userName,
+            userimage: widget.userimage,
+            time: widget.time,
+            postcontent: widget.postcontent,
+            likes: widget.likes,
+            postID: widget.post_id,
+            functionalComment: false,
+          ),
+          Text("xyz"),
+          Padding(
+            padding: const EdgeInsets.only(bottom:8.0),
+            child: TextFormField(
+                    // controller: widget.postcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Add Comment",
+                      fillColor: const Color(0xfff9f9fa),
+                      filled: true,
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed: () {
+
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
