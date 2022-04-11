@@ -6,6 +6,7 @@ class PostBody extends StatelessWidget {
   const PostBody({required this.postSummary});
   @override
   Widget build(BuildContext context) {
+
     return Align(
         alignment: Alignment.topLeft,
         child: Padding(
@@ -14,5 +15,6 @@ class PostBody extends StatelessWidget {
             postSummary,
           ),
         ));
+
   }
 }
