@@ -7,6 +7,7 @@ import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/add-post.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/helper/demo_values.dart';
 import 'package:flutter/services.dart';
@@ -27,34 +28,6 @@ class Feed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List timelinePosts = [];
-// getFollowing() async {
-//     QuerySnapshot snapshot = await followersRef
-//         .document(currentUser.id)
-//         .collection('userFollowing')
-//         .getDocuments();
-//     setState(() {
-//       followingList = snapshot.documents.map((doc) => doc.documentID).toList();
-//       print(followingList);
-//     });
-//   }
-
-// getTimeline()async{
-
-// List posts = [];
-//    for( int i=0; i< followingList.length; i++)
-// {
-//     QuerySnapshot snapshot = await postsRef
-//         .collections('posts/${followingList[i]}/userPosts')
-//         .orderBy('timestamp', descending: true)
-//         .getDocuments();
-//     posts+= snapshot.data.documents.map((doc) => {'id':doc.documentID,...doc.data}).toList();
-// }
-//     setState(() {
-//       timelinePosts = timeLinePosts + posts;
-//     });
-//   }
-
-    // var postsData =  GetAllPostsContent();
 
     return Scaffold(
       // GetAllPostsContent();
@@ -100,15 +73,6 @@ class Feed extends StatelessWidget {
         foregroundColor: Colors.black,
       ),
 
-      // body: ListView(
-      // children: <Widget>[
-      // for(var i=0;i<5;i++){   Post(
-      //           userName: "Bill Gates",
-      //           userimage: "assets/images/bill-gates.jpg",
-      //           time: "5 min",
-      //           //PostImg: "",
-      //         ),},
-      // list.
       body: FutureBuilder(
           future: completePost(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -213,6 +177,8 @@ class Post extends StatelessWidget {
     );
   }
 }
+
+final formGlobalKey = GlobalKey<FormState>();
 
 // Display Like and Comment Post Footer Bar
 class PostFooter extends StatefulWidget {
@@ -325,6 +291,7 @@ class Postscomment extends StatefulWidget {
 }
 
 class _PostscommentState extends State<Postscomment> {
+  TextEditingController commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // print()
@@ -344,50 +311,106 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        
-        children: [
-          Post(
-            userName: widget.userName,
-            userimage: widget.userimage,
-            time: widget.time,
-            postcontent: widget.postcontent,
-            likes: widget.likes,
-            postID: widget.post_id,
-            functionalComment: false,
-          ),
-          Text("xyz"),
-          Padding(
-            padding: const EdgeInsets.only(bottom:8.0),
-            child: TextFormField(
-                    // controller: widget.postcontentController,
-                    onTap: () {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter Text';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Add Comment",
-                      fillColor: const Color(0xfff9f9fa),
-                      filled: true,
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.arrow_forward),
-                        onPressed: () {
-
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Post(
+              userName: widget.userName,
+              userimage: widget.userimage,
+              time: widget.time,
+              postcontent: widget.postcontent,
+              likes: widget.likes,
+              postID: widget.post_id,
+              PostImg: widget.PostImg,
+              functionalComment: false,
+            ),
+            FutureBuilder(
+                future: getAllComments(widget.post_id),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return Text("");
+                  }
+                  final comments = snapshot.data;
+                  return Column(
+                    children: <Widget>[
+                      for (var comment in comments)
+                        Text(comment["commentContent"]),
+                    ],
+                  );
+                }),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Form(
+                key: formGlobalKey,
+                child: TextFormField(
+                  controller: commentController,
+                  onTap: () {},
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter some Text';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Add Comment",
+                    fillColor: const Color(0xfff9f9fa),
+                    filled: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.arrow_forward),
+                      onPressed: () async {
+                        if (formGlobalKey.currentState!.validate()) {
+                          // print(commentController.text);
+                          await updateCommentInDB(
+                              commentController.text, widget.post_id);
+                          // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
+                        }
+                      },
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-          ),
-        ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  updateCommentInDB(comment, postDocID) async {
+    CollectionReference comments =
+        await FirebaseFirestore.instance.collection('Comments');
+    final user = await FirebaseAuth.instance.currentUser;
+    String? user_email = await user!.email;
+    CollectionReference user_table =
+        await FirebaseFirestore.instance.collection('UserData');
+    var userTable =
+        await user_table.where("email", isEqualTo: user_email).get();
+    var userImageURL = userTable.docs[0]["imageURL"];
+    var userName = userTable.docs[0]["username"];
+
+    // print(userName);
+    // print(userImageURL);
+    // print(comment);
+
+    comments.add({
+      "postId": postDocID,
+      "username": userName,
+      "userimageURL": userImageURL,
+      "commentContent": comment,
+    }).then((value) => setState(
+          () => {},
+        ));
+    //   var ref = await FirebaseFirestore.instance
+    //     .collection("UserData")
+    //     .where("email", isEqualTo: email)
+    //     .get();
+
+    // var s = ref.docs[0];
+    // return s;
   }
 }
 
@@ -485,8 +508,7 @@ class AddPostFormState extends State<AddPostForm> {
               IconButton(
                   onPressed: handleChoosefromgallery, //Open Gallery here
                   icon: const Icon(Icons.photo)),
-            ]
-            ),
+            ]),
       ),
     ));
   }
@@ -553,22 +575,19 @@ class MyDelegate extends SearchDelegate {
 Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
     GetAllPostsContent() async {
   var posts = await FirebaseFirestore.instance.collection("Posts").get();
-  // posts.docs.forEach((element) async {
-  //   // print(element);
-  //   print(element["content"]);
-  //   var users = await FirebaseFirestore.instance
-  //       .collection("UserData")
-  //       .where("email", isEqualTo: element["email"])
-  //       .get();
-  //   print(users.docs[0]["email"]);
-  //   posts.docs[0]["username"].;
-  //   // = users.docs[0]["username"];
 
-  //   // element["username"] = "print("\n")";
-  // });
-  // posts.forEach((s)=>print(s));
-  // var s = ref.docs;
   return posts.docs;
+}
+
+getAllComments(doc_id) async {
+  var comments = await FirebaseFirestore.instance
+      .collection("Comments")
+      .where("postId", isEqualTo: doc_id)
+      .get();
+  // ?;
+  // print(comments)
+  // print(comments.docs[0]["commentContent"]);
+  return comments.docs;
 }
 
 completePost() async {
