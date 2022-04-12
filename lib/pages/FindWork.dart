@@ -64,7 +64,7 @@ class FindWork extends StatelessWidget {
                         // PostImg: post["postImageURL"],
                         // likes: post["likes"],
                         postID: post["postID"],
-                        // userabout: post["userAbout"]
+                        userAbout: post["userAbout"]
                         // functionalComment: true,
                       ),
                 ],
@@ -105,6 +105,7 @@ class workPost extends StatelessWidget {
   final String postcontent;
   // final int likes;
   final String postID;
+  final String? userAbout;
   // final bool functionalComment;
 
   const workPost({
@@ -115,6 +116,7 @@ class workPost extends StatelessWidget {
     required this.postcontent,
     // required this.likes,
     required this.postID,
+    this.userAbout
     // required this.functionalComment
   });
 
@@ -130,7 +132,7 @@ class workPost extends StatelessWidget {
             username: userName,
             postTime: time,
             // IMPORTANT __________________________________________________________________________
-            userabout: "",
+            userabout: userAbout,
           ),
           PostBody(postSummary: postcontent),
           // if (PostImg != null && PostImg != "") Image.network(PostImg!),
