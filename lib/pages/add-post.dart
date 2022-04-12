@@ -50,6 +50,7 @@ class _AddPostPageState extends State<AddPostPage> {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: MaterialButton(
                 onPressed: () async {
+                  // if (_formKey.currentState!.validate()){}
                   String? URL = "";
                   final users = FirebaseAuth.instance.currentUser;
                   String? emailID = users?.email;
