@@ -16,8 +16,11 @@ import 'package:backspace/helper/demo_values.dart';
 
 
 class ViewProfile extends StatefulWidget {
-  const ViewProfile({ Key? key }) : super(key: key);
+  const ViewProfile({ Key? key, required this.username, required this.userimageURL, this.userAbout }) : super(key: key);
 
+  final username;
+  final userimageURL;
+  final userAbout;
   @override
   State<ViewProfile> createState() => _ViewProfileState();
 }
@@ -35,15 +38,22 @@ class _ViewProfileState extends State<ViewProfile> {
             color: Colors.black,
           ),
           onPressed: () => Navigator.pop(context, false),
+
         ),
       ),
-      body: Profile() ,
+      body: Profile(username: widget.username, userimageURL: widget.userimageURL, userAbout: widget.userAbout),
+      // Text(widget.username + widget.userimageURL),Profile(widget.username, widget.userimageURL) ,
     );
   }
 }
 
 class Profile extends StatefulWidget {
-  const Profile({ Key? key }) : super(key: key);
+  const Profile({ Key? key, required this.username, required this.userimageURL, this.userAbout }) : super(key: key);
+
+
+  final username ;
+  final userimageURL;
+  final userAbout;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -57,23 +67,25 @@ class _ProfileState extends State<Profile> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Padding(
                 padding: EdgeInsets.only(top: 50),
                 child: FittedBox(
                   fit: BoxFit.fill,
                   child: CircleAvatar(
-                      radius: 70.0, backgroundImage: NetworkImage("assets/images/bill-gates.jpg")),
+                      radius: 70.0, backgroundImage: NetworkImage(widget.userimageURL)),
                 ),
               ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children:  [
               Padding(
                 padding: EdgeInsets.all(12.0),
-                child: Text("Bill Gates", style: TextStyle(fontSize: 25,),),
+                child: 
+                // Text(widget.username),
+                Text(widget.username, style: TextStyle(fontSize: 25,),),
               ),
             ],
           ),
@@ -110,11 +122,12 @@ class _ProfileState extends State<Profile> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 10, top: MediaQuery.of(context).size.width / 25),
-            child: const Align(
+            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width / 10, top: MediaQuery.of(context).size.width / 25, left: MediaQuery.of(context).size.width / 10),
+            child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                DemoValues.postSummary,
+                widget.userAbout
+                // DemoValues.postSummary,
               ),
             ),
           )
@@ -123,3 +136,15 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
+
+
+
+// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUserAbout(email) async {
+//   var ref = await FirebaseFirestore.instance
+//       .collection("UserData")
+//       .where("email", isEqualTo: email)
+//       .get();
+
+//   var s = ref.docs[0];
+//   return s;
+// }
