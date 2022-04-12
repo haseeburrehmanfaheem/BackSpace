@@ -98,6 +98,7 @@ class Feed extends StatelessWidget {
                         likes: post["likes"],
                         postID: post["postID"],
                         functionalComment: true,
+                        userAbout: post["userAbout"],
                       ),
                 ],
               );
@@ -142,6 +143,7 @@ class Post extends StatelessWidget {
   final int likes;
   final String postID;
   final bool functionalComment;
+  final String userAbout;
 
   const Post(
       {required this.userName,
@@ -151,7 +153,8 @@ class Post extends StatelessWidget {
       required this.postcontent,
       required this.likes,
       required this.postID,
-      required this.functionalComment});
+      required this.functionalComment,
+      required this.userAbout});
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +167,7 @@ class Post extends StatelessWidget {
             userImage: userimage,
             username: userName,
             postTime: time,
+            userabout: userAbout,
           ),
           PostBody(postSummary: postcontent),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
@@ -330,6 +334,8 @@ class _PostscommentState extends State<Postscomment> {
               postID: widget.post_id,
               PostImg: widget.PostImg,
               functionalComment: false,
+              // IMPORTANT ___________________________________________________________________________________________
+              userAbout: "",
             ),
             // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
             // DisplayComments(comments, profileImage, name),
@@ -640,7 +646,8 @@ mapUserToPost(post) async {
     "email": post["email"],
     "likes": post["likes"],
     "postImageURL": post["imageURL"],
-    "postID": post.id
+    "postID": post.id,
+    "userAbout": userData.docs[0]["about"],
   };
   // print(post.id);
   return postsMap;

@@ -77,6 +77,8 @@ class Post extends StatelessWidget {
             userImage: userimage,
             username: userName,
             postTime: time,
+            // IMPORTANT_________________________________________________________________
+            // userabout: "",
           ),
           Padding(
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 5),

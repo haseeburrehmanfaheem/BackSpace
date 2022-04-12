@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Instructor extends StatelessWidget {
-  const Instructor({Key? key}) : super(key: key);
+class Instructors extends StatelessWidget {
+  const Instructors({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class Instructor extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('Instructor Review',
+        title: const Text('Instructors Review',
             style: TextStyle(fontFamily: "Poppins")),
         actions: [
           const Padding(

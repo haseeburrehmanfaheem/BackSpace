@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:backspace/pages/EditProfile.dart';
+import 'package:backspace/pages/Instructor.dart';
 import 'package:backspace/pages/UserProfile.dart';
 
 import 'package:backspace/pages/FAQ.dart';
@@ -28,7 +29,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Feed(),
-    Instructor(),
+    Instructors(),
     // UserProfile(),
     FindWork(),
     SubSpace(),
