@@ -75,30 +75,34 @@ class Feed extends StatelessWidget {
         foregroundColor: Colors.black,
       ),
 
-      body: FutureBuilder(
-          future: completePost(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              return Text("");
-            }
-            final posts = snapshot.data;
-            return ListView(
-              children: <Widget>[
-                for (var post in posts)
-                  if (post["subspace"] == null)
-                    Post(
-                      userName: post["username"],
-                      userimage: post["userImageURL"],
-                      time: "5 min",
-                      postcontent: post["content"],
-                      PostImg: post["postImageURL"],
-                      likes: post["likes"],
-                      postID: post["postID"],
-                      functionalComment: true,
-                    ),
-              ],
-            );
-          }),
+      body: Center(
+        child: FutureBuilder(
+            future: completePost(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              final posts = snapshot.data;
+              return ListView(
+                children: <Widget>[
+                  for (var post in posts)
+                    if (post["subspace"] == null ||
+                        post["subspace"] ==
+                            "") // displaying in newsfeed ////////////////////////////
+                      Post(
+                        userName: post["username"],
+                        userimage: post["userImageURL"],
+                        time: "5 min",
+                        postcontent: post["content"],
+                        PostImg: post["postImageURL"],
+                        likes: post["likes"],
+                        postID: post["postID"],
+                        functionalComment: true,
+                      ),
+                ],
+              );
+            }),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -493,8 +497,9 @@ class AddPostFormState extends State<AddPostForm> {
 
   @override
   Widget build(BuildContext context) {
-    return (Form(
-      key: _formKey,
+    return
+      //
+       Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: Row(
@@ -502,21 +507,24 @@ class AddPostFormState extends State<AddPostForm> {
             // mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
               Expanded(
-                child: TextFormField(
-                  controller: widget.postcontentController,
-                  onTap: () {},
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter Text';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Add Post",
-                    fillColor: const Color(0xfff9f9fa),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: widget.postcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Add Post",
+                      fillColor: const Color(0xfff9f9fa),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
                     ),
                   ),
                 ),
@@ -530,8 +538,8 @@ class AddPostFormState extends State<AddPostForm> {
                   onPressed: handleChoosefromgallery, //Open Gallery here
                   icon: const Icon(Icons.photo)),
             ]),
-      ),
-    ));
+      ),)
+    ;
   }
 }
 

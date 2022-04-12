@@ -9,6 +9,8 @@ import 'package:backspace/pages/Notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'EditProfile.dart';
+import 'FindWork.dart';
 import 'newsfeed.dart';
 
 class AddWorkPage extends StatefulWidget {
@@ -19,7 +21,7 @@ class AddWorkPage extends StatefulWidget {
 }
 
 class _AddWorkPageState extends State<AddWorkPage> {
-  final TextEditingController postcontentController = TextEditingController();
+  final TextEditingController workcontentController = TextEditingController();
   File? image;
   CollectionReference users = FirebaseFirestore.instance.collection('posts');
   void changeState(imgSrc) {
@@ -49,16 +51,40 @@ class _AddWorkPageState extends State<AddWorkPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: MaterialButton(
-                onPressed: () {
-                // async {
-                  // String? URL = "";
-                  // final users = FirebaseAuth.instance.currentUser;
-                  // String? emailID = users?.email;
-                  // DateTime currentPhoneDate = DateTime.now(); //DateTime
-                  // Timestamp myTimeStamp =
-                  //     Timestamp.fromDate(currentPhoneDate); //To TimeStamp
-                  // DateTime myDateTime =
-                  //     myTimeStamp.toDate(); // TimeStamp to DateTime
+                onPressed: () async {
+                  // if()
+                  if (_formKey.currentState!.validate()) {
+                    print(workcontentController.text);
+                    String URL = "";
+                    final users = await FirebaseAuth.instance.currentUser;
+                    String? emailID = users?.email;
+                    DateTime currentPhoneDate = DateTime.now(); //DateTime
+                    Timestamp myTimeStamp =
+                        Timestamp.fromDate(currentPhoneDate); //To TimeStamp
+                    DateTime myDateTime =
+                        myTimeStamp.toDate(); // TimeStamp to DateTime
+                    var username = await getUsername(emailID);
+                    var userName = username["username"];
+                    print(userName);
+
+                    addWorkToPost(
+                        emailID, URL, workcontentController.text, myDateTime);
+                    // setState(() => {});
+                    // Navigator.pop(context);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => BottomNavigation()));
+                    // Navigator.pushReplacement(
+                    //     context, MaterialPageRoute(builder: (_) => FindWork()));
+
+                    // username posttable
+                    // user image url posttable
+                    // content controller
+                    // time local
+                    // subspace
+                  }
+                  // async {
+
+                  //     context, myDateTime);
                   // if (image != null) {
                   //   final fileName = basename(image!.path);
                   //   // print("current phone data is: $myDateTime");
@@ -67,7 +93,7 @@ class _AddWorkPageState extends State<AddWorkPage> {
                   //   URL = await FirebaseApi.uploadFile(storagePath, image!);
                   //   // print(URL);
                   // }
-                  // addDataToPost(emailID, URL, postcontentController.text,
+                  // addDataToPost(emailID, URL, workcontentController.text,
                   //     context, myDateTime);
                   // Navigator.pushReplacement(context,
                   //     MaterialPageRoute(builder: (_) => BottomNavigation()));
@@ -80,8 +106,7 @@ class _AddWorkPageState extends State<AddWorkPage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: 
-      Stack(children: [
+      body: Stack(children: [
         SizedBox(
           width: double.infinity,
           height: 300,
@@ -93,75 +118,46 @@ class _AddWorkPageState extends State<AddWorkPage> {
               : Container(),
         ),
         Align(
-          alignment: Alignment.bottomCenter,
-          child: AddWorkForm(postcontentController: postcontentController)
-          // Text("xx"),
-          // AddWorkForm(
-            // postcontentController: postcontentController,
+            alignment: Alignment.bottomCenter,
+            child: AddWorkForm(workcontentController: workcontentController)
+
+            // set
+            // Text("xx"),
+            // AddWorkForm(
+            // workcontentController: workcontentController,
             // changeState: changeState,
-          // ),
-        ),
-      ]
-      ),
+            // ),
+            ),
+      ]),
     );
   }
 }
 
-
-
+// final TextEditingController workcontentController;
 class AddWorkForm extends StatefulWidget {
-  final TextEditingController postcontentController;
+  final TextEditingController workcontentController;
 
   final Function(File)? changeState;
 
   const AddWorkForm({
     Key? key,
     this.changeState,
-    required this.postcontentController,
+    required this.workcontentController,
   }) : super(key: key);
 
   @override
   AddWorkFormState createState() => AddWorkFormState();
 }
 
+final _formKey = GlobalKey<FormState>();
+
 class AddWorkFormState extends State<AddWorkForm> {
-  final _formKey = GlobalKey<FormState>();
-  // File? image;
-
-  // Future handleChoosefromgallery() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-  //     if (image == null) return;
-
-  //     final imageTemp = File(image.path);
-
-  //     setState(() => this.image = imageTemp);
-  //     widget.changeState!(imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  // Future handleTakephoto() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-  //     if (image == null) return;
-
-  //     final imageTemp = File(image.path);
-
-  //     setState(() => this.image = imageTemp);
-  //     widget.changeState!(imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return (Form(
-      key: _formKey,
+    return
+        // Form(
+        // key: _formKey,
+        Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: Row(
@@ -169,32 +165,38 @@ class AddWorkFormState extends State<AddWorkForm> {
             // mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
               Expanded(
-                child: TextFormField(
-                  controller: widget.postcontentController,
-                  onTap: () {},
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter Text';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Add Work",
-                    fillColor: const Color(0xfff9f9fa),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: () async {
-                        // if (formGlobalKey.currentState!.validate()) {
-                        //   // print(commentController.text);
-                        //   await updateCommentInDB(
-                        //       commentController.text, widget.post_id);
-                        //   // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-                        // }
-                      },
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: widget.workcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Add Work",
+                      fillColor: const Color(0xfff9f9fa),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      // suffixIcon: IconButton(
+                      //   icon: Icon(Icons.arrow_forward),
+                      //   onPressed: () async {
+                      //     // if()
+                      //     if (_formKey.currentState!.validate()) {
+                      //       print(widget.workcontentController.text);
+                      //     }
+                      //     //   // print(commentController.text);
+                      //     //   await updateCommentInDB(
+                      //     //       commentController.text, widget.post_id);
+                      //     //   // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
+                      //     // }
+                      //   },
+                      // ),
                     ),
                   ),
                 ),
@@ -209,6 +211,27 @@ class AddWorkFormState extends State<AddWorkForm> {
               //     icon: const Icon(Icons.photo)),
             ]),
       ),
-    ));
+    )
+        // )
+        ;
   }
+}
+
+addWorkToPost(emailID, imageURL, content, myDateTime) async {
+  var ref = await FirebaseFirestore.instance.collection("Posts");
+
+  ref.add({
+    "email": emailID,
+    "imageURL": imageURL,
+    "content": content,
+    "likes": 0,
+    "created_at": myDateTime,
+    "subspace": "work",
+  }).then((value) async {
+    // print(value.id);
+    // var comments_table =
+    //     await FirebaseFirestore.instance.collection("Comments");
+    // comments_table.add({"email": });
+  }).catchError((error) => print("Failed to add user: $error"));
+  return;
 }
