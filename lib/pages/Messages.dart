@@ -41,7 +41,8 @@ class _MessagesState extends State<Messages> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 List<Map<String, dynamic>>? filteredUsers =
-                    await FirebaseApi.searchUsers(userSearchController.text);
+                    await FirebaseApi.returnAllUsers();
+                // await FirebaseApi.searchUsers(userSearchController.text);
                 setState(() => widget.searchResultUsers = filteredUsers);
               }
             },
@@ -49,6 +50,58 @@ class _MessagesState extends State<Messages> {
         ),
       ),
     );
+  }
+
+  Widget showSearchResults() {
+    return widget.searchResultUsers != null
+        ? widget.searchResultUsers!
+                .isEmpty /* Case where No users match Search Query */
+            ? Column(
+                children: const [
+                  SizedBox(height: 100),
+                  Center(
+                    child: Text("No Results Found",
+                        style: TextStyle(fontSize: 20, color: Colors.black)),
+                  )
+                ],
+              )
+            : ListView(
+                /* When results found for Search Query*/
+                children: [
+                  for (var user in widget.searchResultUsers!)
+                    Message(
+                      userImg: user["imageURL"],
+                      name: user["username"],
+                      Time: "2 sec",
+                      posttext: "",
+                    ),
+                ],
+              )
+        : Text("Something Went Wrong!",
+            /* When some error occurs while fetching results from firebase. */
+            style: TextStyle(fontSize: 20, color: Colors.black));
+  }
+
+  showAllUsers() async {
+    return FutureBuilder(
+        future: FirebaseApi.returnAllUsers(),
+        builder: (BuildContext context, AsyncSnapshot? snapshot) {
+          if (snapshot != null) {
+            return ListView(
+              children: [
+                for (var user in snapshot.data)
+                  Message(
+                    userImg: user["imageURL"],
+                    name: user["username"],
+                    Time: "2 sec",
+                    posttext: "",
+                  )
+              ],
+            );
+          } else {
+            return Text("");
+          }
+        });
   }
 
   @override
@@ -72,30 +125,33 @@ class _MessagesState extends State<Messages> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: widget.searchResultUsers != null
-          ? widget.searchResultUsers!.isEmpty
-              ? Column(
-                  children: const [
-                    SizedBox(height: 100),
-                    Center(
-                      child: Text("No Results Found",
-                          style: TextStyle(fontSize: 20, color: Colors.black)),
+      body: FutureBuilder(
+          future: FirebaseApi.returnAllUsers(),
+          builder: (BuildContext context, AsyncSnapshot? snapshot) {
+            if (snapshot!.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            if (snapshot != null) {
+              return ListView(
+                children: [
+                  for (var user in snapshot.data)
+                    Message(
+                      userImg: user["imageURL"],
+                      name: user["username"],
+                      Time: "2 sec",
+                      posttext: "",
                     )
-                  ],
-                )
-              : ListView(
-                  children: [
-                    for (var user in widget.searchResultUsers!)
-                      Message(
-                        userImg: user["imageURL"],
-                        name: user["username"],
-                        Time: "2 sec",
-                        posttext: "",
-                      ),
-                  ],
-                )
-          : Text("Something Went Wrong!",
-              style: TextStyle(fontSize: 20, color: Colors.black)),
+                ],
+              );
+            } else {
+              return Text("");
+            }
+          }),
     );
   }
 }

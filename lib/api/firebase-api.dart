@@ -40,4 +40,15 @@ class FirebaseApi {
       return null;
     }
   }
+
+  static Future<List<Map<String, dynamic>>?> returnAllUsers() async {
+    final QuerySnapshot allUsers =
+        await FirebaseFirestore.instance.collection("UserData").get();
+
+    /* Map List of DocumentSnapshot Objects to a List of key value pairs*/
+    return allUsers.docs.map((DocumentSnapshot doc) {
+      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      return data;
+    }).toList();
+  }
 }
