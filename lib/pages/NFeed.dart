@@ -609,7 +609,7 @@ class MyDelegate extends SearchDelegate {
 
 Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
     GetAllPostsContent() async {
-  var posts = await FirebaseFirestore.instance.collection("Posts").get();
+  var posts = await FirebaseFirestore.instance.collection("Posts").orderBy('created_at', descending: true).get();
 
   return posts.docs;
 }
