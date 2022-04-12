@@ -1,4 +1,5 @@
 import 'package:backspace/pages/AddEvent.dart';
+import 'package:backspace/pages/Chat.dart';
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/ViewProfile.dart';
 import 'package:backspace/pages/homepage.dart';
@@ -58,10 +59,10 @@ class MyApp extends StatelessWidget {
       // home: ViewProfile()
 
       // home: a ? BottomNavigation() : Home(),
-      home: a ? Home() : BottomNavigation(),
+      // home: a ? Home() : BottomNavigation(),
 
       // FirebaseAuth.instance.signOut();
-      // home: Event(),
+      home: Chat(),
     );
   }
 }
