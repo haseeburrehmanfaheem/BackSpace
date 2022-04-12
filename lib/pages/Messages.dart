@@ -1,13 +1,55 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
+import 'package:backspace/api/firebase-api.dart';
 import 'package:backspace/components/newsFeed/post-header/user-icon-name.dart';
 import 'package:backspace/pages/Notification.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 
-class Messages extends StatelessWidget {
-  const Messages({Key? key}) : super(key: key);
+class Messages extends StatefulWidget {
+  Messages({Key? key}) : super(key: key);
+  List<Map<String, dynamic>>? searchResultUsers = [];
+  @override
+  State<Messages> createState() => _MessagesState();
+}
+
+class _MessagesState extends State<Messages> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController userSearchController = TextEditingController();
+
+  Widget userSearchFormWidget() {
+    return Form(
+      key: _formKey,
+      child: TextFormField(
+        controller: userSearchController,
+        validator: (value) {
+          return (value == null || value.isEmpty)
+              ? 'Please enter some text'
+              : null;
+        },
+        decoration: InputDecoration(
+          hintText: "Add Post",
+          fillColor: const Color(0xfff9f9fa),
+          filled: true,
+          suffixIcon: IconButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () async {
+              if (_formKey.currentState!.validate()) {
+                List<Map<String, dynamic>>? filteredUsers =
+                    await FirebaseApi.searchUsers(userSearchController.text);
+                setState(() => widget.searchResultUsers = filteredUsers);
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,48 +59,43 @@ class Messages extends StatelessWidget {
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
-            icon: new Icon(Icons.menu),
+            icon: Icon(Icons.menu),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('Messages', style: TextStyle(fontFamily: "Poppins")),
-        actions: [
-          const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Icon(Icons.search, color: Colors.black)),
+        title: userSearchFormWidget(),
+        actions: const [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                icon: Icon(Icons.notifications_outlined),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Noti()),
-                  );
-                },
-              ))
+            padding: EdgeInsets.only(left: 20.0, right: 20),
+          ),
         ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: ListView(children: const <Widget>[
-        Message(
-          userImg: "assets/images/bill-gates.jpg",
-          name: "Zeerak",
-          Time: "2 sec",
-          posttext: "Bhai SE ka kaam kab khatam hona?",
-        ),
-        Message(
-          userImg: "assets/images/bill-gates.jpg",
-          name: "Haseeb",
-          Time: "3 sec",
-          posttext: "Bhai SE ka kaam kab khatam honaQddwdq?",
-        )
-        // userName: "Zeerak",
-        // imagePath: "assets/images/bill-gates.jpg",
-        // time: "2 sec",
-        // text: "hi guys")
-      ]),
+      body: widget.searchResultUsers != null
+          ? widget.searchResultUsers!.isEmpty
+              ? Column(
+                  children: const [
+                    SizedBox(height: 100),
+                    Center(
+                      child: Text("No Results Found",
+                          style: TextStyle(fontSize: 20, color: Colors.black)),
+                    )
+                  ],
+                )
+              : ListView(
+                  children: [
+                    for (var user in widget.searchResultUsers!)
+                      Message(
+                        userImg: user["imageURL"],
+                        name: user["username"],
+                        Time: "2 sec",
+                        posttext: "",
+                      ),
+                  ],
+                )
+          : Text("Something Went Wrong!",
+              style: TextStyle(fontSize: 20, color: Colors.black)),
     );
   }
 }
@@ -89,7 +126,7 @@ class Message extends StatelessWidget {
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
                 CircleAvatar(
-                  backgroundImage: AssetImage(userImg),
+                  backgroundImage: NetworkImage(userImg),
                   radius: 30,
                 ),
                 Padding(
