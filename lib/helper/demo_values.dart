@@ -6,7 +6,7 @@ class DemoValues {
   static const String postTime = "30 April, 2019";
   static const String postTitle = "Maple Trees";
   static const String postSummary = "Lost keys found.. Submitted to security office  has been the industry etc";
-  static const String userName2 = "Ayehsa Rehman";
+  static const String userName2 = "Ayesha Rehman";
   static const String userName3 = "Sidra Butt";
   static const String userName4 = "Shahzeb Naseer";
   static const String postTitle2 = "Freshman year at LUMS";
