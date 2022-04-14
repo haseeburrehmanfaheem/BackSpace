@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -50,5 +51,34 @@ class FirebaseApi {
       Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
       return data;
     }).toList();
+  }
+
+  static Future<String?> getChatID(emailUser1, emailUser2) async {
+    /* Getting chat ID for messages */
+    try {
+      String chatID = "${emailUser1}_$emailUser2";
+      var chat =
+          await FirebaseFirestore.instance.collection("chat").doc(chatID).get();
+      if (!chat.exists) {
+        chatID = "${emailUser1}_$emailUser2";
+        chat = await FirebaseFirestore.instance
+            .collection("chat")
+            .doc(chatID)
+            .get();
+      }
+      return chatID;
+
+      /* Get all messages for this user */
+      // final Stream<QuerySnapshot> messages = FirebaseFirestore.instance
+      //     .collection("messages")
+      //     .where('chat_id', isEqualTo: chatID)
+      //     .orderBy('sent_at')
+      //     .snapshots();
+      // messages
+    } on Exception catch (e) {
+      print("Error occured while getting chatID");
+      print(e);
+      return null;
+    }
   }
 }

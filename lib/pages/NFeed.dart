@@ -454,12 +454,19 @@ updatelikesintable(likes, documentID, alreadyliked) {
 
 class AddPostForm extends StatefulWidget {
   final TextEditingController postcontentController;
-
+  final Function? openPopup;
   final Function(File)? changeState;
+  final Widget? sendButton;
+  final String hintText;
+  final bool showImagesIcons;
 
   const AddPostForm({
     Key? key,
+    required this.showImagesIcons,
+    required this.hintText,
+    this.openPopup,
     this.changeState,
+    this.sendButton,
     required this.postcontentController,
   }) : super(key: key);
 
@@ -504,8 +511,8 @@ class AddPostFormState extends State<AddPostForm> {
   @override
   Widget build(BuildContext context) {
     return
-      //
-       Container(
+        //
+        Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: Row(
@@ -525,7 +532,7 @@ class AddPostFormState extends State<AddPostForm> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      hintText: "Add Post",
+                      hintText: widget.hintText,
                       fillColor: const Color(0xfff9f9fa),
                       filled: true,
                       border: OutlineInputBorder(
@@ -535,17 +542,29 @@ class AddPostFormState extends State<AddPostForm> {
                   ),
                 ),
               ),
-              IconButton(
-                  onPressed: () {
-                    handleTakephoto();
-                  }, //Open Camera here
-                  icon: const Icon(Icons.camera_alt_outlined)),
-              IconButton(
-                  onPressed: handleChoosefromgallery, //Open Gallery here
-                  icon: const Icon(Icons.photo)),
+              if (widget.showImagesIcons)
+                IconButton(
+                    onPressed: () async {
+                      await handleTakephoto();
+                      if (widget.openPopup != null) {
+                        widget.openPopup!();
+                      }
+                    }, //Open Camera here
+                    icon: const Icon(Icons.camera_alt_outlined)),
+              if (widget.showImagesIcons)
+                IconButton(
+                    onPressed: () async {
+                      await handleChoosefromgallery();
+                      if (widget.openPopup != null) {
+                        // print('OpenPopup');
+                        widget.openPopup!();
+                      }
+                    }, //Open Gallery here
+                    icon: const Icon(Icons.photo)),
+              if (widget.sendButton != null) widget.sendButton!,
             ]),
-      ),)
-    ;
+      ),
+    );
   }
 }
 
@@ -609,7 +628,10 @@ class MyDelegate extends SearchDelegate {
 
 Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
     GetAllPostsContent() async {
-  var posts = await FirebaseFirestore.instance.collection("Posts").orderBy('created_at', descending: true).get();
+  var posts = await FirebaseFirestore.instance
+      .collection("Posts")
+      .orderBy('created_at', descending: true)
+      .get();
 
   return posts.docs;
 }
