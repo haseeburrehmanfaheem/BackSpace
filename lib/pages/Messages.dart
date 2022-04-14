@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:backspace/api/firebase-api.dart';
 import 'package:backspace/components/newsFeed/post-header/user-icon-name.dart';
+import 'package:backspace/pages/Chat.dart';
 import 'package:backspace/pages/Notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
@@ -70,8 +72,7 @@ class _MessagesState extends State<Messages> {
                 children: [
                   for (var user in widget.searchResultUsers!)
                     Message(
-                      userImg: user["imageURL"],
-                      name: user["username"],
+                      user: user,
                       Time: "2 sec",
                       posttext: "",
                     ),
@@ -91,8 +92,7 @@ class _MessagesState extends State<Messages> {
               children: [
                 for (var user in snapshot.data)
                   Message(
-                    userImg: user["imageURL"],
-                    name: user["username"],
+                    user: user,
                     Time: "2 sec",
                     posttext: "",
                   )
@@ -141,8 +141,7 @@ class _MessagesState extends State<Messages> {
                 children: [
                   for (var user in snapshot.data)
                     Message(
-                      userImg: user["imageURL"],
-                      name: user["username"],
+                      user: user,
                       Time: "2 sec",
                       posttext: "",
                     )
@@ -157,23 +156,29 @@ class _MessagesState extends State<Messages> {
 }
 
 class Message extends StatelessWidget {
-  final String userImg;
+  final user;
   final String Time;
-  final String name;
   final String posttext;
   // ignore: use_key_in_widget_constructors
   const Message(
-      {required this.userImg,
-      required this.name,
-      required this.Time,
-      required this.posttext});
+      {required this.user, required this.Time, required this.posttext});
   @override
   Widget build(BuildContext context) {
     return Container(
         //clipBehavior: Clip.antiAlias,
         child: Column(children: [
       const Padding(padding: EdgeInsets.only(top: 10, left: 0)),
-      Container(
+      InkWell(
+        onTap: () async {
+          final currentUser = FirebaseAuth.instance.currentUser;
+          final chatID =
+              await FirebaseApi.getChatID(currentUser?.email, user["email"]);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(receiver: user, chatID: chatID)),
+          );
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +187,7 @@ class Message extends StatelessWidget {
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
                 CircleAvatar(
-                  backgroundImage: NetworkImage(userImg),
+                  backgroundImage: NetworkImage(user["imageURL"]),
                   radius: 30,
                 ),
                 Padding(
@@ -191,7 +196,7 @@ class Message extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
+                        Text(user["username"],
                             style:
                                 const TextStyle(fontWeight: FontWeight.w600)),
                         Text(posttext,

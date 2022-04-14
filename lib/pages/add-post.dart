@@ -94,9 +94,10 @@ class _AddPostPageState extends State<AddPostPage> {
         Align(
           alignment: Alignment.bottomCenter,
           child: AddPostForm(
-            postcontentController: postcontentController,
-            changeState: changeState,
-          ),
+              postcontentController: postcontentController,
+              changeState: changeState,
+              showImagesIcons: true,
+              hintText: "Add Post"),
         ),
       ]),
     );
