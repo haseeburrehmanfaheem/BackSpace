@@ -85,6 +85,11 @@ flutter:
     - assets/images/
     - assets/images/keys.jpg
     - assets/images/user1.jpeg
+    - assets/images/article1.jpg
+    - assets/images/article2.jpg
+    - assets/images/article3.jpg
+    - assets/images/gaming.jpg
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
