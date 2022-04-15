@@ -173,6 +173,7 @@ class Message extends StatelessWidget {
           final currentUser = FirebaseAuth.instance.currentUser;
           final chatID =
               await FirebaseApi.getChatID(currentUser?.email, user["email"]);
+          print("Look here $chatID");
           Navigator.push(
             context,
             MaterialPageRoute(
