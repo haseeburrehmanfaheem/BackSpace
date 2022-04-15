@@ -154,39 +154,36 @@ final _formKey = GlobalKey<FormState>();
 class AddWorkFormState extends State<AddWorkForm> {
   @override
   Widget build(BuildContext context) {
-    return
-        Container(
+    return Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-        child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    controller: widget.workcontentController,
-                    onTap: () {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter Text';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Add Work",
-                      fillColor: const Color(0xfff9f9fa),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
+        child: Row(children: <Widget>[
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: widget.workcontentController,
+                onTap: () {},
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Text';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "Add Work",
+                  fillColor: const Color(0xfff9f9fa),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
               ),
-            ]),
+            ),
+          ),
+        ]),
       ),
-    )
-        ;
+    );
   }
 }
 

@@ -3,6 +3,7 @@
 
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:backspace/pages/ViewProfile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/add-post.dart';
@@ -40,13 +41,12 @@ class Instructor extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: const MyDrawer(),
+      // drawer: const MyDrawer(),
+
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () => Navigator.pop(context, false),
         ),
         title: const Text('Instructor Review'),
         actions: [
@@ -94,22 +94,45 @@ class Instructor extends StatelessWidget {
           getRatingone(
             initialRating: initialRating,
           ),
-
+          FutureBuilder(
+              future: getInstructorReview(instructorID),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Text("no data");
+                }
+                final instructors = snapshot.data;
+                return Column(
+                  // shrinkWrap: true,
+                  // ListView.builder(itemBuilder: itemBuilder)
+                  children: <Widget>[
+                    for (var instructor in instructors)
+                      Review(
+                        username: instructor["name"],
+                        userimageURL: instructor["imageURL"],
+                        Content: instructor["content"],
+                        rating: instructor["rating"].toDouble(),
+                      )
+                  ],
+                );
+              }),
           // Center(
           //   child: Rating(initialRating: 4),
           //   ),
           // Rating(initialRating: 4),
-          Review(),
-          Review(),
-          Review(),
-          Review()
+          // Review(),
+          // Review(),
+          // Review(),
+          // Review()
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddReview()),
+            MaterialPageRoute(
+                builder: (context) => AddReview(
+                      instructorID: instructorID!,
+                    )),
           );
           AddReviewForm(
             instructorID: instructorID!,
@@ -137,8 +160,11 @@ class Instructor extends StatelessWidget {
       );
 }
 
+final textformkey = GlobalKey<FormState>();
+
 class AddReview extends StatelessWidget {
-  const AddReview({Key? key}) : super(key: key);
+  String instructorID;
+  AddReview({Key? key, required this.instructorID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +183,19 @@ class AddReview extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: MaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                if (textformkey.currentState!.validate()) {
+                  // print(reviewcontentController.text);
+                  // print(inputRating);
+                  // print(instructorID);
+                  addInstructorReviewinDB(
+                      reviewcontentController.text, inputRating, instructorID);
+                  UpdateAverageRating(instructorID);
+                  reviewcontentController.clear();
+                  Navigator.pop(context);
+                  // Navigator.pushReplacement(context, newRoute)
+                }
+              },
               // if()
               //   if (_formKey.currentState!.validate()) {
 
@@ -184,7 +222,7 @@ class AddReview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AddstarsForm(),
-                // AddReviewForm(),
+                AddReviewForm(),
               ],
             )
 
@@ -200,11 +238,12 @@ class AddReview extends StatelessWidget {
   }
 }
 
+var inputRating = 5.0;
+
 class AddstarsForm extends StatelessWidget {
   AddstarsForm({Key? key}) : super(key: key);
 
   @override
-  var rating;
   Widget build(BuildContext context) {
     return Container(
       child: RatingBar.builder(
@@ -219,19 +258,21 @@ class AddstarsForm extends StatelessWidget {
         ),
         // ignoreGestures: true,
         onRatingUpdate: (rating) {
-          print(rating);
+          inputRating = rating;
+          // print(inputRating);
         },
       ),
     );
   }
 }
 
+var reviewcontentController = TextEditingController();
+
 class AddReviewForm extends StatelessWidget {
   final String? instructorID;
   AddReviewForm({Key? key, this.instructorID}) : super(key: key);
   @override
-  final _formKey = GlobalKey<FormState>();
-  final reviewcontentController = TextEditingController();
+  // final _formKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
     return Container(
@@ -240,18 +281,18 @@ class AddReviewForm extends StatelessWidget {
         child: Row(children: <Widget>[
           Expanded(
             child: Form(
-              key: _formKey,
+              key: textformkey,
               child: TextFormField(
                 controller: reviewcontentController,
                 onTap: () {},
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Enter Text';
+                    return 'Enter Review before proceeding';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: "Add Work",
+                  hintText: "Add Review",
                   fillColor: const Color(0xfff9f9fa),
                   filled: true,
                   border: OutlineInputBorder(
@@ -346,9 +387,9 @@ class getRatingtwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('4.5'),
+        Text(initialRating.toString()),
         Rating(
-          initialRating: 3,
+          initialRating: initialRating,
           size: 15,
         ),
       ],
@@ -357,6 +398,19 @@ class getRatingtwo extends StatelessWidget {
 }
 
 class Review extends StatefulWidget {
+  const Review(
+      {Key? key,
+      required this.username,
+      required this.userimageURL,
+      required this.Content,
+      required this.rating})
+      : super(key: key);
+
+  final username;
+  final userimageURL;
+  final Content;
+  final rating;
+
   @override
   _Review createState() => _Review();
 }
@@ -368,12 +422,13 @@ class _Review extends State<Review> {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          const UserIconName(
-            userImage: DemoValues.userImage,
-            username: DemoValues.userName,
-            postTime: DemoValues.postTime,
+          UserIcon(
+            userImage: widget.userimageURL,
+            username: widget.username,
+            rating: widget.rating,
+            // postTime: DemoValues.postTime,
           ),
-          const PostBody(postSummary: DemoValues.postSummary),
+          PostBody(postSummary: widget.Content),
         ],
       ),
     );
@@ -408,34 +463,100 @@ class Rating extends StatelessWidget {
   }
 }
 
-class UserIconName extends StatelessWidget {
+class UserIcon extends StatelessWidget {
   final String userImage;
-  final String postTime;
+  // final String postTime;
   final String username;
+  var rating;
   // ignore: use_key_in_widget_constructors
-  const UserIconName(
-      {required this.userImage,
-      required this.username,
-      required this.postTime});
+  UserIcon({
+    required this.userImage,
+    required this.username,
+    required this.rating,
+  });
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(backgroundImage: AssetImage(userImage)),
+      leading: CircleAvatar(backgroundImage: NetworkImage(userImage)),
       title: Padding(
         padding: EdgeInsets.only(left: 5),
         child:
             Text(username, style: const TextStyle(fontWeight: FontWeight.w500)),
       ),
       subtitle: getRatingtwo(
-        initialRating: 3,
+        initialRating: rating,
       ),
       trailing: Padding(
         padding: EdgeInsets.only(right: 15),
-        child: Text(
-          postTime,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
+        // child: Text(
+        //   postTime,
+        //   style: const TextStyle(fontWeight: FontWeight.w500),
+        // ),
       ),
     );
   }
+}
+
+addInstructorReviewinDB(content, rating, instructorID) async {
+  var ref = await FirebaseFirestore.instance.collection("InstructorReview");
+  final user = await FirebaseAuth.instance.currentUser;
+  String? email = user?.email;
+
+  var posts = await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
+  var imageURL = posts.docs[0]["imageURL"];
+  var name = posts.docs[0]["username"];
+  // print(imageURL);
+
+  ref
+      .add({
+        "name": name,
+        "imageURL": imageURL,
+        "content": content,
+        "rating": rating,
+        "instructorID": instructorID,
+      })
+      .then((value) async {})
+      .catchError((error) => print("Failed to add user: $error"));
+  return;
+}
+
+getInstructorReview(instructorID) async {
+  var posts = await FirebaseFirestore.instance
+      .collection("InstructorReview")
+      .where("instructorID", isEqualTo: instructorID)
+      .get();
+  var docs = posts.docs;
+  // print(docs[0]["content"]);
+
+  return posts.docs;
+}
+
+UpdateAverageRating(instructorID) async {
+  var posts = await FirebaseFirestore.instance
+      .collection("InstructorReview")
+      .where("instructorID", isEqualTo: instructorID)
+      .get();
+
+  var docs = posts.docs;
+
+  double rating = 0.0;
+  double total = 0;
+  for (var each in docs) {
+    total++;
+    rating += each["rating"];
+  }
+  rating = rating / total * 1.0;
+  print(rating);
+  String inString = rating.toStringAsFixed(2);
+  rating = double.parse(inString);
+
+  // final user = FirebaseAuth.instance.currentUser;
+  var ref = await FirebaseFirestore.instance
+      .collection("Instructor")
+      .where("id", isEqualTo: instructorID)
+      .get();
+  ref.docs[0].reference.update({"rating": rating});
 }
