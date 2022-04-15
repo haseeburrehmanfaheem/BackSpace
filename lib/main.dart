@@ -5,6 +5,7 @@ import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/ViewProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
@@ -61,13 +62,21 @@ class MyApp extends StatelessWidget {
 
 
       // home: a ? BottomNavigation() : Home(),
-      // home: a ? Home() : BottomNavigation(),
-      home: Proved(),
+      home: a ? Home() : BottomNavigation(),
+      // home: Proved(),
 
       // FirebaseAuth.instance.signOut();
       // home: Chat(),
     );
   }
+}
+
+
+getUserData(email) async {
+  return await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
 }
 
 // class App extends StatelessWidget {

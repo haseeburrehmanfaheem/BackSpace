@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:backspace/pages/ApprovedPosts.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:backspace/pages/signup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -213,9 +215,20 @@ login(emailAddress, password, context) async {
   try {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: emailAddress, password: password);
-    Navigator.pushReplacement(
+    final roles = await getUserData(emailAddress);
+    final temp = roles.docs[0]["roles"];
+    if(temp == "user"){
+      Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => BottomNavigation()));
+    }
+    else if(temp == "admin"){
+      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => Proved()));
+    }
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (_) => BottomNavigation()));
     print('The user has been logged in');
+    print(temp);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       Fluttertoast.showToast(
@@ -228,3 +241,20 @@ login(emailAddress, password, context) async {
     }
   }
 }
+
+getUserData(email) async {
+  return await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
+}
+
+// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername(email) async {
+//   var ref = await FirebaseFirestore.instance
+//       .collection("UserData")
+//       .where("email", isEqualTo: email)
+//       .get();
+
+//   var s = ref.docs[0];
+//   return s;
+// }

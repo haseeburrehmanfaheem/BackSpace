@@ -86,9 +86,10 @@ class Feed extends StatelessWidget {
               return ListView(
                 children: <Widget>[
                   for (var post in posts)
-                    if (post["subspace"] == null ||
+                    if ((post["subspace"] == null ||
                         post["subspace"] ==
-                            "") // displaying in newsfeed ////////////////////////////
+                            ""))
+                            // && (post["approved"] == true)) // displaying in newsfeed ////////////////////////////
                       Post(
                         userName: post["username"],
                         userimage: post["userImageURL"],
@@ -630,6 +631,7 @@ Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
     GetAllPostsContent() async {
   var posts = await FirebaseFirestore.instance
       .collection("Posts")
+      .where("approved", isEqualTo: true)
       .orderBy('created_at', descending: true)
       .get();
 
@@ -670,6 +672,7 @@ mapUserToPost(post) async {
     "postImageURL": post["imageURL"],
     "postID": post.id,
     "userAbout": userData.docs[0]["about"],
+    "approved": post["approved"]
   };
   // print(post.id);
   return postsMap;
