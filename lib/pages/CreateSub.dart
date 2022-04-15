@@ -56,6 +56,25 @@ class SubspaceForm extends StatelessWidget {
                 color: Colors.black87),
           ),
         ),
+        Container(
+        margin: const EdgeInsets.only(top: 30.0, left: 20.0),
+        padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, left: 30.0, right: 30.0),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.black)
+        ),
+        child: TextButton.icon(
+          style: TextButton.styleFrom(
+              primary: Colors.black.withOpacity(0.5)
+            ),
+            icon: Icon(Icons.camera_alt_outlined),
+            label: const Text('Add Image', style: TextStyle( color: Colors.black, fontSize: 14, ),),
+            onPressed: () {
+              
+            },
+        ),
+      ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         ),

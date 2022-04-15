@@ -1,4 +1,5 @@
 import 'package:backspace/pages/AddEvent.dart';
+import 'package:backspace/pages/ApprovedPosts.dart';
 import 'package:backspace/pages/Chat.dart';
 import 'package:backspace/pages/EditProfile.dart';
 import 'package:backspace/pages/ViewProfile.dart';
@@ -60,7 +61,8 @@ class MyApp extends StatelessWidget {
 
 
       // home: a ? BottomNavigation() : Home(),
-      home: a ? Home() : BottomNavigation(),
+      // home: a ? Home() : BottomNavigation(),
+      home: Proved(),
 
       // FirebaseAuth.instance.signOut();
       // home: Chat(),
