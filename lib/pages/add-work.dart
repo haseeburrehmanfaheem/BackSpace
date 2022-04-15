@@ -155,14 +155,10 @@ class AddWorkFormState extends State<AddWorkForm> {
   @override
   Widget build(BuildContext context) {
     return
-        // Form(
-        // key: _formKey,
         Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
-            // mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
               Expanded(
                 child: Form(
@@ -183,36 +179,13 @@ class AddWorkFormState extends State<AddWorkForm> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      // suffixIcon: IconButton(
-                      //   icon: Icon(Icons.arrow_forward),
-                      //   onPressed: () async {
-                      //     // if()
-                      //     if (_formKey.currentState!.validate()) {
-                      //       print(widget.workcontentController.text);
-                      //     }
-                      //     //   // print(commentController.text);
-                      //     //   await updateCommentInDB(
-                      //     //       commentController.text, widget.post_id);
-                      //     //   // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-                      //     // }
-                      //   },
-                      // ),
                     ),
                   ),
                 ),
               ),
-              // IconButton(
-              //     onPressed: () {
-              //       // handleTakephoto();
-              //     }, //Open Camera here
-              //     icon: const Icon(Icons.ca)),
-              // IconButton(
-              //     onPressed: handleChoosefromgallery, //Open Gallery here
-              //     icon: const Icon(Icons.photo)),
             ]),
       ),
     )
-        // )
         ;
   }
 }
