@@ -44,7 +44,7 @@ class _AdminDrawer extends State<AdminDrawer> {
                 }),
             ListTile(
                 leading: Icon(Icons.live_help_outlined),
-                title: Text('Approve Posts'),
+                title: Text('Approved Posts'),
                 onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Proved()));

@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 import 'Admindrawer.dart';
+import 'ApprovedPosts.dart';
+import 'NFeed.dart';
 
 class Pending extends StatelessWidget {
   const Pending({Key? key}) : super(key: key);
@@ -40,31 +43,72 @@ class Pending extends StatelessWidget {
         ),
         body: ListView(
           children: [
-            Post(
-              userName: "Aswad",
-              userimage: "assets/images/bill-gates.jpg",
-              time: "3 min",
-              Posttxt: "Stop littering pls :(",
-              PostImg: "assets/images/keys.jpg",
-            )
+            FutureBuilder(
+                future: completePost(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }
+                  final posts = snapshot.data;
+                  return Column(
+                    children: <Widget>[
+                      for (var post in posts)
+                        if ((post["subspace"] == null ||
+                                post["subspace"] == "") &&
+                            (post["approved"] == false))
+
+                          // displaying in newsfeed ////////////////////////////
+                          // Text("data")
+                          AdminPost2(
+                            userName: post["username"],
+                            userimage: post["userImageURL"],
+                            time: "3 min",
+                            Posttxt: post["content"],
+                            PostImg: post["postImageURL"],
+                            postid: post["postID"],
+                          ),
+
+                      // Post(
+                      //   userName: post["username"],
+                      //   userimage: post["userImageURL"],
+                      //   time: "5 min",
+                      //   postcontent: post["content"],
+                      //   PostImg: post["postImageURL"],
+                      //   likes: post["likes"],
+                      //   postID: post["postID"],
+                      //   functionalComment: true,
+                      //   userAbout: post["userAbout"],
+                      // ),
+                    ],
+                  );
+                })
+            // Post(
+            //   userName: "Aswad",
+            //   userimage: "assets/images/bill-gates.jpg",
+            //   time: "3 min",
+            //   Posttxt: "Stop littering pls :(",
+            //   PostImg: "assets/images/keys.jpg",
+            // )
           ],
         ));
   }
 }
 
-class Post extends StatelessWidget {
+class AdminPost2 extends StatelessWidget {
   final String userName;
   final String userimage;
   final String time;
   final String Posttxt;
   final String? PostImg;
+  final String postid;
 
-  const Post(
+  const AdminPost2(
       {required this.userName,
       required this.userimage,
       required this.time,
       required this.Posttxt,
-      this.PostImg});
+      this.PostImg,
+      required this.postid});
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +133,12 @@ class Post extends StatelessWidget {
             //       style: const TextStyle(fontWeight: FontWeight.w500)),
             // ]),
           ),
-          if (PostImg != null) Image.asset(PostImg!),
+          if (PostImg != null && PostImg != "") Image.network(PostImg!),
+          // if (PostImg != null && PostImg != "") Image.network(PostImg!),
           Divider(height: 1),
-          const PostFooter(),
+          PostFooter(
+            id: postid,
+          ),
         ],
       ),
     );
@@ -100,7 +147,8 @@ class Post extends StatelessWidget {
 
 // Display Like and Comment Post Footer Bar
 class PostFooter extends StatefulWidget {
-  const PostFooter({Key? key}) : super(key: key);
+  var id;
+  PostFooter({Key? key, required this.id}) : super(key: key);
 
   @override
   _PostFooter createState() => _PostFooter();
@@ -122,7 +170,12 @@ class _PostFooter extends State<PostFooter> {
           highlightedBorderColor: Colors.green,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          onPressed: () {},
+          onPressed: () {
+            print(widget.id);
+            setIDTrue(widget.id);
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Pending()));
+          },
         ),
         const Padding(padding: EdgeInsets.only(right: 70)),
         const Padding(padding: EdgeInsets.only(left: 70.0)),
@@ -141,4 +194,10 @@ class _PostFooter extends State<PostFooter> {
       ],
     );
   }
+}
+
+setIDTrue(id) {
+  var posts = FirebaseFirestore.instance.collection('Posts');
+  posts.doc(id) // <-- Doc ID where data should be updated.
+      .update({'approved': true});
 }
