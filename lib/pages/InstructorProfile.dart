@@ -1,6 +1,8 @@
-import 'dart:io';
+// import 'dart:html';
+// import 'dart:io';
 
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:backspace/pages/ViewProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:backspace/pages/Notification.dart';
 import 'package:backspace/pages/add-post.dart';
@@ -14,12 +16,25 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
+// import 'smooth_star_rating_nsafe/smooth_star_rating.dart';
 
 final usersRef = FirebaseFirestore.instance
     .collection('UserData'); //database reference object
 
 class Instructor extends StatelessWidget {
-  const Instructor({Key? key}) : super(key: key);
+  final String? userName;
+  final String? imagePath;
+  final Widget? rating;
+  final String? instructorID;
+  final initialRating;
+  const Instructor({
+    Key? key,
+    this.userName,
+    this.imagePath,
+    this.rating,
+    this.instructorID,
+    this.initialRating,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +48,24 @@ class Instructor extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('News Feed'),
+        title: const Text('Instructor Review'),
         actions: [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              // child: IconButton(
-              //     onPressed: () {
-              //       showSearch(
-              //         context: context,
-              //         delegate: MyDelegate(),
-              //       );
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => const Noti()),
-              //       // );
-              //     },
-              //     icon: Icon(Icons.search, color: Colors.black)
-              //     )
-                  ),
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            // child: IconButton(
+            //     onPressed: () {
+            //       showSearch(
+            //         context: context,
+            //         delegate: MyDelegate(),
+            //       );
+            //       // Navigator.push(
+            //       //   context,
+            //       //   MaterialPageRoute(builder: (context) => const Noti()),
+            //       // );
+            //     },
+            //     icon: Icon(Icons.search, color: Colors.black)
+            //     )
+          ),
           // Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -69,39 +84,48 @@ class Instructor extends StatelessWidget {
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
-        children: [ 
+        children: [
           Padding(padding: EdgeInsets.only(top: 20.0)),
-          ProfileWidget(), 
+          ProfileWidget(
+            url: imagePath!,
+          ),
           const SizedBox(height: 24),
-          buildName(),
-          getRatingone(initialRating: 3,),
-          
-          // Center( 
-          //   child: Rating(initialRating: 4), 
+          buildName(userName),
+          getRatingone(
+            initialRating: initialRating,
+          ),
+
+          // Center(
+          //   child: Rating(initialRating: 4),
           //   ),
           // Rating(initialRating: 4),
           Review(),
           Review(),
           Review(),
-          
-        ], 
+          Review()
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add onPressed code here!
-          },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.grey,
-        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddReview()),
+          );
+          AddReviewForm(
+            instructorID: instructorID!,
+          );
+          // Add onPressed code here!
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.grey,
+      ),
     );
   }
 
-
-
-  Widget buildName() => Column(
+  Widget buildName(name) => Column(
         children: [
           Text(
-            'Sir Barff',
+            name,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
@@ -111,19 +135,147 @@ class Instructor extends StatelessWidget {
           // )
         ],
       );
-
-
 }
 
-class ProfileWidget extends StatefulWidget{
+class AddReview extends StatelessWidget {
+  const AddReview({Key? key}) : super(key: key);
 
-  @override 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ),
+        title: const Text('Add Review'),
+        actions: [
+          // Icon(Icons.search, color: Colors.black)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: MaterialButton(
+              onPressed: () {},
+              // if()
+              //   if (_formKey.currentState!.validate()) {
+
+              // },
+              child: const Text(
+                "Post",
+                style: TextStyle(color: Colors.blue, fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
+      body: Stack(children: [
+        SizedBox(
+          width: double.infinity,
+          height: 300,
+          child: Container(),
+        ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AddstarsForm(),
+                // AddReviewForm(),
+              ],
+            )
+
+            // set
+            // Text("xx"),
+            // AddWorkForm(
+            // workcontentController: workcontentController,
+            // changeState: changeState,
+            // ),
+            ),
+      ]),
+    );
+  }
+}
+
+class AddstarsForm extends StatelessWidget {
+  AddstarsForm({Key? key}) : super(key: key);
+
+  @override
+  var rating;
+  Widget build(BuildContext context) {
+    return Container(
+      child: RatingBar.builder(
+        initialRating: 5,
+        minRating: 1,
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemBuilder: (context, _) => const Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        // ignoreGestures: true,
+        onRatingUpdate: (rating) {
+          print(rating);
+        },
+      ),
+    );
+  }
+}
+
+class AddReviewForm extends StatelessWidget {
+  final String? instructorID;
+  AddReviewForm({Key? key, this.instructorID}) : super(key: key);
+  @override
+  final _formKey = GlobalKey<FormState>();
+  final reviewcontentController = TextEditingController();
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+        child: Row(children: <Widget>[
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: reviewcontentController,
+                onTap: () {},
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Enter Text';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "Add Work",
+                  fillColor: const Color(0xfff9f9fa),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+class ProfileWidget extends StatefulWidget {
+  String url;
+  ProfileWidget({Key? key, required this.url}) : super(key: key);
+  @override
   _ProfileWidgetState createState() => _ProfileWidgetState();
 }
 
-class _ProfileWidgetState extends State <ProfileWidget>{
-
-
+class _ProfileWidgetState extends State<ProfileWidget> {
+  // String url;
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
@@ -131,7 +283,6 @@ class _ProfileWidgetState extends State <ProfileWidget>{
     return Center(
       child: Stack(
         children: [
-          
           buildImage(),
         ],
       ),
@@ -139,7 +290,7 @@ class _ProfileWidgetState extends State <ProfileWidget>{
   }
 
   Widget buildImage() {
-    final image = NetworkImage("assets/images/bill-gates.jpg");
+    final image = NetworkImage(widget.url);
 
     return ClipOval(
       child: Material(
@@ -170,51 +321,47 @@ class _ProfileWidgetState extends State <ProfileWidget>{
 }
 
 class getRatingone extends StatelessWidget {
-  
-   final double initialRating;
-   const getRatingone({required this.initialRating});
+  final double initialRating;
+  const getRatingone({required this.initialRating});
   @override
   Widget build(BuildContext context) {
     return Row(
-   mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text('4.5'),
-      Rating(initialRating: 3, size: 25,),
-      Text('(23 Reviews)'),
-
-    ],
-
-  );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(initialRating.toString()),
+        Rating(
+          initialRating: initialRating,
+          size: 25,
+        ),
+        // Text('(23 Reviews)'),
+      ],
+    );
   }
-
 }
 
 class getRatingtwo extends StatelessWidget {
-  
-   final double initialRating;
-   const getRatingtwo({required this.initialRating});
+  final double initialRating;
+  const getRatingtwo({required this.initialRating});
   @override
   Widget build(BuildContext context) {
     return Row(
-    children: [
-      Text('4.5'),
-      Rating(initialRating: 3, size: 15,),
-    ],
-  );
+      children: [
+        Text('4.5'),
+        Rating(
+          initialRating: 3,
+          size: 15,
+        ),
+      ],
+    );
   }
-
 }
 
-class Review extends StatefulWidget{
-
+class Review extends StatefulWidget {
   @override
   _Review createState() => _Review();
-
 }
 
-
-class _Review extends State <Review> {
-
+class _Review extends State<Review> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -242,27 +389,24 @@ class Rating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(5),
-        child: RatingBar.builder(
-          initialRating: initialRating,
-          minRating: 1,
-          itemSize: size,
-          direction: Axis.horizontal,
-          allowHalfRating: true,
-          itemCount: 5,
-          itemBuilder: (context, _) => const Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          ignoreGestures: true,
-          onRatingUpdate: (rating) {},
-        )
-        );
+      padding: const EdgeInsets.all(5),
+      child: RatingBar.builder(
+        initialRating: initialRating,
+        minRating: 1,
+        itemSize: size,
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemBuilder: (context, _) => const Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        ignoreGestures: true,
+        onRatingUpdate: (rating) {},
+      ),
+    );
   }
 }
-
-
-
 
 class UserIconName extends StatelessWidget {
   final String userImage;
@@ -282,7 +426,9 @@ class UserIconName extends StatelessWidget {
         child:
             Text(username, style: const TextStyle(fontWeight: FontWeight.w500)),
       ),
-      subtitle: getRatingtwo(initialRating: 3,), 
+      subtitle: getRatingtwo(
+        initialRating: 3,
+      ),
       trailing: Padding(
         padding: EdgeInsets.only(right: 15),
         child: Text(
@@ -293,29 +439,3 @@ class UserIconName extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

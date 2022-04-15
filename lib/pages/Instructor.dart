@@ -5,6 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/route_manager.dart';
+
+import 'InstructorProfile.dart';
 
 class Instructors extends StatelessWidget {
   const Instructors({Key? key}) : super(key: key);
@@ -65,10 +68,14 @@ class Instructors extends StatelessWidget {
                   children: <Widget>[
                     for (var instructor in instructors)
                       SimpleCard(
-                          userName: instructor["name"],
-                          imagePath: instructor["pictureURL"],
-                          rating: Rating(
-                              initialRating: instructor["rating"].toDouble()))
+                        userName: instructor["name"],
+                        imagePath: instructor["pictureURL"],
+                        rating: Rating(
+                            initialRating: instructor["rating"].toDouble()),
+                        instructorID: instructor["id"],
+                        initialRating: instructor["rating"].toDouble(),
+                        // context:context ,
+                      )
                   ],
                 );
               }),
@@ -92,20 +99,37 @@ class Instructors extends StatelessWidget {
 }
 
 class SimpleCard extends StatelessWidget {
-  final String userName;
-  final String imagePath;
+  final String? userName;
+  final String? imagePath;
   final Widget? rating;
+  final initialRating;
+  final String? instructorID;
+  // final context;
 
   const SimpleCard({
-    required this.userName,
-    required this.imagePath,
+    this.userName,
+    this.imagePath,
     this.rating,
+    this.instructorID,
+    this.initialRating,
+    // required this.context,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (() => {print(this.userName)}),
+      onTap: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Instructor(
+                      userName: userName,
+                      imagePath: imagePath,
+                      rating: rating,
+                      instructorID: instructorID,
+                      initialRating: initialRating,
+                    )))
+      },
       child: SizedBox(
           height: 80,
           child: Card(
@@ -125,8 +149,8 @@ class SimpleCard extends StatelessWidget {
 }
 
 class ImageAndName extends StatelessWidget {
-  final String name;
-  final String image;
+  final String? name;
+  final String? image;
 
   const ImageAndName({required this.name, required this.image});
 
@@ -134,8 +158,9 @@ class ImageAndName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListTile(
-        leading: CircleAvatar(radius: 30, backgroundImage: NetworkImage(image)),
-        title: Text(name,
+        leading:
+            CircleAvatar(radius: 30, backgroundImage: NetworkImage(image!)),
+        title: Text(name!,
             style: const TextStyle(
                 fontFamily: "Poppins", fontSize: 18, letterSpacing: 0.2)),
       ),
