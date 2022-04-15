@@ -57,16 +57,20 @@ class FirebaseApi {
     /* Getting chat ID for messages */
     try {
       String chatID = "${emailUser1}_$emailUser2";
+      print("Ye sai hay?");
+      print(chatID);
       var chat =
           await FirebaseFirestore.instance.collection("chat").doc(chatID).get();
       if (!chat.exists) {
-        chatID = "${emailUser1}_$emailUser2";
+        print("Going in if $chatID wrong");
+        chatID = "${emailUser2}_$emailUser1";
         chat = await FirebaseFirestore.instance
             .collection("chat")
             .doc(chatID)
             .get();
-        if (!chat.exists) return null;
       }
+      print("Aithe wekh");
+      print(chat.exists);
       return chatID;
 
       /* Get all messages for this user */

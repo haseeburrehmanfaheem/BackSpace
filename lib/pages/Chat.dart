@@ -43,10 +43,8 @@ class _ChatState extends State<Chat> {
 
   sendMessage(message, imageURL, currentUser, receiver) async {
     final currentUser = FirebaseAuth.instance.currentUser;
-    // final chatID = "${currentUser?.email}_${receiver['email']}";
     var chatID = await FirebaseApi.getChatID(
         currentUser?.email, widget.receiver["email"]);
-    // chatID ??= "${currentUser?.email}_${receiver['email']}";
     //Get user email and use it as id of document for chat
     CollectionReference chat = FirebaseFirestore.instance.collection('chat');
     CollectionReference messages =
@@ -191,6 +189,7 @@ class _ChatState extends State<Chat> {
                 .orderBy('sent_at')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              print(widget.chatID);
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height / 1.3,
@@ -203,8 +202,8 @@ class _ChatState extends State<Chat> {
                 return Text("Something went wrong");
               }
               return ListView(
-                children: snapshot.data!.docs
-                    .map<Widget>((DocumentSnapshot document) {
+                children:
+                    snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
                   Map<String, dynamic> message =
                       document.data()! as Map<String, dynamic>;
                   return senderOrReceiver(message);
