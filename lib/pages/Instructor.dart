@@ -59,7 +59,7 @@ class Instructors extends StatelessWidget {
               future: getAllInstructors(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Text("no data");
+                  return Center(child: CircularProgressIndicator());
                 }
                 final instructors = snapshot.data;
                 return ListView(

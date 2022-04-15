@@ -61,8 +61,10 @@ class MyApp extends StatelessWidget {
       // home: ViewProfile()
 
 
-      // home: a ? BottomNavigation() : Home(),
-      home: a ? Home() : BottomNavigation(),
+
+      home: a ? BottomNavigation() : Home(),
+      // home: a ? Home() : BottomNavigation(),
+
       // home: Proved(),
 
       // FirebaseAuth.instance.signOut();
