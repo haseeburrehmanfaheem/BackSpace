@@ -43,7 +43,10 @@ class _ChatState extends State<Chat> {
 
   sendMessage(message, imageURL, currentUser, receiver) async {
     final currentUser = FirebaseAuth.instance.currentUser;
-    final chatID = "${currentUser?.email}_${receiver['email']}";
+    // final chatID = "${currentUser?.email}_${receiver['email']}";
+    var chatID = await FirebaseApi.getChatID(
+        currentUser?.email, widget.receiver["email"]);
+    // chatID ??= "${currentUser?.email}_${receiver['email']}";
     //Get user email and use it as id of document for chat
     CollectionReference chat = FirebaseFirestore.instance.collection('chat');
     CollectionReference messages =
@@ -249,9 +252,9 @@ class Sender extends StatelessWidget {
         padding: EdgeInsets.only(top: 5, left: 5),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(userImage!),
-            ),
+            // CircleAvatar(
+            //   backgroundImage: NetworkImage(userImage!),
+            // ),
             BubbleSpecialThree(
               text: postText,
               color: Color(0xFFE8E8EE),

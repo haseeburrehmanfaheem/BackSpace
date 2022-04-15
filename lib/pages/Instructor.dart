@@ -1,6 +1,7 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types
 
 import 'package:backspace/pages/Notification.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -41,28 +42,51 @@ class Instructors extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-        Padding(
-            child: Text("Search Results",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 24,
-                )),
-            padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)),
-        SimpleCard(
-            userName: "Bill Gates",
-            imagePath: "assets/images/bill-gates.jpg",
-            rating: Rating(initialRating: 3.5)),
-        SimpleCard(
-            userName: "Wajih Hassan",
-            imagePath: "assets/images/user1jpg.jpg",
-            rating: Rating(initialRating: 4.0)),
-        SimpleCard(
-            userName: "Zartash Uzmi",
-            imagePath: "assets/images/user2.jpg",
-            rating: Rating(initialRating: 3.5)),
-      ]),
+      body: Column(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Padding(
+          //     // child: Text("Search Results",
+          //     //     textAlign: TextAlign.left,
+          //     //     style: TextStyle(
+          //     //       fontSize: 24,
+          //     //     )),
+          //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)),
+          FutureBuilder(
+              future: getAllInstructors(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Text("no data");
+                }
+                final instructors = snapshot.data;
+                return ListView(
+                  shrinkWrap: true,
+                  // ListView.builder(itemBuilder: itemBuilder)
+                  children: <Widget>[
+                    for (var instructor in instructors)
+                      SimpleCard(
+                          userName: instructor["name"],
+                          imagePath: instructor["pictureURL"],
+                          rating: Rating(
+                              initialRating: instructor["rating"].toDouble()))
+                  ],
+                );
+              }),
+
+          // SimpleCard(
+          //     userName: "Bill Gates",
+          //     imagePath: "assets/images/bill-gates.jpg",
+          //     rating: Rating(initialRating: 3.5)),
+          // SimpleCard(
+          //     userName: "Wajih Hassan",
+          //     imagePath: "assets/images/user1jpg.jpg",
+          //     rating: Rating(initialRating: 4.0)),
+          // SimpleCard(
+          //     userName: "Zartash Uzmi",
+          //     imagePath: "assets/images/user2.jpg",
+          //     rating: Rating(initialRating: 3.5)),
+        ],
+      ),
     );
   }
 }
@@ -80,20 +104,23 @@ class SimpleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 80,
-        child: Card(
-          margin: EdgeInsets.zero,
-          shape: const RoundedRectangleBorder(
-            side:
-                BorderSide(color: Color.fromARGB(101, 24, 21, 21), width: 0.5),
-          ),
-          child: Row(children: [
-            ImageAndName(name: userName, image: imagePath),
-            if (rating != null) rating!
-          ]),
-          // elevation: 5,
-        ));
+    return GestureDetector(
+      onTap: (() => {print(this.userName)}),
+      child: SizedBox(
+          height: 80,
+          child: Card(
+            margin: EdgeInsets.zero,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                  color: Color.fromARGB(101, 24, 21, 21), width: 0.5),
+            ),
+            child: Row(children: [
+              ImageAndName(name: userName, image: imagePath),
+              if (rating != null) rating!
+            ]),
+            // elevation: 5,
+          )),
+    );
   }
 }
 
@@ -107,7 +134,7 @@ class ImageAndName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListTile(
-        leading: CircleAvatar(radius: 30, backgroundImage: AssetImage(image)),
+        leading: CircleAvatar(radius: 30, backgroundImage: NetworkImage(image)),
         title: Text(name,
             style: const TextStyle(
                 fontFamily: "Poppins", fontSize: 18, letterSpacing: 0.2)),
@@ -117,7 +144,7 @@ class ImageAndName extends StatelessWidget {
 }
 
 class Rating extends StatelessWidget {
-  final double initialRating;
+  final initialRating;
 
   const Rating({required this.initialRating});
 
@@ -140,4 +167,12 @@ class Rating extends StatelessWidget {
           onRatingUpdate: (rating) {},
         ));
   }
+}
+
+getAllInstructors() async {
+  var instructors = await FirebaseFirestore.instance
+      .collection("Instructor")
+      .orderBy('name', descending: false)
+      .get();
+  return instructors.docs;
 }

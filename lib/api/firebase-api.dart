@@ -65,6 +65,7 @@ class FirebaseApi {
             .collection("chat")
             .doc(chatID)
             .get();
+        if (!chat.exists) return null;
       }
       return chatID;
 
