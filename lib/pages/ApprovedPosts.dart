@@ -163,14 +163,20 @@ class _PostFooter extends State<PostFooter> {
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: [
-        OutlineButton(
+        OutlinedButton(
+          //color: Colors.green,
           child: Text(
-            "Delete Post",
-            style: TextStyle(fontSize: 20.0, color: Colors.red),
+            "Delete",
+            style: TextStyle(fontSize: 16.0, color: Colors.red),
           ),
-          highlightedBorderColor: Colors.red,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(
+              width: 1.0,
+              color: Colors.red,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          ),
           onPressed: () {
             DeletePostFromDB(widget.docid);
             Navigator.pushReplacement(

@@ -162,14 +162,20 @@ class _PostFooter extends State<PostFooter> {
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: [
-        OutlineButton(
+        OutlinedButton(
+          //color: Colors.green,
           child: Text(
             "Approve",
-            style: TextStyle(fontSize: 20.0, color: Colors.green),
+            style: TextStyle(fontSize: 16.0, color: Colors.green),
           ),
-          highlightedBorderColor: Colors.green,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(
+              width: 1.0,
+              color: Colors.green,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          ),
           onPressed: () {
             print(widget.id);
             setIDTrue(widget.id);
@@ -181,14 +187,20 @@ class _PostFooter extends State<PostFooter> {
         const Padding(padding: EdgeInsets.only(left: 70.0)),
         Align(
             alignment: Alignment.centerRight,
-            child: OutlineButton(
+            child: OutlinedButton(
+              //color: Colors.green,
               child: Text(
-                "Reject",
-                style: TextStyle(fontSize: 20.0, color: Colors.red),
+                "Remove",
+                style: TextStyle(fontSize: 16.0, color: Colors.red),
               ),
-              highlightedBorderColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  width: 1.0,
+                  color: Colors.red,
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+              ),
               onPressed: () {
                 DeletePostFromDB(widget.id);
                 Navigator.pushReplacement(context,
