@@ -159,7 +159,6 @@ class Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 15),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [

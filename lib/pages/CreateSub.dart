@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:backspace/pages/AddEvent.dart';
 import 'package:backspace/pages/Admindrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 var SubspaceNameController = TextEditingController();
 var SubspaceDescriptionController = TextEditingController();
@@ -46,7 +50,27 @@ class CreateSub extends StatelessWidget {
   }
 }
 
-class SubspaceForm extends StatelessWidget {
+class SubspaceForm extends StatefulWidget {
+  File? image = null;
+  @override
+  State<SubspaceForm> createState() => _SubspaceFormState();
+}
+
+class _SubspaceFormState extends State<SubspaceForm> {
+   Future handleChoosefromgallery() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => widget.image = imageTemp);
+      // widget.changeState!(imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,6 +86,22 @@ class SubspaceForm extends StatelessWidget {
                 color: Colors.black87),
           ),
         ),
+        Padding(
+            padding: const EdgeInsets.only(left: 24, top: 16),
+            child: Stack(children: [
+              SizedBox(
+                width: 200,
+                // double.infinity,
+                height: 200,
+                child: widget.image != null
+                    ? Image.file(
+                        widget.image!,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(),
+              ),
+            ]),
+          ),
         Container(
           margin: const EdgeInsets.only(top: 30.0, left: 20.0),
           padding: const EdgeInsets.only(
@@ -80,7 +120,9 @@ class SubspaceForm extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+
+            },
           ),
         ),
         const Padding(
@@ -185,4 +227,20 @@ class SubspaceForm extends StatelessWidget {
       ],
     );
   }
+}
+
+
+Widget buildImage(s) {
+  return Center(
+    child: Material(
+      color: Colors.transparent,
+      child: Ink.image(
+        image: NetworkImage(s),
+        fit: BoxFit.cover,
+        width: 128,
+        height: 128,
+        child: InkWell(),
+      ),
+    ),
+  );
 }

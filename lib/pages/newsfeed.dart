@@ -106,7 +106,7 @@ class _MyDrawer extends State<MyDrawer> {
 
     return Container(
       // height: 100,
-      margin: const EdgeInsets.only(top: 22),
+      margin: const EdgeInsets.only(top: 52),
       height: MediaQuery.of(context).size.height * 0.90,
       // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
       // width: 50,
