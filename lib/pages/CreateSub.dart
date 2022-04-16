@@ -27,16 +27,16 @@ class CreateSub extends StatelessWidget {
         title: const Text('Create SubSpace'),
         actions: [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                icon: Icon(Icons.search), onPressed: () {},
-                // onPressed: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => Noti()),
-                //   );
-                // },
-              ))
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            // child: IconButton(
+            //   icon: Icon(Icons.search), onPressed: () {},
+            //   // onPressed: () {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => Noti()),
+            //   );
+            // },
+          )
         ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,

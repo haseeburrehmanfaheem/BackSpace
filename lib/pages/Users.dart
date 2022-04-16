@@ -38,7 +38,7 @@ class Block extends StatelessWidget {
         BlockUser(
             userImage: "assets/images/bill-gates.jpg",
             username: "Haseeb",
-            blocked: false)
+            blocked: true)
       ]),
     );
   }

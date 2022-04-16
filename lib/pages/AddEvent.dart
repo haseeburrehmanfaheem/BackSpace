@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'Admindrawer.dart';
 
 class Event extends StatefulWidget {
-
   Event({Key? key}) : super(key: key);
 
   @override
@@ -31,34 +32,37 @@ class EventState extends State<Event> {
         title: const Text('Add Event'),
         actions: [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                icon: Icon(Icons.search), onPressed: () {},
-                // onPressed: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => Noti()),
-                //   );
-                // },
-              ))
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            // child: IconButton(
+            //   icon: Icon(Icons.search), onPressed: () {},
+            //   // onPressed: () {
+            //   //   Navigator.push(
+            //   //     context,
+            //   //     MaterialPageRoute(builder: (context) => Noti()),
+            //   //   );
+            //   // },
+          )
         ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: SingleChildScrollView(child: SubspaceForm()),
+      body: SingleChildScrollView(child: Subspaceform()),
     );
   }
 }
 
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-// import 'package:backspace/pages/Admindrawer.dart';
-// import 'package:flutter/material.dart';
-
 var EventController = TextEditingController();
 GlobalKey<FormState> EventForm = GlobalKey<FormState>();
 
-class SubspaceForm extends StatelessWidget {
+class Subspaceform extends StatefulWidget {
+  File? image;
+  Subspaceform({Key? key}) : super(key: key);
+
+  @override
+  State<Subspaceform> createState() => SubspaceformState();
+}
+
+class SubspaceformState extends State<Subspaceform> {
   @override
   Widget build(BuildContext context) {
     return Column(
