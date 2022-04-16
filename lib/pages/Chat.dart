@@ -213,27 +213,29 @@ class _ChatState extends State<Chat> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: AddPostForm(
-              showImagesIcons: true,
-              postcontentController: _messageContentController,
-              sendButton: IconButton(
-                  /* Send Message here */
-                  onPressed: () async {
-                    await sendMessage(
-                      _messageContentController.text,
-                      img,
-                      currentUser,
-                      widget.receiver,
-                    );
-                    _messageContentController.text = '';
-                    img = null;
-                  },
-                  icon: const Icon(Icons.send)),
-              hintText: "Send Message",
-              changeState: changeState,
-              openPopup: () {
-                _openDialog(context);
-              },
+            child: Container(
+              child: AddPostForm(
+                showImagesIcons: true,
+                postcontentController: _messageContentController,
+                sendButton: IconButton(
+                    /* Send Message here */
+                    onPressed: () async {
+                      await sendMessage(
+                        _messageContentController.text,
+                        img,
+                        currentUser,
+                        widget.receiver,
+                      );
+                      _messageContentController.text = '';
+                      img = null;
+                    },
+                    icon: const Icon(Icons.send)),
+                hintText: "Send Message",
+                changeState: changeState,
+                openPopup: () {
+                  _openDialog(context);
+                },
+              ),
             ),
           ),
         ]));
