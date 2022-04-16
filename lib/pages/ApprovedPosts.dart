@@ -116,6 +116,7 @@ class AdminPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(top: 12),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
