@@ -23,8 +23,8 @@ class _AdminDrawer extends State<AdminDrawer> {
   Widget build(BuildContext context) {
     return Container(
       // height: 100,
-      margin: const EdgeInsets.only(top: 22),
-      height: MediaQuery.of(context).size.height * 0.90,
+      margin: const EdgeInsets.only(top: 50),
+      height: MediaQuery.of(context).size.height * 0.92,
       // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
       // width: 50,
 

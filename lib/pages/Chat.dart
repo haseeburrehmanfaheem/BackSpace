@@ -181,61 +181,63 @@ class _ChatState extends State<Chat> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: Stack(children: [
-          StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("messages")
-                .where('chat_id', isEqualTo: widget.chatID)
-                .orderBy('sent_at')
-                .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              print(widget.chatID);
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.3,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+        body: 
+        Stack(children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.80,
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("messages")
+                  .where('chat_id', isEqualTo: widget.chatID)
+                  .orderBy('sent_at')
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                print(widget.chatID);
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text("Something went wrong");
+                }
+                return ListView(
+                  children:
+                      snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+                    Map<String, dynamic> message =
+                        document.data()! as Map<String, dynamic>;
+                    return senderOrReceiver(message);
+                  }).toList(),
                 );
-              }
-              if (snapshot.hasError) {
-                return Text("Something went wrong");
-              }
-              return ListView(
-                children:
-                    snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
-                  Map<String, dynamic> message =
-                      document.data()! as Map<String, dynamic>;
-                  return senderOrReceiver(message);
-                }).toList(),
-              );
-            },
+              },
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              child: AddPostForm(
-                showImagesIcons: true,
-                postcontentController: _messageContentController,
-                sendButton: IconButton(
-                    /* Send Message here */
-                    onPressed: () async {
-                      await sendMessage(
-                        _messageContentController.text,
-                        img,
-                        currentUser,
-                        widget.receiver,
-                      );
-                      _messageContentController.text = '';
-                      img = null;
-                    },
-                    icon: const Icon(Icons.send)),
-                hintText: "Send Message",
-                changeState: changeState,
-                openPopup: () {
-                  _openDialog(context);
-                },
-              ),
+            child: AddPostForm(
+              showImagesIcons: true,
+              postcontentController: _messageContentController,
+              sendButton: IconButton(
+                  /* Send Message here */
+                  onPressed: () async {
+                    await sendMessage(
+                      _messageContentController.text,
+                      img,
+                      currentUser,
+                      widget.receiver,
+                    );
+                    _messageContentController.text = '';
+                    img = null;
+                  },
+                  icon: const Icon(Icons.send)),
+              hintText: "Send Message",
+              changeState: changeState,
+              openPopup: () {
+                _openDialog(context);
+              },
             ),
           ),
         ]));
