@@ -24,8 +24,7 @@ class Instructors extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('Instructors Review',
-            style: TextStyle(fontFamily: "Poppins")),
+        title: const Text('Instructors'),
         actions: [
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
@@ -48,6 +47,42 @@ class Instructors extends StatelessWidget {
       body: Column(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection("Instructor").snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              // print(widget.chatID);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              if (snapshot.hasError) {
+                return Text("Something went wrong");
+              }
+              return ListView(
+                shrinkWrap: true,
+                children:
+                    snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+                  Map<String, dynamic> instructor =
+                      document.data()! as Map<String, dynamic>;
+                  return SimpleCard(
+                    userName: instructor["name"],
+                    imagePath: instructor["pictureURL"],
+                    rating:
+                        Rating(initialRating: instructor["rating"].toDouble()),
+                    instructorID: instructor["id"],
+                    initialRating: instructor["rating"].toDouble(),
+                    // context:context ,
+                  );
+                  // return senderOrReceiver(message);
+                }).toList(),
+              );
+            },
+          )
           // Padding(
           //     // child: Text("Search Results",
           //     //     textAlign: TextAlign.left,
@@ -55,30 +90,30 @@ class Instructors extends StatelessWidget {
           //     //       fontSize: 24,
           //     //     )),
           //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)),
-          FutureBuilder(
-              future: getAllInstructors(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                final instructors = snapshot.data;
-                return ListView(
-                  shrinkWrap: true,
-                  // ListView.builder(itemBuilder: itemBuilder)
-                  children: <Widget>[
-                    for (var instructor in instructors)
-                      SimpleCard(
-                        userName: instructor["name"],
-                        imagePath: instructor["pictureURL"],
-                        rating: Rating(
-                            initialRating: instructor["rating"].toDouble()),
-                        instructorID: instructor["id"],
-                        initialRating: instructor["rating"].toDouble(),
-                        // context:context ,
-                      )
-                  ],
-                );
-              }),
+          // FutureBuilder(
+          //     future: getAllInstructors(),
+          //     builder: (context, AsyncSnapshot snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return Center(child: CircularProgressIndicator());
+          //       }
+          //       final instructors = snapshot.data;
+          //       return ListView(
+          //         shrinkWrap: true,
+          //         // ListView.builder(itemBuilder: itemBuilder)
+          //         children: <Widget>[
+          //           for (var instructor in instructors)
+          //             SimpleCard(
+          //               userName: instructor["name"],
+          //               imagePath: instructor["pictureURL"],
+          //               rating: Rating(
+          //                   initialRating: instructor["rating"].toDouble()),
+          //               instructorID: instructor["id"],
+          //               initialRating: instructor["rating"].toDouble(),
+          //               // context:context ,
+          //             )
+          //         ],
+          //       );
+          //     }),
 
           // SimpleCard(
           //     userName: "Bill Gates",

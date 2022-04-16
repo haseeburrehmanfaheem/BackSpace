@@ -209,6 +209,7 @@ class SignupPage extends StatelessWidget {
       "username": name,
       "roles": "user",
       "about": "",
+      "blocked": false,
     }).then((value) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => BottomNavigation()));
