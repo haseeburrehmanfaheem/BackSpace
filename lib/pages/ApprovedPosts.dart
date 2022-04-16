@@ -6,6 +6,7 @@ import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 import 'Admindrawer.dart';
 import 'NFeed.dart';
+import 'PendingPosts.dart';
 
 class Proved extends StatelessWidget {
   const Proved({Key? key}) : super(key: key);
@@ -48,6 +49,7 @@ class Proved extends StatelessWidget {
                 if (!snapshot.hasData) {
                   return CircularProgressIndicator();
                 }
+                // else if()
                 final posts = snapshot.data;
                 return Column(
                   children: <Widget>[
@@ -64,6 +66,7 @@ class Proved extends StatelessWidget {
                           time: "3 min",
                           Posttxt: post["content"],
                           PostImg: post["postImageURL"],
+                          docid: post["postID"],
                         ),
 
                     // Post(
@@ -100,13 +103,15 @@ class AdminPost extends StatelessWidget {
   final String time;
   final String Posttxt;
   final String? PostImg;
+  String docid;
 
-  const AdminPost(
+  AdminPost(
       {required this.userName,
       required this.userimage,
       required this.time,
       required this.Posttxt,
-      this.PostImg});
+      this.PostImg,
+      required this.docid});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +137,9 @@ class AdminPost extends StatelessWidget {
           ),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
           Divider(height: 1),
-          const PostFooter(),
+          PostFooter(
+            docid: docid,
+          ),
         ],
       ),
     );
@@ -141,7 +148,8 @@ class AdminPost extends StatelessWidget {
 
 // Display Like and Comment Post Footer Bar
 class PostFooter extends StatefulWidget {
-  const PostFooter({Key? key}) : super(key: key);
+  String docid;
+  PostFooter({Key? key, required this.docid}) : super(key: key);
 
   @override
   _PostFooter createState() => _PostFooter();
@@ -163,7 +171,11 @@ class _PostFooter extends State<PostFooter> {
           highlightedBorderColor: Colors.red,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          onPressed: () {},
+          onPressed: () {
+            DeletePostFromDB(widget.docid);
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Proved()));
+          },
         ),
       ],
     );

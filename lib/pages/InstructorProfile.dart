@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:backspace/helper/demo_values.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
@@ -193,6 +194,7 @@ class AddReview extends StatelessWidget {
                   UpdateAverageRating(instructorID);
                   reviewcontentController.clear();
                   Navigator.pop(context);
+                  // navigator.pu
                   // Navigator.pushReplacement(context, newRoute)
                 }
               },

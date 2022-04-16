@@ -197,6 +197,7 @@ addWorkToPost(emailID, imageURL, content, myDateTime) async {
     "likes": 0,
     "created_at": myDateTime,
     "subspace": "work",
+    "approved": true,
   }).then((value) async {
     // print(value.id);
     // var comments_table =

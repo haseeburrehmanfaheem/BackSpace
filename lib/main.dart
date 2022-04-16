@@ -29,21 +29,54 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // bool signed_in = false;
+  // bool is_admin = false;
+  // FirebaseAuth.instance.userChanges().listen((User? user) async {
+  //   if (user == null) {
+  //     print('User is currently signed out!');
+  //   } else {
+  //     print('User is signed in!');
+  //     signed_in = true;
+  //     final email = await FirebaseAuth.instance.currentUser!.email;
+  //     final temp = await getUserData(email);
+  //     is_admin = (temp.docs[0]["roles"] == "admin");
+  //     if (is_admin) {
+  //       print("Is admin");
+  //     } else {
+  //       print("Is not admin");
+  //     }
+  //     // signout ki line
+  //     // FirebaseAuth.instance.signOut();
+  //   }
+  // });
+
+  // runApp(
+  //   (signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home()),
+  // );
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // const Myapp({Key? key}) : super(key: key);
-  bool a = false;
+  // const Myapp({Key? key,this.signed_in}) : super(key: key);
+  bool signed_in = false;
+  bool is_admin = false;
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
+    FirebaseAuth.instance.userChanges().listen((User? user) async {
       if (user == null) {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
-
-        a = true;
+        signed_in = true;
+        final email = FirebaseAuth.instance.currentUser!.email;
+        final temp = await getUserData(email);
+        is_admin = (temp.docs[0]["roles"] == "admin");
+        if (is_admin) {
+          print("Is admin");
+        } else {
+          print("Is not admin");
+        }
         // signout ki line
         // FirebaseAuth.instance.signOut();
       }
@@ -57,22 +90,14 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
-
       // home: ViewProfile()
-
-
-
-      home: a ? BottomNavigation() : Home(),
+      home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
       // home: a ? Home() : BottomNavigation(),
-
       // home: Proved(),
-
       // FirebaseAuth.instance.signOut();
-      // home: Chat(),
     );
   }
 }
-
 
 getUserData(email) async {
   return await FirebaseFirestore.instance
