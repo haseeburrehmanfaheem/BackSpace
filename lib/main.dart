@@ -6,11 +6,13 @@ import 'package:backspace/pages/ViewProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'; // new
 import 'package:firebase_core/firebase_core.dart'; // new
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -24,11 +26,28 @@ import 'src/authentication.dart'; // new
 //   runApp(MyApp());
 // }
 
+// const AndroidNotificationChannel channel = AndroidNotificationChannel(
+//     'high_importance_channel', // id
+//     'High Importance Notifications', // title
+//     // 'This channel is used for important notifications.', // description
+//     importance: Importance.high,
+//     playSound: true);
+
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
+
+Future<void> backroundHandler(RemoteMessage message) async {
+  print(" This is message from background");
+  print(message.notification!.title);
+  print(message.notification!.body);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(backroundHandler);
   // bool signed_in = false;
   // bool is_admin = false;
   // FirebaseAuth.instance.userChanges().listen((User? user) async {
