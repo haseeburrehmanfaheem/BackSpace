@@ -189,7 +189,11 @@ class _PostFooter extends State<PostFooter> {
               highlightedBorderColor: Colors.red,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
-              onPressed: () {},
+              onPressed: () {
+                DeletePostFromDB(widget.id);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Pending()));
+              },
             )),
       ],
     );
@@ -200,4 +204,11 @@ setIDTrue(id) {
   var posts = FirebaseFirestore.instance.collection('Posts');
   posts.doc(id) // <-- Doc ID where data should be updated.
       .update({'approved': true});
+}
+
+DeletePostFromDB(id) {
+  var posts = FirebaseFirestore.instance.collection('Posts');
+  posts
+      .doc(id) // <-- Doc ID where data should be deleted.
+      .delete();
 }
