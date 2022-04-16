@@ -57,7 +57,7 @@ class SubspaceForm extends StatefulWidget {
 }
 
 class _SubspaceFormState extends State<SubspaceForm> {
-   Future handleChoosefromgallery() async {
+  Future handleChoosefromgallery() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -71,6 +71,7 @@ class _SubspaceFormState extends State<SubspaceForm> {
       print('Failed to pick image: $e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -87,21 +88,21 @@ class _SubspaceFormState extends State<SubspaceForm> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(left: 24, top: 16),
-            child: Stack(children: [
-              SizedBox(
-                width: 200,
-                // double.infinity,
-                height: 200,
-                child: widget.image != null
-                    ? Image.file(
-                        widget.image!,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(),
-              ),
-            ]),
-          ),
+          padding: const EdgeInsets.only(left: 24, top: 16),
+          child: Stack(children: [
+            SizedBox(
+              width: 200,
+              // double.infinity,
+              height: 200,
+              child: widget.image != null
+                  ? Image.file(
+                      widget.image!,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(),
+            ),
+          ]),
+        ),
         Container(
           margin: const EdgeInsets.only(top: 30.0, left: 20.0),
           padding: const EdgeInsets.only(
@@ -121,7 +122,7 @@ class _SubspaceFormState extends State<SubspaceForm> {
               ),
             ),
             onPressed: () {
-
+              handleChoosefromgallery();
             },
           ),
         ),
@@ -228,7 +229,6 @@ class _SubspaceFormState extends State<SubspaceForm> {
     );
   }
 }
-
 
 Widget buildImage(s) {
   return Center(

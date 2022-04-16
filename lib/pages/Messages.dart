@@ -43,8 +43,9 @@ class _MessagesState extends State<Messages> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 List<Map<String, dynamic>>? filteredUsers =
-                    await FirebaseApi.returnAllUsers();
-                // await FirebaseApi.searchUsers(userSearchController.text);
+                    await FirebaseApi.searchUsers(userSearchController.text);
+                // await FirebaseApi.returnAllUsers();
+
                 setState(() => widget.searchResultUsers = filteredUsers);
               }
             },
@@ -107,51 +108,53 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: MyDrawer(),
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        title: userSearchFormWidget(),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(left: 20.0, right: 20),
-          ),
-        ],
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-      ),
-      body: FutureBuilder(
-          future: FirebaseApi.returnAllUsers(),
-          builder: (BuildContext context, AsyncSnapshot? snapshot) {
-            if (snapshot!.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.3,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            if (snapshot != null) {
-              return ListView(
-                children: [
-                  for (var user in snapshot.data)
-                    Message(
-                      user: user,
-                      Time: "2 sec",
-                      posttext: "",
-                    )
-                ],
-              );
-            } else {
-              return Text("");
-            }
-          }),
-    );
+        drawer: MyDrawer(),
+        appBar: AppBar(
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+          ),
+          title: userSearchFormWidget(),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20),
+            ),
+          ],
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+        body: showSearchResults()
+
+        // FutureBuilder(
+        //     future: FirebaseApi.returnAllUsers(),
+        //     builder: (BuildContext context, AsyncSnapshot? snapshot) {
+        //       if (snapshot!.connectionState == ConnectionState.waiting) {
+        //         return SizedBox(
+        //           height: MediaQuery.of(context).size.height / 1.3,
+        //           child: Center(
+        //             child: CircularProgressIndicator(),
+        //           ),
+        //         );
+        //       }
+        //       if (snapshot != null) {
+        //         return ListView(
+        //           children: [
+        //             for (var user in snapshot.data)
+        //               Message(
+        //                 user: user,
+        //                 Time: "2 sec",
+        //                 posttext: "",
+        //               )
+        //           ],
+        //         );
+        //       } else {
+        //         return Text("");
+        //       }
+        //     }),
+        );
   }
 }
 
