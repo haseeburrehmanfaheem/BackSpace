@@ -47,7 +47,7 @@ class Proved extends StatelessWidget {
               future: completePost(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
                 // else if()
                 final posts = snapshot.data;
