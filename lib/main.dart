@@ -91,9 +91,9 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
       // home: ViewProfile()
-      home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
+      //home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
       // home: a ? Home() : BottomNavigation(),
-      // home: Proved(),
+      home: Proved(),
       // FirebaseAuth.instance.signOut();
     );
   }
