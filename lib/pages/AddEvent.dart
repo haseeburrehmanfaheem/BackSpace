@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:backspace/pages/ApprovedPosts.dart';
+import 'package:backspace/pages/PendingPosts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../api/firebase-api.dart';
 import 'Admindrawer.dart';
+import 'package:path/path.dart';
+import 'EditProfile.dart';
 
 class Event extends StatefulWidget {
   Event({Key? key}) : super(key: key);
@@ -68,7 +73,6 @@ class Subspaceform extends StatefulWidget {
 }
 
 class SubspaceformState extends State<Subspaceform> {
-
   Future handleChoosefromgallery() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -83,8 +87,6 @@ class SubspaceformState extends State<Subspaceform> {
       print('Failed to pick image: $e');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +134,7 @@ class SubspaceformState extends State<Subspaceform> {
                 decoration: InputDecoration(
                   fillColor: Color(0xfff9f9fa),
                   filled: true,
-    
+
                   //icon: Icon(Icons.favorite),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xff000000)),
@@ -141,72 +143,72 @@ class SubspaceformState extends State<Subspaceform> {
               ),
             ),
           ),
-          // if (widget.image == null) ? 
-            Stack(
-              children:
-              [
-                SizedBox(
-                  width: 100,
-                  // double.infinity,
-                  height: 100,
-                  child: widget.image != null
-                      ? Image.file(
-                          widget.image!,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(),
+          // if (widget.image == null) ?
+          Padding(
+            padding: const EdgeInsets.only(left: 24, top: 16),
+            child: Stack(children: [
+              SizedBox(
+                width: 200,
+                // double.infinity,
+                height: 200,
+                child: widget.image != null
+                    ? Image.file(
+                        widget.image!,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(),
+              ),
+            ]),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 30.0, left: 20.0),
+            padding: const EdgeInsets.only(
+                top: 2.0, bottom: 2.0, left: 30.0, right: 30.0),
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black)),
+            child: TextButton.icon(
+              style:
+                  TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
+              icon: Icon(Icons.camera_alt_outlined),
+              label: const Text(
+                'Add Image',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 30.0, left: 20.0),
-                  padding: const EdgeInsets.only(
-                      top: 2.0, bottom: 2.0, left: 30.0, right: 30.0),
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.black)),
-                  child: 
-                  TextButton.icon(
-                    style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
-                    icon: Icon(Icons.camera_alt_outlined),
-                    label: const Text(
-                      'Add Image',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                    ),
-                    onPressed: () {
-                      // buildImage('assets/images/bill-gates.jpg');
-                      handleChoosefromgallery();
-                    },
-                  ),
-                ),
-              //    TextButton.icon(
-              //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
-              //   icon: Icon(Icons.camera_alt_outlined),
-              //   label: const Text(
-              //     'Add Image',
-              //     style: TextStyle(
-              //       color: Colors.black,
-              //       fontSize: 14,
-              //     ),
-              //   ),
-              //   onPressed: () {
-              //     handleChoosefromgallery();
-              //     // buildImage('assets/images/bill-gates.jpg');
-              //   },
-              // ),
-              ]
+              ),
+              onPressed: () {
+                // buildImage('assets/images/bill-gates.jpg');
+                handleChoosefromgallery();
+              },
             ),
-          
-            // Stack(
-              
-            //         // initialValue: txt.data,
-            //         children: [
-            //           buildImage('assets/images/bill-gates.jpg'),
-            //           // Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
-            //         ],
-            //       ),
+          ),
+          //    TextButton.icon(
+          //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
+          //   icon: Icon(Icons.camera_alt_outlined),
+          //   label: const Text(
+          //     'Add Image',
+          //     style: TextStyle(
+          //       color: Colors.black,
+          //       fontSize: 14,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     handleChoosefromgallery();
+          //     // buildImage('assets/images/bill-gates.jpg');
+          //   },
+          // ),
+
+          // Stack(
+
+          //         // initialValue: txt.data,
+          //         children: [
+          //           buildImage('assets/images/bill-gates.jpg'),
+          //           // Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
+          //         ],
+          //       ),
           // Container(
           //   margin: const EdgeInsets.only(top: 30.0, left: 20.0),
           //   padding: const EdgeInsets.only(
@@ -215,21 +217,21 @@ class SubspaceformState extends State<Subspaceform> {
           //       color: Colors.black.withOpacity(0.1),
           //       borderRadius: BorderRadius.circular(20),
           //       border: Border.all(color: Colors.black)),
-          //   child: 
-            // TextButton.icon(
-            //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
-            //   icon: Icon(Icons.camera_alt_outlined),
-            //   label: const Text(
-            //     'Add Image',
-            //     style: TextStyle(
-            //       color: Colors.black,
-            //       fontSize: 14,
-            //     ),
-            //   ),
-            //   onPressed: () {
-            //     buildImage('assets/images/bill-gates.jpg');
-            //   },
-            // ),
+          //   child:
+          // TextButton.icon(
+          //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
+          //   icon: Icon(Icons.camera_alt_outlined),
+          //   label: const Text(
+          //     'Add Image',
+          //     style: TextStyle(
+          //       color: Colors.black,
+          //       fontSize: 14,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     buildImage('assets/images/bill-gates.jpg');
+          //   },
+          // ),
           // ),
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8)),
@@ -262,15 +264,39 @@ class SubspaceformState extends State<Subspaceform> {
             child: MaterialButton(
               minWidth: double.infinity,
               height: 60,
-              onPressed: () {
+              onPressed: () async {
                 if (EventForm.currentState!.validate()) {
                   // print("wassup");
                   print(EventController.text);
+
+                  String? URL = "";
+                  final users = FirebaseAuth.instance.currentUser;
+                  String? emailID = users?.email;
+                  DateTime currentPhoneDate = DateTime.now(); //DateTime
+                  Timestamp myTimeStamp =
+                      Timestamp.fromDate(currentPhoneDate); //To TimeStamp
+                  DateTime myDateTime =
+                      myTimeStamp.toDate(); // TimeStamp to DateTime
+                  if (widget.image != null) {
+                    final fileName = basename(widget.image!.path);
+                    // print(fileName);
+                    // print("current phone data is: $myDateTime");
+                    final storagePath =
+                        'UserImages/${emailID}_${myDateTime}_$fileName';
+                    URL = await FirebaseApi.uploadFile(
+                        storagePath, widget.image!);
+                    // print(URL);
+                  }
+                  // Navigator.pop(context);
+                  AddEventToDB(emailID, URL, EventController.text, myDateTime);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Proved()));
+                  // AddEventToDB(emailID, URL, EventController.text, myDateTime);
                 }
               },
               color: Colors.black,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
               child: const Text(
                 "Add Event",
                 style: TextStyle(
@@ -285,7 +311,6 @@ class SubspaceformState extends State<Subspaceform> {
     );
   }
 }
-
 
 // if (formkey1.currentState!.validate()
 
@@ -332,7 +357,6 @@ Widget buildCircle({
       ),
     );
 
-
 // Stack(
 //                   // initialValue: txt.data,
 //                   children: [
@@ -340,3 +364,17 @@ Widget buildCircle({
 //                     Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
 //                   ],
 //                 );
+
+AddEventToDB(emailID, URL, text, myDateTime) async {
+  var ref = await FirebaseFirestore.instance.collection("Posts");
+
+  ref.add({
+    "email": emailID,
+    "imageURL": URL,
+    "content": text,
+    "likes": 0,
+    "created_at": myDateTime,
+    "subspace": null,
+    "approved": true
+  });
+}
