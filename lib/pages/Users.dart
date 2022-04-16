@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Admindrawer.dart';
 
@@ -34,12 +35,46 @@ class Block extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: ListView(children: [
-        BlockUser(
-            userImage: "assets/images/bill-gates.jpg",
-            username: "Haseeb",
-            blocked: true)
-      ]),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("UserData")
+            .where("roles", isEqualTo: "user")
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // print(widget.chatID);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+          return ListView(
+            children:
+                snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+              Map<String, dynamic> message =
+                  document.data()! as Map<String, dynamic>;
+              return BlockUser(
+                  userImage: message["imageURL"],
+                  username: message["username"],
+                  blocked: message["blocked"],
+                  email: message["email"]);
+              // return senderOrReceiver(message);
+            }).toList(),
+          );
+        },
+      ),
+
+      // ListView(children: [
+      //   BlockUser(
+      //       userImage: "assets/images/bill-gates.jpg",
+      //       username: "Haseeb",
+      //       blocked: true)
+      // ]),
     );
   }
 }
@@ -48,10 +83,14 @@ class BlockUser extends StatelessWidget {
   final String userImage;
   final bool blocked;
   final String username;
+  final String email;
 
   // ignore: use_key_in_widget_constructors
   const BlockUser(
-      {required this.userImage, required this.username, required this.blocked});
+      {required this.userImage,
+      required this.username,
+      required this.blocked,
+      required this.email});
   @override
   Widget build(BuildContext context) {
     if (blocked == false) {
@@ -61,21 +100,15 @@ class BlockUser extends StatelessWidget {
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage(userImage),
+                  backgroundImage: NetworkImage(userImage),
                 ),
                 title: Padding(
                     padding: EdgeInsets.only(left: 0),
-                    child: TextButton(
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: () {},
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(username,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ))),
-                    )
+                    child: Text(username,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ))
 
                     // Text(username, style: const TextStyle(fontWeight: FontWeight.w500)),
                     ),
@@ -95,7 +128,9 @@ class BlockUser extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      blockuserinDB(email, true);
+                    },
                   ),
                 ),
               )));
@@ -106,21 +141,15 @@ class BlockUser extends StatelessWidget {
               padding: EdgeInsets.only(top: 10, bottom: 10),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage(userImage),
+                  backgroundImage: NetworkImage(userImage),
                 ),
                 title: Padding(
                     padding: EdgeInsets.only(left: 0),
-                    child: TextButton(
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: () {},
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(username,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ))),
-                    )
+                    child: Text(username,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ))
 
                     // Text(username, style: const TextStyle(fontWeight: FontWeight.w500)),
                     ),
@@ -140,10 +169,21 @@ class BlockUser extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      blockuserinDB(email, false);
+                    },
                   ),
                 ),
               )));
     }
   }
+}
+
+blockuserinDB(email, blockkarna) async {
+  var ref = await FirebaseFirestore.instance
+      .collection("UserData")
+      .where("email", isEqualTo: email)
+      .get();
+
+  ref.docs[0].reference.update({'blocked': blockkarna ? true : false});
 }

@@ -217,13 +217,18 @@ login(emailAddress, password, context) async {
         .signInWithEmailAndPassword(email: emailAddress, password: password);
     final roles = await getUserData(emailAddress);
     final temp = roles.docs[0]["roles"];
-    if(temp == "user"){
+    final blocked = roles.docs[0]["blocked"];
+    if (temp == "user") {
+      if (blocked) {
+        Fluttertoast.showToast(
+            msg: "The User is blocked", gravity: ToastGravity.TOP);
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => BottomNavigation()));
+      }
+    } else if (temp == "admin") {
       Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (_) => BottomNavigation()));
-    }
-    else if(temp == "admin"){
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (_) => Proved()));
+          context, MaterialPageRoute(builder: (_) => Proved()));
     }
     // Navigator.pushReplacement(
     //     context, MaterialPageRoute(builder: (_) => BottomNavigation()));

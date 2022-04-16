@@ -95,27 +95,63 @@ class Instructor extends StatelessWidget {
           getRatingone(
             initialRating: initialRating,
           ),
-          FutureBuilder(
-              future: getInstructorReview(instructorID),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                final instructors = snapshot.data;
-                return Column(
-                  // shrinkWrap: true,
-                  // ListView.builder(itemBuilder: itemBuilder)
-                  children: <Widget>[
-                    for (var instructor in instructors)
-                      Review(
-                        username: instructor["name"],
-                        userimageURL: instructor["imageURL"],
-                        Content: instructor["content"],
-                        rating: instructor["rating"].toDouble(),
-                      )
-                  ],
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("InstructorReview")
+                .where("instructorID", isEqualTo: instructorID)
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              // print(widget.chatID);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
-              }),
+              }
+              if (snapshot.hasError) {
+                return Text("Something went wrong");
+              }
+              return Column(
+                // shrinkWrap: true,
+                children:
+                    snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+                  Map<String, dynamic> instructor =
+                      document.data()! as Map<String, dynamic>;
+                  return Review(
+                    username: instructor["name"],
+                    userimageURL: instructor["imageURL"],
+                    Content: instructor["content"],
+                    rating: instructor["rating"].toDouble(),
+                  );
+                  // return senderOrReceiver(message);
+                }).toList(),
+              );
+            },
+          )
+
+          // FutureBuilder(
+          //     future: getInstructorReview(instructorID),
+          //     builder: (context, AsyncSnapshot snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return Center(child: CircularProgressIndicator());
+          //       }
+          //       final instructors = snapshot.data;
+          //       return Column(
+          //         // shrinkWrap: true,
+          //         // ListView.builder(itemBuilder: itemBuilder)
+          //         children: <Widget>[
+          //           for (var instructor in instructors)
+          //             Review(
+          //               username: instructor["name"],
+          //               userimageURL: instructor["imageURL"],
+          //               Content: instructor["content"],
+          //               rating: instructor["rating"].toDouble(),
+          //             )
+          //         ],
+          //       );
+          //     }),
           // Center(
           //   child: Rating(initialRating: 4),
           //   ),
