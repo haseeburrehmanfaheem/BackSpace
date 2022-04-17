@@ -36,6 +36,7 @@ class SubSpaceChat extends StatelessWidget {
           SingleChildScrollView(child: 
           Simple(userName: about, imagePath: image,),
           
+          
           ),
           ),
     );
@@ -56,18 +57,65 @@ class Simple extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 100,
-        child: Card(
-          margin: EdgeInsets.zero,
-          shape: const RoundedRectangleBorder(
-            side:
-                BorderSide(color: Color.fromARGB(101, 24, 21, 21), width: 0.5),
-          ),
-          child: Row(children: [
-            ImageAndName(name: userName, image: imagePath),
-          ]),
-          // elevation: 5,
-        ));
+    return Column(
+    children: [
+    SizedBox(
+        height: 150,
+        child:  Row(
+
+          children: [
+            Padding(padding: EdgeInsets.only(left: 20)),
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('images/sophia_hs.jpg'),
+            ),
+            Flexible(
+              child: ListTile(
+                title: Text(
+                  "ABout asdhasdlbcjaksfkldjcaksnfvajdnfuvndifunvil",
+                  style: TextStyle(
+                fontFamily: "Poppins", fontSize: 18, letterSpacing: 0.2)
+                ),
+                ),
+              ),
+            
+          ],
+        ),
+    ),
+    Divider(color: Colors.grey),
+    // Container(
+    //           alignment: Alignment.bottomCenter,
+    //           width: MediaQuery.of(context).size.width,
+    //           child: Container(
+    //             padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+    //             color: Colors.grey[100],
+    //             child: Row(
+    //               children: <Widget>[
+    //                 Expanded(
+    //                   child: TextField(
+    //                     // controller: messageEditingController,
+    //                     style: TextStyle(
+    //                       color: Colors.black
+    //                     ),
+    //                     decoration: InputDecoration(
+    //                       hintText: "Send a message ...",
+    //                       hintStyle: TextStyle(
+    //                         color: Colors.black,
+    //                         fontSize: 16,
+    //                       ),
+    //                       border: InputBorder.none
+    //                     ),
+    //                   ),
+    //                 ),
+                     
+    //               ],
+    //             ),
+    //           ),
+
+            // ),
+
+    ]
+    ); 
   }
 }
+
