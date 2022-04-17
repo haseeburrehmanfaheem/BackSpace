@@ -84,6 +84,7 @@ class Feed extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("Posts")
             .where("subspace", isEqualTo: "")
+            .orderBy("created_at", descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -129,16 +130,16 @@ class Feed extends StatelessWidget {
                   if (!snapshot1.hasData) return Text("");
                   // CircularProgressIndicator();
                   return Post(
-                    userName: snapshot1.data.docs[0]["username"],
-                    userimage: snapshot1.data.docs[0]["imageURL"],
-                    time: "5 min",
-                    postcontent: post["content"],
-                    PostImg: post["imageURL"],
-                    likes: post["likes"],
-                    postID: document.id,
-                    functionalComment: true,
-                    userAbout: snapshot1.data.docs[0]["about"],
-                  );
+                      userName: snapshot1.data.docs[0]["username"],
+                      userimage: snapshot1.data.docs[0]["imageURL"],
+                      time: post["created_at"],
+                      postcontent: post["content"],
+                      PostImg: post["imageURL"],
+                      likes: post["likes"],
+                      postID: document.id,
+                      functionalComment: true,
+                      userAbout: snapshot1.data.docs[0]["about"],
+                      email: snapshot1.data.docs[0]["email"]);
                 },
               );
             }).toList(),
@@ -207,13 +208,14 @@ newPage(context) {
 class Post extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   final int likes;
   final String postID;
   final bool functionalComment;
   final String userAbout;
+  final String? email;
 
   const Post(
       {required this.userName,
@@ -224,7 +226,8 @@ class Post extends StatelessWidget {
       required this.likes,
       required this.postID,
       required this.functionalComment,
-      required this.userAbout});
+      required this.userAbout,
+      this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +244,8 @@ class Post extends StatelessWidget {
             username: userName,
             postTime: time,
             userabout: userAbout,
+            delete: email,
+            docid: postID,
           ),
           PostBody(postSummary: postcontent),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
@@ -270,7 +275,7 @@ class PostFooter extends StatefulWidget {
 
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   final bool functionalComment;
@@ -357,7 +362,7 @@ class Postscomment extends StatefulWidget {
   var post_id;
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   Postscomment(
@@ -466,7 +471,7 @@ class _PostscommentState extends State<Postscomment> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     hintText: "Add Comment",
-                    fillColor: Colors.grey.withOpacity(0.3),
+                    fillColor: Colors.grey.withOpacity(0.2),
                     // fromRGBO(249, 249, 250, 1),
 
                     filled: true,
@@ -641,26 +646,28 @@ class AddPostFormState extends State<AddPostForm> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      // enabledBorder: OutlineInputBorder(
-                      // borderSide: BorderSide(
-                      //     color: Colors.white,
-                      //     ),
-                      // borderRadius: BorderRadius.circular(50.0),
-                      // ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
                       hintText: widget.hintText,
-                      fillColor: const Color(0xfff9f9fa),
+                      fillColor: Colors.grey.withOpacity(0.2),
                       filled: true,
-                      // isDense: true,
-                      // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                      isDense: true,
+                      contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0),
                       ),
                     ),
                   ),
-                  // ),
-                  // ),
                 ),
               ),
+              // ),
+              // ),
+              // ),
+              // ),
               if (widget.showImagesIcons)
                 IconButton(
                     onPressed: () async {

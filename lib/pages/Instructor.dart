@@ -208,8 +208,7 @@ class ImageAndName extends StatelessWidget {
         leading:
             CircleAvatar(radius: 30, backgroundImage: NetworkImage(image!)),
         title: Text(name!,
-            style: const TextStyle(
-                fontFamily: "Poppins", fontSize: 18, letterSpacing: 0.2)),
+            style: const TextStyle(fontSize: 18, letterSpacing: 0.2)),
       ),
     );
   }

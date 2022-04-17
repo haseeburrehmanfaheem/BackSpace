@@ -45,9 +45,17 @@ class _MessagesState extends State<Messages> {
               : null;
         },
         decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white,
+                           ),
+                          borderRadius: BorderRadius.circular(25.0),
+                      ),
           hintText: "Search Users",
-          fillColor: Colors.white,
+          fillColor: Colors.grey.withOpacity(0.2),
           filled: true,
+          isDense: true,
+          contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 0),
           suffixIcon: IconButton(
             icon: Icon(Icons.search_outlined),
             onPressed: () async {
@@ -64,7 +72,15 @@ class _MessagesState extends State<Messages> {
               }
             },
           ),
+          border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          // bord
+          
+          // borderSide: BorderSide(color: Colors.white)
+
         ),
+        ),
+        
       ),
     );
   }
@@ -254,9 +270,14 @@ class Message extends StatelessWidget {
                         Text(user["username"],
                             style:
                                 const TextStyle(fontWeight: FontWeight.w600)),
-                        Text(posttext,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w500)),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width *0.5,
+                          child: Text(posttext,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w500)),
+                        ),
                       ],
                     )),
               ],

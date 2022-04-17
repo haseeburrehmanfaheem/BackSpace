@@ -71,7 +71,7 @@ class Proved extends StatelessWidget {
                         AdminPost(
                           userName: post["username"],
                           userimage: post["userImageURL"],
-                          time: "3 min",
+                          time: post["created_at"],
                           Posttxt: post["content"],
                           PostImg: post["postImageURL"],
                           docid: post["postID"],
@@ -108,7 +108,7 @@ class Proved extends StatelessWidget {
 class AdminPost extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String Posttxt;
   final String? PostImg;
   String docid;
@@ -176,7 +176,7 @@ class _PostFooter extends State<PostFooter> {
           //color: Colors.green,
           child: Text(
             "Reject",
-            style: TextStyle(fontSize: 16.0, color: Colors.red),
+            style: TextStyle(fontSize: 14.0, color: Colors.red),
           ),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
@@ -184,7 +184,7 @@ class _PostFooter extends State<PostFooter> {
               color: Colors.red,
             ),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () {
             DeletePostFromDB(widget.docid);
