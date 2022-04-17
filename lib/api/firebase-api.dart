@@ -72,14 +72,6 @@ class FirebaseApi {
       print("Aithe wekh");
       print(chat.exists);
       return chatID;
-
-      /* Get all messages for this user */
-      // final Stream<QuerySnapshot> messages = FirebaseFirestore.instance
-      //     .collection("messages")
-      //     .where('chat_id', isEqualTo: chatID)
-      //     .orderBy('sent_at')
-      //     .snapshots();
-      // messages
     } on Exception catch (e) {
       print("Error occured while getting chatID");
       print(e);

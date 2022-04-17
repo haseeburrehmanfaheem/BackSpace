@@ -584,14 +584,16 @@ class AddPostFormState extends State<AddPostForm> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-      if (image == null) return;
+      if (image == null) return false;
 
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
       widget.changeState!(imageTemp);
+      return true;
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+      return false;
     }
   }
 
@@ -599,14 +601,16 @@ class AddPostFormState extends State<AddPostForm> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
-      if (image == null) return;
+      if (image == null) return false;
 
       final imageTemp = File(image.path);
 
       setState(() => this.image = imageTemp);
       widget.changeState!(imageTemp);
+      return true;
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+      return false;
     }
   }
 
@@ -661,8 +665,8 @@ class AddPostFormState extends State<AddPostForm> {
               if (widget.showImagesIcons)
                 IconButton(
                     onPressed: () async {
-                      await handleTakephoto();
-                      if (widget.openPopup != null) {
+                      final success = await handleTakephoto();
+                      if (widget.openPopup != null && success) {
                         widget.openPopup!();
                       }
                     }, //Open Camera here
@@ -670,8 +674,8 @@ class AddPostFormState extends State<AddPostForm> {
               if (widget.showImagesIcons)
                 IconButton(
                     onPressed: () async {
-                      await handleChoosefromgallery();
-                      if (widget.openPopup != null) {
+                      final success = await handleChoosefromgallery();
+                      if (widget.openPopup != null && success) {
                         // print('OpenPopup');
                         widget.openPopup!();
                       }
