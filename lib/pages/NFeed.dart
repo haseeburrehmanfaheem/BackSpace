@@ -393,6 +393,7 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
+
       body: Column(
         children: [
           Expanded(
@@ -442,6 +443,7 @@ class _PostscommentState extends State<Postscomment> {
             key: formGlobalKey,
             child: TextFormField(
               controller: commentController,
+
               onTap: () {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -450,9 +452,22 @@ class _PostscommentState extends State<Postscomment> {
                 return null;
               },
               decoration: InputDecoration(
+
+                
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors.white,
+                       ),
+                      borderRadius: BorderRadius.circular(25.0),
+                  ),
                 hintText: "Add Comment",
-                fillColor: const Color(0xfff9f9fa),
+                fillColor: Colors.grey.withOpacity(0.3),
+                // fromRGBO(249, 249, 250, 1),
+                
                 filled: true,
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+
                 suffixIcon: IconButton(
                   icon: Icon(Icons.arrow_forward),
                   onPressed: () async {
@@ -465,8 +480,13 @@ class _PostscommentState extends State<Postscomment> {
                     }
                   },
                 ),
+
+                
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(50.0),
+                  
+                  // borderSide: BorderSide(color: Colors.white)
+
                 ),
               ),
             ),
