@@ -118,7 +118,7 @@ class MyApp extends StatelessWidget {
 
       // home: Messages()
       // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
-      home: BottomNavigation(),
+      // home: BottomNavigation(),
       // home: ViewProfile()
       // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
       home: BottomNavigation(),

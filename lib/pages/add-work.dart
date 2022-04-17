@@ -159,23 +159,37 @@ class AddWorkFormState extends State<AddWorkForm> {
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
         child: Row(children: <Widget>[
           Expanded(
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                controller: widget.workcontentController,
-                onTap: () {},
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter Text';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  hintText: "Add Work",
-                  fillColor: const Color(0xfff9f9fa),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              color: Colors.white,
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  child: TextFormField(
+                    controller: widget.workcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Add Work",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white,
+                              ),
+                          borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      fillColor: Colors.grey.withOpacity(0.2),
+                      filled: true,
+                      isDense: true,
+                      contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
                   ),
                 ),
               ),
