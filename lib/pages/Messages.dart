@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-
+import 'package:async/async.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:backspace/api/firebase-api.dart';
 import 'package:backspace/components/newsFeed/post-header/user-icon-name.dart';
 import 'package:backspace/pages/Chat.dart';
@@ -46,16 +47,16 @@ class _MessagesState extends State<Messages> {
         },
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white,
-                           ),
-                          borderRadius: BorderRadius.circular(25.0),
-                      ),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
           hintText: "Search Users",
           fillColor: Colors.grey.withOpacity(0.2),
           filled: true,
           isDense: true,
-          contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 0),
+          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
           suffixIcon: IconButton(
             icon: Icon(Icons.search_outlined),
             onPressed: () async {
@@ -73,14 +74,12 @@ class _MessagesState extends State<Messages> {
             },
           ),
           border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          // bord
-          
-          // borderSide: BorderSide(color: Colors.white)
+            borderRadius: BorderRadius.circular(25.0),
+            // bord
 
+            // borderSide: BorderSide(color: Colors.white)
+          ),
         ),
-        ),
-        
       ),
     );
   }
@@ -156,9 +155,23 @@ class _MessagesState extends State<Messages> {
       ),
       body: searchUsed == ""
           ? StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('chat').snapshots(),
-              builder: (BuildContext context, AsyncSnapshot? snapshot) {
-                if (snapshot!.connectionState == ConnectionState.waiting) {
+              stream: CombineLatestStream.list(
+                [
+                  FirebaseFirestore.instance
+                      .collection('chat')
+                      .where("user1",
+                          isEqualTo: FirebaseAuth.instance.currentUser?.email)
+                      .snapshots(),
+                  FirebaseFirestore.instance
+                      .collection('chat')
+                      .where("user2",
+                          isEqualTo: FirebaseAuth.instance.currentUser?.email)
+                      .snapshots(),
+                ],
+              ),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                // print(snapshot.data.docs);
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return SizedBox(
                     height: MediaQuery.of(context).size.height / 1.3,
                     child: Center(
@@ -166,9 +179,10 @@ class _MessagesState extends State<Messages> {
                     ),
                   );
                 }
+
                 if (snapshot != null) {
-                  return ListView(
-                    children: snapshot.data.docs
+                  return ListView(children: [
+                    ...snapshot.data[0].docs
                         .map<Widget>((DocumentSnapshot document) {
                       Map<String, dynamic> chat =
                           document.data()! as Map<String, dynamic>;
@@ -204,7 +218,43 @@ class _MessagesState extends State<Messages> {
                                 posttext: chat["last_messsage"]);
                           });
                     }).toList(),
-                  );
+                    ...snapshot.data[1].docs
+                        .map<Widget>((DocumentSnapshot document) {
+                      Map<String, dynamic> chat =
+                          document.data()! as Map<String, dynamic>;
+                      return FutureBuilder(
+                          future: FirebaseFirestore.instance
+                              .collection("UserData")
+                              .where("email",
+                                  isEqualTo: chat["user1"] ==
+                                          FirebaseAuth
+                                              .instance.currentUser?.email
+                                      ? chat["user2"]
+                                      : chat["user1"])
+                              .get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot usersSnapshot) {
+                            if (usersSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 1.3,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            if (usersSnapshot.hasError) {
+                              return Text("Something went wrong");
+                            }
+                            final user = usersSnapshot.data.docs[0].data();
+                            return Message(
+                                user: user,
+                                time: chat["last_message_time"],
+                                posttext: chat["last_messsage"]);
+                          });
+                    }).toList(),
+                  ]);
                 } else {
                   return Text("");
                 }
@@ -271,7 +321,7 @@ class Message extends StatelessWidget {
                             style:
                                 const TextStyle(fontWeight: FontWeight.w600)),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width *0.5,
+                          width: MediaQuery.of(context).size.width * 0.5,
                           child: Text(posttext,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,

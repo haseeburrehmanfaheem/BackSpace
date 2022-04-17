@@ -62,6 +62,8 @@ dependencies:
   flutter_local_notifications: ^9.4.0
   flutter_chat_bubble: ^2.0.0
   lit_relative_date_time: ^1.2.0
+  async: ^2.8.2
+  rxdart: ^0.27.3
 
 dev_dependencies:
   flutter_test:
