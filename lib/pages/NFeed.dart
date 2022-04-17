@@ -126,17 +126,16 @@ class Feed extends StatelessWidget {
                   if (!snapshot1.hasData) return Text("");
                   // CircularProgressIndicator();
                   return Post(
-                    userName: snapshot1.data.docs[0]["username"],
-                    userimage: snapshot1.data.docs[0]["imageURL"],
-                    time: post["created_at"],
-                    postcontent: post["content"],
-                    PostImg: post["imageURL"],
-                    likes: post["likes"],
-                    postID: document.id,
-                    functionalComment: true,
-                    userAbout: snapshot1.data.docs[0]["about"],
-                    email: snapshot1.data.docs[0]["email"]
-                  );
+                      userName: snapshot1.data.docs[0]["username"],
+                      userimage: snapshot1.data.docs[0]["imageURL"],
+                      time: post["created_at"],
+                      postcontent: post["content"],
+                      PostImg: post["imageURL"],
+                      likes: post["likes"],
+                      postID: document.id,
+                      functionalComment: true,
+                      userAbout: snapshot1.data.docs[0]["about"],
+                      email: snapshot1.data.docs[0]["email"]);
                 },
               );
             }).toList(),
@@ -242,6 +241,7 @@ class Post extends StatelessWidget {
             postTime: time,
             userabout: userAbout,
             delete: email,
+            docid: postID,
           ),
           PostBody(postSummary: postcontent),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
@@ -398,7 +398,6 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-
       body: Column(
         children: [
           Expanded(
@@ -449,12 +448,10 @@ class _PostscommentState extends State<Postscomment> {
             color: Colors.white,
             child: Form(
               key: formGlobalKey,
-              
               child: Container(
                 margin: EdgeInsets.all(15),
                 child: TextFormField(
                   controller: commentController,
-
                   onTap: () {},
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -465,14 +462,14 @@ class _PostscommentState extends State<Postscomment> {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.white,
-                           ),
-                          borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.white,
                       ),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
                     hintText: "Add Comment",
                     fillColor: Colors.grey.withOpacity(0.3),
                     // fromRGBO(249, 249, 250, 1),
-                    
+
                     filled: true,
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -490,12 +487,10 @@ class _PostscommentState extends State<Postscomment> {
                       },
                     ),
 
-                    
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
-                      
-                      // borderSide: BorderSide(color: Colors.white)
 
+                      // borderSide: BorderSide(color: Colors.white)
                     ),
                   ),
                 ),
@@ -632,38 +627,38 @@ class AddPostFormState extends State<AddPostForm> {
             children: <Widget>[
               Expanded(
                 // child: Container(
-                  // color: Colors.white,
-                  child: Form(
-                    key: _formKey,
-                    // child: Container(
-                      //  margin: EdgeInsets.all(15),
-                      child: TextFormField(
-                        controller: widget.postcontentController,
-                        onTap: () {},
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter Text';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          // enabledBorder: OutlineInputBorder(
-                          // borderSide: BorderSide(
-                          //     color: Colors.white,
-                          //     ),
-                          // borderRadius: BorderRadius.circular(50.0),
-                          // ),
-                          hintText: widget.hintText,
-                          fillColor: const Color(0xfff9f9fa),
-                          filled: true,
-                          // isDense: true,
-                          // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
+                // color: Colors.white,
+                child: Form(
+                  key: _formKey,
+                  // child: Container(
+                  //  margin: EdgeInsets.all(15),
+                  child: TextFormField(
+                    controller: widget.postcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      // enabledBorder: OutlineInputBorder(
+                      // borderSide: BorderSide(
+                      //     color: Colors.white,
+                      //     ),
+                      // borderRadius: BorderRadius.circular(50.0),
+                      // ),
+                      hintText: widget.hintText,
+                      fillColor: const Color(0xfff9f9fa),
+                      filled: true,
+                      // isDense: true,
+                      // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
-                    // ),
+                    ),
+                  ),
+                  // ),
                   // ),
                 ),
               ),
