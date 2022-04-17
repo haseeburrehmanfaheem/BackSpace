@@ -203,13 +203,17 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RelativeDateTime _relativeDateTime = RelativeDateTime(
-        dateTime: DateTime.now(),
-        other: DateTime.parse(time!.toDate().toString()));
+    RelativeDateTime _relativeDateTime;
+    RelativeDateFormat _relativeDateFormatter;
+    if (time != null) {
+      RelativeDateTime _relativeDateTime = RelativeDateTime(
+          dateTime: DateTime.now(),
+          other: DateTime.parse(time!.toDate().toString()));
 
-    RelativeDateFormat _relativeDateFormatter = RelativeDateFormat(
-      Localizations.localeOf(context),
-    );
+      RelativeDateFormat _relativeDateFormatter = RelativeDateFormat(
+        Localizations.localeOf(context),
+      );
+    }
     return Container(
         //clipBehavior: Clip.antiAlias,
         child: Column(children: [
@@ -255,10 +259,21 @@ class Message extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(right: 15, top: 5),
-              child: Text(
-                _relativeDateFormatter.format(_relativeDateTime),
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
+              child: time != null
+                  ? Text(
+                      RelativeDateFormat(
+                        Localizations.localeOf(context),
+                      ).format(
+                        RelativeDateTime(
+                          dateTime: DateTime.now(),
+                          other: DateTime.parse(
+                            time!.toDate().toString(),
+                          ),
+                        ),
+                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    )
+                  : Text(""),
             ),
           ],
         ),
