@@ -106,20 +106,20 @@ class _MyDrawer extends State<MyDrawer> {
 
     return Container(
       // height: 100,
-      margin: const EdgeInsets.only(top: 52),
-      height: MediaQuery.of(context).size.height * 0.90,
+      // margin: const EdgeInsets.only(top: 52),
+      // height: MediaQuery.of(context).size.height * 0.90,
       // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
       // width: 50,
 
       child: Drawer(
         child: ListView(
           // padding: EdgeInsets.zero,
-          padding: EdgeInsets.only(top: 50),
+          // padding: EdgeInsets.only(top: 50),
           // padding: EdgeInsets.only(top: 10),
           // margin: EdgeInsets.all(80),
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.only(left: 1, top: 20),
+                padding: EdgeInsets.only(right: 200, top: 20),
                 child:
                     FutureBuilder<QueryDocumentSnapshot<Map<String, dynamic>>>(
                   future: getUsername(s),
@@ -155,7 +155,7 @@ class _MyDrawer extends State<MyDrawer> {
                 // ,
                 ),
             Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 15),
               child: FutureBuilder<String>(
                 future: getUsername1(s),
                 builder: (context, snapshot) {
@@ -164,7 +164,7 @@ class _MyDrawer extends State<MyDrawer> {
                       snapshot.data ?? " ",
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.black.withOpacity(.50),
+                        color: Colors.black,
                       ),
                     );
                   } else {
@@ -172,7 +172,7 @@ class _MyDrawer extends State<MyDrawer> {
                       "Loading data...",
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.black.withOpacity(.50),
+                        color: Colors.black,
                       ),
                     );
                   }
@@ -197,11 +197,12 @@ class _MyDrawer extends State<MyDrawer> {
             //   ),
             // ),
             Padding(
-              padding: EdgeInsets.only(left: 10, bottom: 20),
+              padding: EdgeInsets.only(left: 15, bottom: 20),
               child: Text(
                 s!,
                 style: TextStyle(
                   fontSize: 16,
+                  color: Colors.black.withOpacity(.50),
                 ),
               ),
             ),

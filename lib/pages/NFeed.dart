@@ -45,7 +45,7 @@ class Feed extends StatelessWidget {
         title: const Text('News Feed'),
         actions: [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 0),
               child: IconButton(
                   onPressed: () {
                     showSearch(
@@ -76,34 +76,100 @@ class Feed extends StatelessWidget {
       ),
 
       body: Center(
-        child: FutureBuilder(
-            future: completePost(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
-              final posts = snapshot.data;
-              return ListView(
-                children: <Widget>[
-                  for (var post in posts)
-                    if ((post["subspace"] == null || post["subspace"] == "") &&
-                        (post["approved"] ==
-                            true)) // displaying in newsfeed ////////////////////////////
-                      Post(
-                        userName: post["username"],
-                        userimage: post["userImageURL"],
-                        time: "5 min",
-                        postcontent: post["content"],
-                        PostImg: post["postImageURL"],
-                        likes: post["likes"],
-                        postID: post["postID"],
-                        functionalComment: true,
-                        userAbout: post["userAbout"],
-                      ),
-                ],
+          child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("Posts")
+            .where("subspace", isEqualTo: "")
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          // print(widget.chatID);
+          else if (snapshot.connectionState == ConnectionState.waiting) {
+            // return Text("leading");
+
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+
+          return ListView(
+            shrinkWrap: true,
+            // primary: false,
+            physics: BouncingScrollPhysics(),
+            children:
+                snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+              Map<String, dynamic> post =
+                  document.data()! as Map<String, dynamic>;
+              var query = FirebaseFirestore.instance
+                  .collection("UserData")
+                  .where("email", isEqualTo: post["email"])
+                  .snapshots();
+
+              return StreamBuilder<QuerySnapshot>(
+                stream: query,
+                builder: (context, AsyncSnapshot snapshot1) {
+                  if (!snapshot1.hasData) return Text("");
+                  // CircularProgressIndicator();
+                  return Post(
+                    userName: snapshot1.data.docs[0]["username"],
+                    userimage: snapshot1.data.docs[0]["imageURL"],
+                    time: "5 min",
+                    postcontent: post["content"],
+                    PostImg: post["imageURL"],
+                    likes: post["likes"],
+                    postID: document.id,
+                    functionalComment: true,
+                    userAbout: snapshot1.data.docs[0]["about"],
+                  );
+                },
               );
-            }),
-      ),
+            }).toList(),
+          );
+        },
+      )
+
+          // child: FutureBuilder(
+          //     future: completePost(),
+          //     builder: (context, AsyncSnapshot snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return CircularProgressIndicator();
+          //       }
+          //       final posts = snapshot.data;
+          //       return ListView(
+          //         children: <Widget>[
+          //           for (var post in posts)
+          //             if ((post["subspace"] == null || post["subspace"] == "") &&
+          //                 (post["approved"] ==
+          //                     true)) // displaying in newsfeed ////////////////////////////
+          //               Post(
+          //                 userName: post["username"],
+          //                 userimage: post["userImageURL"],
+          //                 time: "5 min",
+          //                 postcontent: post["content"],
+          //                 PostImg: post["postImageURL"],
+          //                 likes: post["likes"],
+          //                 postID: post["postID"],
+          //                 functionalComment: true,
+          //                 userAbout: post["userAbout"],
+          //               ),
+          //         ],
+          //       );
+          //     }),
+          ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -159,6 +225,9 @@ class Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(
+        top: 10,
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
@@ -221,6 +290,7 @@ class PostFooter extends StatefulWidget {
 
 class _PostFooter extends State<PostFooter> {
   bool clicked_once = false;
+  bool pressAttention = false;
   @override
   Widget build(BuildContext context) {
     var x = widget.likes;
@@ -230,6 +300,7 @@ class _PostFooter extends State<PostFooter> {
       children: [
         IconButton(
           icon: const Icon(Icons.thumb_up_alt_outlined),
+          color: pressAttention ? Colors.blue : Colors.black,
           onPressed: () {
             clicked_once = !clicked_once;
             updatelikesintable(widget.likes, widget.post_id, !clicked_once);
@@ -270,9 +341,9 @@ class _PostFooter extends State<PostFooter> {
   updateLikes() {
     setState(() => {
           if (clicked_once)
-            {widget.likes = widget.likes + 1}
+            {widget.likes = widget.likes + 1, pressAttention = !pressAttention}
           else
-            {widget.likes = widget.likes - 1}
+            {widget.likes = widget.likes - 1, pressAttention = !pressAttention}
         });
   }
 }
@@ -306,6 +377,7 @@ class _PostscommentState extends State<Postscomment> {
   Widget build(BuildContext context) {
     // print()
     return Scaffold(
+      backgroundColor: Color(0xffDADADA),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -321,49 +393,63 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Post(
-              userName: widget.userName,
-              userimage: widget.userimage,
-              time: widget.time,
-              postcontent: widget.postcontent,
-              likes: widget.likes,
-              postID: widget.post_id,
-              PostImg: widget.PostImg,
-              functionalComment: false,
-              // IMPORTANT ___________________________________________________________________________________________
-              userAbout: "",
+
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Post(
+                    userName: widget.userName,
+                    userimage: widget.userimage,
+                    time: widget.time,
+                    postcontent: widget.postcontent,
+                    likes: widget.likes,
+                    postID: widget.post_id,
+                    PostImg: widget.PostImg,
+                    functionalComment: false,
+                    // IMPORTANT ___________________________________________________________________________________________
+                    userAbout: "",
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
+                  // DisplayComments(comments, profileImage, name),
+                  FutureBuilder(
+                      future: getAllComments(widget.post_id),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Text("");
+                        }
+                        final comments = snapshot.data;
+                        return Column(
+                          children: <Widget>[
+                            for (var comment in comments)
+                              CommentsDisplay(
+                                  userImg: comment["userimageURL"],
+                                  name: comment["username"],
+                                  Time: "",
+                                  posttext: comment["commentContent"])
+                            // Text(comment["commentContent"]),
+                          ],
+                        );
+                      }),
+                ],
+              ),
             ),
-            // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
-            // DisplayComments(comments, profileImage, name),
-            FutureBuilder(
-                future: getAllComments(widget.post_id),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text("");
-                  }
-                  final comments = snapshot.data;
-                  return Column(
-                    children: <Widget>[
-                      for (var comment in comments)
-                        CommentsDisplay(
-                            userImg: comment["userimageURL"],
-                            name: comment["username"],
-                            Time: "",
-                            posttext: comment["commentContent"])
-                      // Text(comment["commentContent"]),
-                    ],
-                  );
-                }),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Form(
-                key: formGlobalKey,
+          ),
+          Container(
+            // margin: EdgeInsets.all(),
+            color: Colors.white,
+            child: Form(
+              key: formGlobalKey,
+              
+              child: Container(
+                margin: EdgeInsets.all(15),
                 child: TextFormField(
                   controller: commentController,
+
                   onTap: () {},
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -372,9 +458,20 @@ class _PostscommentState extends State<Postscomment> {
                     return null;
                   },
                   decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white,
+                           ),
+                          borderRadius: BorderRadius.circular(25.0),
+                      ),
                     hintText: "Add Comment",
-                    fillColor: const Color(0xfff9f9fa),
+                    fillColor: Colors.grey.withOpacity(0.3),
+                    // fromRGBO(249, 249, 250, 1),
+                    
                     filled: true,
+                    isDense: true,
+                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+
                     suffixIcon: IconButton(
                       icon: Icon(Icons.arrow_forward),
                       onPressed: () async {
@@ -387,15 +484,20 @@ class _PostscommentState extends State<Postscomment> {
                         }
                       },
                     ),
+
+                    
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(50.0),
+                      
+                      // borderSide: BorderSide(color: Colors.white)
+
                     ),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -524,26 +626,40 @@ class AddPostFormState extends State<AddPostForm> {
             // mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
               Expanded(
-                child: Form(
-                  key: _formKey,
-                  child: TextFormField(
-                    controller: widget.postcontentController,
-                    onTap: () {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter Text';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: widget.hintText,
-                      fillColor: const Color(0xfff9f9fa),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                // child: Container(
+                  // color: Colors.white,
+                  child: Form(
+                    key: _formKey,
+                    // child: Container(
+                      //  margin: EdgeInsets.all(15),
+                      child: TextFormField(
+                        controller: widget.postcontentController,
+                        onTap: () {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter Text';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          // enabledBorder: OutlineInputBorder(
+                          // borderSide: BorderSide(
+                          //     color: Colors.white,
+                          //     ),
+                          // borderRadius: BorderRadius.circular(50.0),
+                          // ),
+                          hintText: widget.hintText,
+                          fillColor: const Color(0xfff9f9fa),
+                          filled: true,
+                          // isDense: true,
+                          // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    // ),
+                  // ),
                 ),
               ),
               if (widget.showImagesIcons)

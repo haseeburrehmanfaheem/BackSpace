@@ -18,18 +18,14 @@ class Guide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Welcome to Flutter',
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.chevron_left),
             onPressed: () => Navigator.pop(context, false),
           ),
-          title: const Text('Freshman Guide',
-              style: TextStyle(fontFamily: "Poppins")),
+          title: Text('Freshman Guide', style: TextStyle(color:Colors.black, fontWeight: FontWeight.w500),),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
@@ -62,7 +58,6 @@ class Guide extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -192,7 +187,7 @@ class _PostTitleAndSummary extends StatelessWidget {
             Text(Title1,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             SizedBox(height: 5.0),
-            Text(Summary1, style: TextStyle(fontFamily: "Poppins")),
+            // Text(Summary1, style: TextStyle(fontFamily: "Poppins")),
             SizedBox(height: 3.0),
             Text(Username1,
                 style: TextStyle(

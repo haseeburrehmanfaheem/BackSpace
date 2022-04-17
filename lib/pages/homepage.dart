@@ -50,40 +50,89 @@ class _BuildUnauthScreenState extends State<BuildUnauthScreen> {
                   shape: BoxShape.circle,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => Login()));
-                  //   _navigateToNextScreen();
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
-                  width: 380,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/widgets/loginbutton.png'),
-                        fit: BoxFit.fill),
+                  padding: const EdgeInsets.only(top: 3, left: 3),
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60,
+                    onPressed: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => Login()));
+                    },
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40)),
+                    child: const Text(
+                      "LOGIN",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: Colors.white),
+                    ),
                   ),
                 ),
               ),
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //         context, MaterialPageRoute(builder: (_) => Login()));
+              //     //   _navigateToNextScreen();
+              //   },
+              //   child: Container(
+              //     width: 380,
+              //     height: 50,
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //           image: AssetImage('assets/widgets/loginbutton.png'),
+              //           fit: BoxFit.fill),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 40),
-              GestureDetector(
-                // onTap: () => print("hello world"),
-                onTap: () {
-                  // print("Container clicked");
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => SignupPage()));
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
-                  width: 380,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/widgets/signupbutton.png'),
-                        fit: BoxFit.fill),
+                  padding: const EdgeInsets.only(top: 3, left: 3),
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60,
+                    onPressed: () {
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => SignupPage()));
+                    },
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                        side: BorderSide(color: Colors. black)),
+                    child: const Text(
+                      "SIGN  UP",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Colors.black),
+                    ),
                   ),
                 ),
-              )
+              ),
+              // GestureDetector(
+              //   // onTap: () => print("hello world"),
+              //   onTap: () {
+              //     // print("Container clicked");
+              //     Navigator.push(
+              //         context, MaterialPageRoute(builder: (_) => SignupPage()));
+              //   },
+              //   child: Container(
+              //     width: 450,
+              //     height: 50,
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //           image: AssetImage('assets/widgets/signupbutton.png'),
+              //           fit: BoxFit.fill),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

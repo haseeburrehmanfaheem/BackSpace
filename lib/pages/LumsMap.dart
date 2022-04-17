@@ -27,6 +27,7 @@ class Map1 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        title: Text('LUMS Map', style: TextStyle(color: Colors.black),),
         leading: IconButton(
           icon: Icon(
             Icons.chevron_left,

@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Noti extends StatefulWidget {
@@ -20,31 +20,31 @@ class _NotiState extends State<Noti> {
     // LocalNotificationService.initilize();
 
     // Terminated State
-    FirebaseMessaging.instance.getInitialMessage().then((event) {
-      if (event != null) {
-        setState(() {
-          notificationMsg =
-              "${event.notification!.title} ${event.notification!.body} I am coming from terminated state";
-        });
-      }
-    });
+    // FirebaseMessaging.instance.getInitialMessage().then((event) {
+    //   if (event != null) {
+    //     setState(() {
+    //       notificationMsg =
+    //           "${event.notification!.title} ${event.notification!.body} I am coming from terminated state";
+    //     });
+    //   }
+    // });
 
-    // Foregrand State
-    FirebaseMessaging.onMessage.listen((event) {
-      // LocalNotificationService.showNotificationOnForeground(event);
-      setState(() {
-        notificationMsg =
-            "${event.notification!.title} ${event.notification!.body} I am coming from foreground";
-      });
-    });
+    // // Foregrand State
+    // FirebaseMessaging.onMessage.listen((event) {
+    //   // LocalNotificationService.showNotificationOnForeground(event);
+    //   setState(() {
+    //     notificationMsg =
+    //         "${event.notification!.title} ${event.notification!.body} I am coming from foreground";
+    //   });
+    // });
 
-    // background State
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      setState(() {
-        notificationMsg =
-            "${event.notification!.title} ${event.notification!.body} I am coming from background";
-      });
-    });
+    // // background State
+    // FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    //   setState(() {
+    //     notificationMsg =
+    //         "${event.notification!.title} ${event.notification!.body} I am coming from background";
+    //   });
+    // });
   }
 
   Widget build(BuildContext context) {

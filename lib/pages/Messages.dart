@@ -116,14 +116,23 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: MyDrawer(),
-      appBar: AppBar(
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+        backgroundColor: Colors.white,
+        drawer: MyDrawer(),
+        appBar: AppBar(
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
           ),
+          title: userSearchFormWidget(),
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20),
+            ),
+          ],
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
         ),
         title: userSearchFormWidget(),
         actions: const [
