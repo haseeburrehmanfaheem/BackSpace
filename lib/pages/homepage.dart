@@ -74,22 +74,7 @@ class _BuildUnauthScreenState extends State<BuildUnauthScreen> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.push(
-              //         context, MaterialPageRoute(builder: (_) => Login()));
-              //     //   _navigateToNextScreen();
-              //   },
-              //   child: Container(
-              //     width: 380,
-              //     height: 50,
-              //     decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //           image: AssetImage('assets/widgets/loginbutton.png'),
-              //           fit: BoxFit.fill),
-              //     ),
-              //   ),
-              // ),
+
               SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -116,23 +101,7 @@ class _BuildUnauthScreenState extends State<BuildUnauthScreen> {
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   // onTap: () => print("hello world"),
-              //   onTap: () {
-              //     // print("Container clicked");
-              //     Navigator.push(
-              //         context, MaterialPageRoute(builder: (_) => SignupPage()));
-              //   },
-              //   child: Container(
-              //     width: 450,
-              //     height: 50,
-              //     decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //           image: AssetImage('assets/widgets/signupbutton.png'),
-              //           fit: BoxFit.fill),
-              //     ),
-              //   ),
-              // )
+
             ],
           ),
         ),
@@ -141,20 +110,6 @@ class _BuildUnauthScreenState extends State<BuildUnauthScreen> {
   }
 }
 
-// class LoginScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('New Screen')),
-//       body: Center(
-//         child: Text(
-//           'This is a new screen',
-//           style: TextStyle(fontSize: 24.0),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class _HomeState extends State<Home> {
   @override
@@ -163,9 +118,4 @@ class _HomeState extends State<Home> {
     return isauth ? buildAuthScreen() : BuildUnauthScreen();
   }
 }
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     throw UnimplementedError();
-//   }
-// }
+

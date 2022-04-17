@@ -73,31 +73,9 @@ class _AddWorkPageState extends State<AddWorkPage> {
                     // Navigator.pop(context);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (_) => BottomNavigation()));
-                    // Navigator.pushReplacement(
-                    //     context, MaterialPageRoute(builder: (_) => FindWork()));
-
-                    // username posttable
-                    // user image url posttable
-                    // content controller
-                    // time local
-                    // subspace
+                    
                   }
-                  // async {
 
-                  //     context, myDateTime);
-                  // if (image != null) {
-                  //   final fileName = basename(image!.path);
-                  //   // print("current phone data is: $myDateTime");
-                  //   final storagePath =
-                  //       'UserImages/${emailID}_${myDateTime}_$fileName';
-                  //   URL = await FirebaseApi.uploadFile(storagePath, image!);
-                  //   // print(URL);
-                  // }
-                  // addDataToPost(emailID, URL, workcontentController.text,
-                  //     context, myDateTime);
-                  // Navigator.pushReplacement(context,
-                  //     MaterialPageRoute(builder: (_) => BottomNavigation()));
-                  // save content and likes and jkadnfknadkjfna
                 },
                 child: const Text("Post",
                     style: TextStyle(color: Colors.blue, fontSize: 18))),
@@ -120,13 +98,6 @@ class _AddWorkPageState extends State<AddWorkPage> {
         Align(
             alignment: Alignment.bottomCenter,
             child: AddWorkForm(workcontentController: workcontentController)
-
-            // set
-            // Text("xx"),
-            // AddWorkForm(
-            // workcontentController: workcontentController,
-            // changeState: changeState,
-            // ),
             ),
       ]),
     );
@@ -213,10 +184,7 @@ addWorkToPost(emailID, imageURL, content, myDateTime) async {
     "subspace": "work",
     "approved": true,
   }).then((value) async {
-    // print(value.id);
-    // var comments_table =
-    //     await FirebaseFirestore.instance.collection("Comments");
-    // comments_table.add({"email": });
+
   }).catchError((error) => print("Failed to add user: $error"));
   return;
 }

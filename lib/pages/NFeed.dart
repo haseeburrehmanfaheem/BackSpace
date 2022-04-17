@@ -85,6 +85,7 @@ class Feed extends StatelessWidget {
             .collection("Posts")
             .where("subspace", isEqualTo: "")
             .orderBy("created_at", descending: true)
+            .where("approved", isEqualTo: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,34 +147,6 @@ class Feed extends StatelessWidget {
           );
         },
       )
-
-          // child: FutureBuilder(
-          //     future: completePost(),
-          //     builder: (context, AsyncSnapshot snapshot) {
-          //       if (!snapshot.hasData) {
-          //         return CircularProgressIndicator();
-          //       }
-          //       final posts = snapshot.data;
-          //       return ListView(
-          //         children: <Widget>[
-          //           for (var post in posts)
-          //             if ((post["subspace"] == null || post["subspace"] == "") &&
-          //                 (post["approved"] ==
-          //                     true)) // displaying in newsfeed ////////////////////////////
-          //               Post(
-          //                 userName: post["username"],
-          //                 userimage: post["userImageURL"],
-          //                 time: "5 min",
-          //                 postcontent: post["content"],
-          //                 PostImg: post["postImageURL"],
-          //                 likes: post["likes"],
-          //                 postID: post["postID"],
-          //                 functionalComment: true,
-          //                 userAbout: post["userAbout"],
-          //               ),
-          //         ],
-          //       );
-          //     }),
           ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -187,16 +160,6 @@ class Feed extends StatelessWidget {
   }
 }
 
-// final databaseRef = FirebaseFirestore.instance.collection('UserData'); //database reference object
-// Future<void> getData() async {
-//     // Get docs from collection reference
-//     QuerySnapshot querySnapshot = await databaseRef.get();
-
-//     // Get data from docs and convert map to List
-//     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-
-//     print(allData);
-// }
 
 newPage(context) {
   Navigator.push(
@@ -422,8 +385,6 @@ class _PostscommentState extends State<Postscomment> {
                     userAbout: "",
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
-                  // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
-                  // DisplayComments(comments, profileImage, name),
                   FutureBuilder(
                       future: getAllComments(widget.post_id),
                       builder: (context, AsyncSnapshot snapshot) {
@@ -439,7 +400,7 @@ class _PostscommentState extends State<Postscomment> {
                                   name: comment["username"],
                                   Time: "",
                                   posttext: comment["commentContent"])
-                            // Text(comment["commentContent"]),
+
                           ],
                         );
                       }),
@@ -448,7 +409,6 @@ class _PostscommentState extends State<Postscomment> {
             ),
           ),
           Container(
-            // margin: EdgeInsets.all(),
             color: Colors.white,
             child: Form(
               key: formGlobalKey,
@@ -482,19 +442,16 @@ class _PostscommentState extends State<Postscomment> {
                       icon: Icon(Icons.arrow_forward),
                       onPressed: () async {
                         if (formGlobalKey.currentState!.validate()) {
-                          // print(commentController.text);
+
                           await updateCommentInDB(
                               commentController.text, widget.post_id);
                           commentController.clear();
-                          // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-                        }
+                                                 }
                       },
                     ),
 
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
-
-                      // borderSide: BorderSide(color: Colors.white)
                     ),
                   ),
                 ),
@@ -518,9 +475,6 @@ class _PostscommentState extends State<Postscomment> {
     var userImageURL = userTable.docs[0]["imageURL"];
     var userName = userTable.docs[0]["username"];
 
-    // print(userName);
-    // print(userImageURL);
-    // print(comment);
 
     comments.add({
       "postId": postDocID,
@@ -530,26 +484,11 @@ class _PostscommentState extends State<Postscomment> {
     }).then((value) => setState(
           () => {},
         ));
-    //   var ref = await FirebaseFirestore.instance
-    //     .collection("UserData")
-    //     .where("email", isEqualTo: email)
-    //     .get();
 
-    // var s = ref.docs[0];
-    // return s;
   }
 }
 
-// class DisplayComments extends StatelessWidget {
-//   const DisplayComments({ Key? key }) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-
-//     );
-//   }
-// }
 
 updatelikesintable(likes, documentID, alreadyliked) {
   var posts = FirebaseFirestore.instance.collection('Posts');

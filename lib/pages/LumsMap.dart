@@ -39,8 +39,7 @@ class Map1 extends StatelessWidget {
       body: Center(
         child: ClipRect(
           child: GestureDetector(
-            // onDoubleTap: () => _handleDoubleTap(_transformationController),
-            // onDoubleTapDown: _handleDoubleTapDown,
+           
             onDoubleTapDown: _handleDoubleTapDown,
             onDoubleTap: _handleDoubleTap,
             child: InteractiveViewer(

@@ -43,14 +43,7 @@ class EventState extends State<Event> {
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            // child: IconButton(
-            //   icon: Icon(Icons.search), onPressed: () {},
-            //   // onPressed: () {
-            //   //   Navigator.push(
-            //   //     context,
-            //   //     MaterialPageRoute(builder: (context) => Noti()),
-            //   //   );
-            //   // },
+
           )
         ],
         backgroundColor: Colors.white,
@@ -185,80 +178,11 @@ class SubspaceformState extends State<Subspaceform> {
               },
             ),
           ),
-          //    TextButton.icon(
-          //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
-          //   icon: Icon(Icons.camera_alt_outlined),
-          //   label: const Text(
-          //     'Add Image',
-          //     style: TextStyle(
-          //       color: Colors.black,
-          //       fontSize: 14,
-          //     ),
-          //   ),
-          //   onPressed: () {
-          //     handleChoosefromgallery();
-          //     // buildImage('assets/images/bill-gates.jpg');
-          //   },
-          // ),
 
-          // Stack(
 
-          //         // initialValue: txt.data,
-          //         children: [
-          //           buildImage('assets/images/bill-gates.jpg'),
-          //           // Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
-          //         ],
-          //       ),
-          // Container(
-          //   margin: const EdgeInsets.only(top: 30.0, left: 20.0),
-          //   padding: const EdgeInsets.only(
-          //       top: 2.0, bottom: 2.0, left: 30.0, right: 30.0),
-          //   decoration: BoxDecoration(
-          //       color: Colors.black.withOpacity(0.1),
-          //       borderRadius: BorderRadius.circular(20),
-          //       border: Border.all(color: Colors.black)),
-          //   child:
-          // TextButton.icon(
-          //   style: TextButton.styleFrom(primary: Colors.black.withOpacity(0.5)),
-          //   icon: Icon(Icons.camera_alt_outlined),
-          //   label: const Text(
-          //     'Add Image',
-          //     style: TextStyle(
-          //       color: Colors.black,
-          //       fontSize: 14,
-          //     ),
-          //   ),
-          //   onPressed: () {
-          //     buildImage('assets/images/bill-gates.jpg');
-          //   },
-          // ),
-          // ),
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8)),
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          //   child: Text(
-          //     "About",
-          //     style: TextStyle(
-          //         fontSize: 15,
-          //         fontWeight: FontWeight.w400,
-          //         color: Colors.black87),
-          //   ),
-          // ),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          //   child: TextFormField(
-          //     // initialValue: txt.data,
-          //     decoration: InputDecoration(
-          //       fillColor: Color(0xfff9f9fa),
-          //       filled: true,
-          //       //icon: Icon(Icons.favorite),
-          //       enabledBorder: UnderlineInputBorder(
-          //         borderSide: BorderSide(color: Color(0xff000000)),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+
           Padding(
             padding: EdgeInsets.only(left: 24, top: 80, right: 24),
             child: MaterialButton(
@@ -291,7 +215,7 @@ class SubspaceformState extends State<Subspaceform> {
                   AddEventToDB(emailID, URL, EventController.text, myDateTime);
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Proved()));
-                  // AddEventToDB(emailID, URL, EventController.text, myDateTime);
+
                 }
               },
               color: Colors.black,
@@ -329,20 +253,7 @@ Widget buildImage(s) {
   );
 }
 
-// Widget buildEditIcon() => buildCircle(
-//       color: Colors.white,
-//       all: 3,
-//       child: buildCircle(
-//         color: Colors.black.withOpacity(0.5),
-//         all: 8,
-//         child: IconButton(
-//           icon: Icon(Icons.camera_alt_rounded),
-//           onPressed: handleChoosefromgallery,
-//           color: Colors.white,
-//           // size: 20,
-//         ),
-//       ),
-//     );
+
 
 Widget buildCircle({
   required Widget child,
@@ -357,13 +268,7 @@ Widget buildCircle({
       ),
     );
 
-// Stack(
-//                   // initialValue: txt.data,
-//                   children: [
-//                     buildImage(url),
-//                     Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
-//                   ],
-//                 );
+
 
 AddEventToDB(emailID, URL, text, myDateTime) async {
   var ref = await FirebaseFirestore.instance.collection("Posts");

@@ -55,14 +55,7 @@ class SubSpace extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Padding(
-          //     child: Text("Joined Subspaces",
-          //         textAlign: TextAlign.left,
-          //         style: TextStyle(
-          //           fontSize: 24,
-          //         )),
-          //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)
-          //     ),
+          
           FutureBuilder(
               future: getallsubspaces(),
               builder: (context, AsyncSnapshot snapshot) {

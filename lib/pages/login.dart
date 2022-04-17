@@ -24,9 +24,7 @@ class _LoginState extends State<Login> {
   GlobalKey<FormState> formkey2 = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  // final String email;
-  // final String password;
-  // _LoginState(this.email, this.password);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,36 +121,14 @@ class _LoginState extends State<Login> {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            // print("hello world");
-                            // if()
-                            // print(nameController.text);
-                            // print(emailController.text);
-                            // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
                               // showLoaderDialog(context);
                               login(emailController.text,
                                   passwordController.text, context);
-                              //  Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (_) => BottomNavigation()));
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     backgroundColor: Colors.white,
-                              //     content: Text(
-                              //       'Validation Successful',
-                              //       style: TextStyle(
-                              //         color: Colors.black,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // );
+
                             }
-                            // Navigator.pushReplacement(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (_) => BottomNavigation()));
+
                           },
                           color: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -178,16 +154,9 @@ class _LoginState extends State<Login> {
                           child: const Text("Don't have an account?"),
                         ),
                         TextButton(
-                          // style: TextButton.styleFrom(
-                          //   textStyle: const TextStyle(
-                          //       // fontSize: 16,
-                          //       // fontWeight: FontWeight.w600,
-                          //       //decoration: TextDecoration.underline
-                          //       ),
-                          //   primary: Colors.black,
-                          // ),
+
                           onPressed: () {
-                            // print("Container clicked");
+
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -261,15 +230,7 @@ getUserData(email) async {
       .get();
 }
 
-// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUsername(email) async {
-//   var ref = await FirebaseFirestore.instance
-//       .collection("UserData")
-//       .where("email", isEqualTo: email)
-//       .get();
 
-//   var s = ref.docs[0];
-//   return s;
-// }
 showLoaderDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
     content: new Row(

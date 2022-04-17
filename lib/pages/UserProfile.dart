@@ -38,19 +38,6 @@ class UserProfile extends StatelessWidget {
         actions: [
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              // child: IconButton(
-              //     onPressed: () {
-              //       showSearch(
-              //         context: context,
-              //         delegate: MyDelegate(),
-              //       );
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => const Noti()),
-              //       // );
-              //     },
-              //     icon: Icon(Icons.search, color: Colors.black)
-              //     )
                   ),
           // Icon(Icons.search, color: Colors.black)),
           Padding(
@@ -70,9 +57,9 @@ class UserProfile extends StatelessWidget {
       ),
       body: ListView(
         physics: BouncingScrollPhysics(),
-        children: [ 
+        children: [
           Padding(padding: EdgeInsets.all(20.0)),
-          ProfileWidget(), 
+          ProfileWidget(),
           const SizedBox(height: 24),
           buildName(),
           const SizedBox(height: 15),
@@ -89,17 +76,17 @@ class UserProfile extends StatelessWidget {
               ),
               ],
             ),
-          
+
           ),
           Padding(
-    
+
           padding: EdgeInsets.only(left:20, top: 10),
           child : const Text('About', style: TextStyle(fontSize: 20),),
           ),
           const PostBody(postSummary: DemoValues.postSummary),
-          
-          
-        ], 
+
+
+        ],
       ),
     );
   }
@@ -121,7 +108,7 @@ class UserProfile extends StatelessWidget {
 
 class ProfileWidget extends StatefulWidget{
 
-  @override 
+  @override
   _ProfileWidgetState createState() => _ProfileWidgetState();
 }
 
@@ -135,7 +122,7 @@ class _ProfileWidgetState extends State <ProfileWidget>{
     return Center(
       child: Stack(
         children: [
-          
+
           buildImage(),
         ],
       ),

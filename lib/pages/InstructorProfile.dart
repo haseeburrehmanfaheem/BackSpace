@@ -131,35 +131,7 @@ class Instructor extends StatelessWidget {
             },
           )
 
-          // FutureBuilder(
-          //     future: getInstructorReview(instructorID),
-          //     builder: (context, AsyncSnapshot snapshot) {
-          //       if (!snapshot.hasData) {
-          //         return Center(child: CircularProgressIndicator());
-          //       }
-          //       final instructors = snapshot.data;
-          //       return Column(
-          //         // shrinkWrap: true,
-          //         // ListView.builder(itemBuilder: itemBuilder)
-          //         children: <Widget>[
-          //           for (var instructor in instructors)
-          //             Review(
-          //               username: instructor["name"],
-          //               userimageURL: instructor["imageURL"],
-          //               Content: instructor["content"],
-          //               rating: instructor["rating"].toDouble(),
-          //             )
-          //         ],
-          //       );
-          //     }),
-          // Center(
-          //   child: Rating(initialRating: 4),
-          //   ),
-          // Rating(initialRating: 4),
-          // Review(),
-          // Review(),
-          // Review(),
-          // Review()
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -234,10 +206,7 @@ class AddReview extends StatelessWidget {
                   // Navigator.pushReplacement(context, newRoute)
                 }
               },
-              // if()
-              //   if (_formKey.currentState!.validate()) {
-
-              // },
+              
               child: const Text(
                 "Post",
                 style: TextStyle(color: Colors.blue, fontSize: 18),

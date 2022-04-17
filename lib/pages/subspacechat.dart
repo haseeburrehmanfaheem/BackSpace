@@ -109,26 +109,8 @@ class _SimpleState extends State<Simple> {
       height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(5),
       child: Column(
-          //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // SizedBox(
-            //   height: 150,
-            //   child: Row(
-            //     children: [
-            //       Padding(padding: EdgeInsets.only(left: 20)),
-            //       CircleAvatar(
-            //         radius: 50,
-            //         backgroundImage: NetworkImage(widget.imagePath),
-            //       ),
-            //       Flexible(
-            //         child: ListTile(
-            //           title: Text(widget.about,
-            //               style: TextStyle(fontSize: 18, letterSpacing: 0.2)),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+
             Divider(
               height: 1,
               thickness: 1,
@@ -187,17 +169,7 @@ class _SimpleState extends State<Simple> {
                           userImage: snapshot1.data.docs[0]["imageURL"],
                         );
 
-                        // Post(
-                        //   userName: snapshot1.data.docs[0]["username"],
-                        //   userimage: snapshot1.data.docs[0]["imageURL"],
-                        //   time: "5 min",
-                        //   postcontent: post["content"],
-                        //   PostImg: post["imageURL"],
-                        //   likes: post["likes"],
-                        //   postID: document.id,
-                        //   functionalComment: true,
-                        //   userAbout: snapshot1.data.docs[0]["about"],
-                        // );
+
                       },
                     );
                   }).toList(),
@@ -319,13 +291,3 @@ class Sender1 extends StatelessWidget {
         ));
   }
 }
-
-
-//  Align(
-//               alignment: Alignment.bottomCenter,
-//               child: AddSubspaceForm(
-//                 postcontentController: addsubspacecontroller,
-//                 hintText: "Send Message",
-//                 subspaceName: widget.title,
-//               ),
-//             ),

@@ -113,8 +113,6 @@ class BlockUser extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ))
-
-                    // Text(username, style: const TextStyle(fontWeight: FontWeight.w500)),
                     ),
                 trailing: Padding(
                   padding: EdgeInsets.only(right: 15),
