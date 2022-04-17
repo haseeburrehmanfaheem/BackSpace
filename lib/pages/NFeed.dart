@@ -393,81 +393,85 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Post(
-              userName: widget.userName,
-              userimage: widget.userimage,
-              time: widget.time,
-              postcontent: widget.postcontent,
-              likes: widget.likes,
-              postID: widget.post_id,
-              PostImg: widget.PostImg,
-              functionalComment: false,
-              // IMPORTANT ___________________________________________________________________________________________
-              userAbout: "",
-            ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
-            // DisplayComments(comments, profileImage, name),
-            FutureBuilder(
-                future: getAllComments(widget.post_id),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text("");
-                  }
-                  final comments = snapshot.data;
-                  return Column(
-                    children: <Widget>[
-                      for (var comment in comments)
-                        CommentsDisplay(
-                            userImg: comment["userimageURL"],
-                            name: comment["username"],
-                            Time: "",
-                            posttext: comment["commentContent"])
-                      // Text(comment["commentContent"]),
-                    ],
-                  );
-                }),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Form(
-          key: formGlobalKey,
-          child: TextFormField(
-            controller: commentController,
-            onTap: () {},
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Enter some Text';
-              }
-              return null;
-            },
-            decoration: InputDecoration(
-              hintText: "Add Comment",
-              fillColor: const Color(0xfff9f9fa),
-              filled: true,
-              suffixIcon: IconButton(
-                icon: Icon(Icons.arrow_forward),
-                onPressed: () async {
-                  if (formGlobalKey.currentState!.validate()) {
-                    // print(commentController.text);
-                    await updateCommentInDB(
-                        commentController.text, widget.post_id);
-                    commentController.clear();
-                    // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-                  }
-                },
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Post(
+                    userName: widget.userName,
+                    userimage: widget.userimage,
+                    time: widget.time,
+                    postcontent: widget.postcontent,
+                    likes: widget.likes,
+                    postID: widget.post_id,
+                    PostImg: widget.PostImg,
+                    functionalComment: false,
+                    // IMPORTANT ___________________________________________________________________________________________
+                    userAbout: "",
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
+                  // DisplayComments(comments, profileImage, name),
+                  FutureBuilder(
+                      future: getAllComments(widget.post_id),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Text("");
+                        }
+                        final comments = snapshot.data;
+                        return Column(
+                          children: <Widget>[
+                            for (var comment in comments)
+                              CommentsDisplay(
+                                  userImg: comment["userimageURL"],
+                                  name: comment["username"],
+                                  Time: "",
+                                  posttext: comment["commentContent"])
+                            // Text(comment["commentContent"]),
+                          ],
+                        );
+                      }),
+                ],
               ),
             ),
           ),
-        ),
+          Form(
+            key: formGlobalKey,
+            child: TextFormField(
+              controller: commentController,
+              onTap: () {},
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Enter some Text';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: "Add Comment",
+                fillColor: const Color(0xfff9f9fa),
+                filled: true,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.arrow_forward),
+                  onPressed: () async {
+                    if (formGlobalKey.currentState!.validate()) {
+                      // print(commentController.text);
+                      await updateCommentInDB(
+                          commentController.text, widget.post_id);
+                      commentController.clear();
+                      // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
+                    }
+                  },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
