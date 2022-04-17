@@ -1,4 +1,5 @@
 import 'package:backspace/pages/Notification.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:backspace/pages/subspacechat.dart';
@@ -22,8 +23,7 @@ class SubSpace extends StatelessWidget {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
-          title:
-              const Text('Sub Space', style: TextStyle(fontFamily: "Poppins")),
+          title: const Text('Sub Space'),
           actions: [
             const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
@@ -43,28 +43,79 @@ class SubSpace extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: 
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-            child: Text("Joined Subspaces",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 24,
-                )),
-            padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)
-            ),
-        InkWell(
-          child: SimpleCard(userName: "Gaming", imagePath: "/images/gaming.jpg"),
-          onTap: (){
-                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SubSpaceChat(name: "Gaming", image: "/images/gaming.jpg", about: "asjkdbcajksbcafj",) ));
-                    },
-                    
-        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Padding(
+            //     child: Text("Joined Subspaces",
+            //         textAlign: TextAlign.left,
+            //         style: TextStyle(
+            //           fontSize: 24,
+            //         )),
+            //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)
+            //     ),
+            FutureBuilder(
+                future: getallsubspaces(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }
+                  final subspaces = snapshot.data;
+                  return ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      for (var each in subspaces)
+                        // Text("data")
+                        SimpleCard2(
+                          userName: each["name"],
+                          imagePath: each["imageURL"],
+                        )
+                    ],
+                  );
+                }),
 
-        ],
+            // SimpleCard2(userName: "Gaming", imagePath: "/images/gaming.jpg"),
+          ],
         ),
       ),
     );
   }
+}
+
+class SimpleCard2 extends StatelessWidget {
+  final String? userName;
+  final String? imagePath;
+  // final context;
+
+  SimpleCard2({
+    this.userName,
+    this.imagePath,
+
+    // required this.context,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => {},
+      child: SizedBox(
+          height: 80,
+          child: Card(
+            margin: EdgeInsets.zero,
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(
+                  color: Color.fromARGB(101, 24, 21, 21), width: 0.5),
+            ),
+            child: Row(children: [
+              ImageAndName(name: userName, image: imagePath),
+            ]),
+            // elevation: 5,
+          )),
+    );
+  }
+}
+
+getallsubspaces() async {
+  var subspaces = await FirebaseFirestore.instance.collection("SubSpace").get();
+  return subspaces.docs;
 }

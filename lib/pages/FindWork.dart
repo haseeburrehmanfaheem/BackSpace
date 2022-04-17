@@ -44,6 +44,113 @@ class FindWork extends StatelessWidget {
         foregroundColor: Colors.black,
       ),
       body: Center(
+        //     child: StreamBuilder(
+        //   stream: FirebaseFirestore.instance
+        //       .collection("Posts")
+        //       .where("subspace", isEqualTo: "work")
+        //       .snapshots(),
+        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //     // print(widget.chatID);
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return SizedBox(
+        //         height: MediaQuery.of(context).size.height / 1.3,
+        //         child: Center(
+        //           child: CircularProgressIndicator(),
+        //         ),
+        //       );
+        //     }
+        //     if (snapshot.hasError) {
+        //       return Text("Something went wrong");
+        //     }
+        //     return ListView(
+        //       // shrinkWrap: true,
+        //       children:
+        //           snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+        //         Map<String, dynamic> post =
+        //             document.data()! as Map<String, dynamic>;
+        //         var query = FirebaseFirestore.instance
+        //             .collection("UserData")
+        //             .where("email", isEqualTo: post["email"])
+        //             .snapshots();
+
+        //         return StreamBuilder<QuerySnapshot>(
+        //           stream: query,
+        //           builder: (context, AsyncSnapshot snapshot1) {
+        //             if (!snapshot.hasData) return Text("Loading...");
+
+        //             // right here is where you need to put the widget that you
+        //             // want to create for the history entries in snapshot.data...
+        //             return Text(
+        //                 "${post["content"]} ${snapshot1.data.docs[0]["username"]} ${post.documentID}");
+        //             // return Text("hello");
+        //             //  return workPost(
+        //             //   userName: post["username"],
+        //             //   userimage: post["userImageURL"],
+        //             //   time: "5 min",
+        //             //   postcontent: post["content"],
+        //             //   // PostImg: post["postImageURL"],
+        //             //   // likes: post["likes"],
+        //             //   postID: post["postID"],
+        //             //   userAbout: post["userAbout"]
+        //             //   // functionalComment: true,
+        //             //   );
+        //           },
+        //         );
+        //         // return Text("HAHA");
+
+        //         // return senderOrReceiver(message);
+        //       }).toList(),
+        //     );
+        //   },
+        // )
+
+//         child: StreamBuilder(
+//         stream: FirebaseFirestore.instance.collection("Posts").snapshots(),
+//         //       // .where("subspace", isEqualTo: "work")
+//         //       .snapshots(),
+//           builder: (context,AsyncSnapshot snapshot1) {
+//         return StreamBuilder(
+//         stream: FirebaseFirestore.instance.collection("UserData").snapshots(),
+//       builder: (context, AsyncSnapshot snapshot2) {
+//         // print(widget.chatID);
+//             if (snapshot1.connectionState == ConnectionState.waiting) {
+//               return SizedBox(
+//                 height: MediaQuery.of(context).size.height / 1.3,
+//                 child: Center(
+//                   child: CircularProgressIndicator(),
+//                 ),
+//               );
+//             }
+//             if (snapshot1.hasError) {
+//               return Text("Something went wrong");
+//             }
+//             return ListView(
+//               // shrinkWrap: true,
+//               children:
+//                   snapshot1.data.docs.map<Widget>((DocumentSnapshot document) {
+//                 Map<String, dynamic> post =
+//                     document.data() as Map<String, dynamic>;
+//                 // return Text("HAHA");
+//                 return workPost(
+//                     userName: post["username"],
+//                     userimage: post["userImageURL"],
+//                     time: "5 min",
+//                     postcontent: post["content"],
+//                     // PostImg: post["postImageURL"],
+//                     // likes: post["likes"],
+//                     postID: post["postID"],
+//                     userAbout: post["userAbout"]
+//                     // functionalComment: true,
+//                     );
+//                 // return senderOrReceiver(message);
+//               }).toList(),
+//             );
+//         // do some stuff with both streams here
+//       },
+//     );
+//   },
+// )
+
         child: FutureBuilder(
             future: completePost(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -57,16 +164,16 @@ class FindWork extends StatelessWidget {
                     if (post["subspace"] ==
                         "work") // displaying in find work ////////////////////////////
                       workPost(
-                        userName: post["username"],
-                        userimage: post["userImageURL"],
-                        time: "5 min",
-                        postcontent: post["content"],
-                        // PostImg: post["postImageURL"],
-                        // likes: post["likes"],
-                        postID: post["postID"],
-                        userAbout: post["userAbout"]
-                        // functionalComment: true,
-                      ),
+                          userName: post["username"],
+                          userimage: post["userImageURL"],
+                          time: "5 min",
+                          postcontent: post["content"],
+                          // PostImg: post["postImageURL"],
+                          // likes: post["likes"],
+                          postID: post["postID"],
+                          userAbout: post["userAbout"]
+                          // functionalComment: true,
+                          ),
                 ],
               );
             }),
@@ -108,17 +215,17 @@ class workPost extends StatelessWidget {
   final String? userAbout;
   // final bool functionalComment;
 
-  const workPost({
-    required this.userName,
-    required this.userimage,
-    required this.time,
-    // this.PostImg,
-    required this.postcontent,
-    // required this.likes,
-    required this.postID,
-    this.userAbout
-    // required this.functionalComment
-  });
+  const workPost(
+      {required this.userName,
+      required this.userimage,
+      required this.time,
+      // this.PostImg,
+      required this.postcontent,
+      // required this.likes,
+      required this.postID,
+      this.userAbout
+      // required this.functionalComment
+      });
 
   @override
   Widget build(BuildContext context) {

@@ -76,34 +76,90 @@ class Feed extends StatelessWidget {
       ),
 
       body: Center(
-        child: FutureBuilder(
-            future: completePost(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
-              final posts = snapshot.data;
-              return ListView(
-                children: <Widget>[
-                  for (var post in posts)
-                    if ((post["subspace"] == null || post["subspace"] == "") &&
-                        (post["approved"] ==
-                            true)) // displaying in newsfeed ////////////////////////////
-                      Post(
-                        userName: post["username"],
-                        userimage: post["userImageURL"],
-                        time: "5 min",
-                        postcontent: post["content"],
-                        PostImg: post["postImageURL"],
-                        likes: post["likes"],
-                        postID: post["postID"],
-                        functionalComment: true,
-                        userAbout: post["userAbout"],
-                      ),
-                ],
+          child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("Posts")
+            .where("subspace", isEqualTo: "")
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // print(widget.chatID);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // return Text("leading");
+
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+
+          return ListView(
+            shrinkWrap: true,
+            // primary: false,
+            physics: BouncingScrollPhysics(),
+            children:
+                snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+              Map<String, dynamic> post =
+                  document.data()! as Map<String, dynamic>;
+              var query = FirebaseFirestore.instance
+                  .collection("UserData")
+                  .where("email", isEqualTo: post["email"])
+                  .snapshots();
+
+              return StreamBuilder<QuerySnapshot>(
+                stream: query,
+                builder: (context, AsyncSnapshot snapshot1) {
+                  if (!snapshot1.hasData) return Text("loading");
+                  return Post(
+                    userName: snapshot1.data.docs[0]["username"],
+                    userimage: snapshot1.data.docs[0]["imageURL"],
+                    time: "5 min",
+                    postcontent: post["content"],
+                    PostImg: post["imageURL"],
+                    likes: post["likes"],
+                    postID: document.id,
+                    functionalComment: true,
+                    userAbout: snapshot1.data.docs[0]["about"],
+                  );
+                },
               );
-            }),
-      ),
+            }).toList(),
+          );
+        },
+      )
+
+          // child: FutureBuilder(
+          //     future: completePost(),
+          //     builder: (context, AsyncSnapshot snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return CircularProgressIndicator();
+          //       }
+          //       final posts = snapshot.data;
+          //       return ListView(
+          //         children: <Widget>[
+          //           for (var post in posts)
+          //             if ((post["subspace"] == null || post["subspace"] == "") &&
+          //                 (post["approved"] ==
+          //                     true)) // displaying in newsfeed ////////////////////////////
+          //               Post(
+          //                 userName: post["username"],
+          //                 userimage: post["userImageURL"],
+          //                 time: "5 min",
+          //                 postcontent: post["content"],
+          //                 PostImg: post["postImageURL"],
+          //                 likes: post["likes"],
+          //                 postID: post["postID"],
+          //                 functionalComment: true,
+          //                 userAbout: post["userAbout"],
+          //               ),
+          //         ],
+          //       );
+          //     }),
+          ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

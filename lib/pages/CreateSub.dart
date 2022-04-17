@@ -2,11 +2,16 @@
 
 import 'dart:io';
 
+import 'package:backspace/api/firebase-api.dart';
 import 'package:backspace/pages/AddEvent.dart';
 import 'package:backspace/pages/Admindrawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+
+import 'ApprovedPosts.dart';
 
 var SubspaceNameController = TextEditingController();
 var SubspaceDescriptionController = TextEditingController();
@@ -206,11 +211,29 @@ class _SubspaceFormState extends State<SubspaceForm> {
           child: MaterialButton(
             minWidth: double.infinity,
             height: 60,
-            onPressed: () {
+            onPressed: () async {
               if (Namekey.currentState!.validate() &&
                   Aboutkey.currentState!.validate()) {
                 // print("wassup");
                 print(SubspaceNameController.text);
+                print(SubspaceDescriptionController.text);
+                String? URL =
+                    "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fsubspacedefaultimage.png?alt=media&token=971f5a5e-80dd-4573-b41e-fcf31cd1a2ab";
+                if (widget.image != null) {
+                  final fileName = basename(widget.image!.path);
+                  // print(fileName);
+                  // print("current phone data is: $myDateTime");
+                  final storagePath =
+                      'UserImages/${SubspaceDescriptionController.text}_$fileName';
+                  URL =
+                      await FirebaseApi.uploadFile(storagePath, widget.image!);
+                  // print(URL);
+                }
+                String name = SubspaceNameController.text;
+                String description = SubspaceDescriptionController.text;
+                await SaveSubspaceInDb(name, description, URL);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Proved()));
               }
             },
             color: Colors.black,
@@ -243,4 +266,14 @@ Widget buildImage(s) {
       ),
     ),
   );
+}
+
+SaveSubspaceInDb(name, description, URL) async {
+  var ref = await FirebaseFirestore.instance.collection("SubSpace");
+
+  ref.add({
+    "name": name,
+    "imageURL": URL,
+    "description": description,
+  });
 }
