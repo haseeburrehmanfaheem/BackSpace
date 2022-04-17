@@ -393,55 +393,57 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Post(
-              userName: widget.userName,
-              userimage: widget.userimage,
-              time: widget.time,
-              postcontent: widget.postcontent,
-              likes: widget.likes,
-              postID: widget.post_id,
-              PostImg: widget.PostImg,
-              functionalComment: false,
-              // IMPORTANT ___________________________________________________________________________________________
-              userAbout: "",
+
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Post(
+                    userName: widget.userName,
+                    userimage: widget.userimage,
+                    time: widget.time,
+                    postcontent: widget.postcontent,
+                    likes: widget.likes,
+                    postID: widget.post_id,
+                    PostImg: widget.PostImg,
+                    functionalComment: false,
+                    // IMPORTANT ___________________________________________________________________________________________
+                    userAbout: "",
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
+                  // DisplayComments(comments, profileImage, name),
+                  FutureBuilder(
+                      future: getAllComments(widget.post_id),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Text("");
+                        }
+                        final comments = snapshot.data;
+                        return Column(
+                          children: <Widget>[
+                            for (var comment in comments)
+                              CommentsDisplay(
+                                  userImg: comment["userimageURL"],
+                                  name: comment["username"],
+                                  Time: "",
+                                  posttext: comment["commentContent"])
+                            // Text(comment["commentContent"]),
+                          ],
+                        );
+                      }),
+                ],
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
-            // DisplayComments(comments, profileImage, name),
-            FutureBuilder(
-                future: getAllComments(widget.post_id),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text("");
-                  }
-                  final comments = snapshot.data;
-                  return Column(
-                    children: <Widget>[
-                      for (var comment in comments)
-                        CommentsDisplay(
-                            userImg: comment["userimageURL"],
-                            name: comment["username"],
-                            Time: "",
-                            posttext: comment["commentContent"])
-                      // Text(comment["commentContent"]),
-                    ],
-                  );
-                }),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          margin: EdgeInsets.all(15.0),
-          child: Form(
+          ),
+          Form(
             key: formGlobalKey,
             child: TextFormField(
               controller: commentController,
-              
+
               onTap: () {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -450,6 +452,7 @@ class _PostscommentState extends State<Postscomment> {
                 return null;
               },
               decoration: InputDecoration(
+
                 
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -464,6 +467,7 @@ class _PostscommentState extends State<Postscomment> {
                 filled: true,
                 isDense: true,
                 contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+
                 suffixIcon: IconButton(
                   icon: Icon(Icons.arrow_forward),
                   onPressed: () async {
@@ -476,16 +480,18 @@ class _PostscommentState extends State<Postscomment> {
                     }
                   },
                 ),
+
                 
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50.0),
                   
                   // borderSide: BorderSide(color: Colors.white)
+
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

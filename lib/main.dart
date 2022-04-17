@@ -115,13 +115,13 @@ class MyApp extends StatelessWidget {
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
 
-      // home: SubSpaceChat(name: "Gaming", image: DemoValues.postImage3, about: "Gaming is all about adkjbadkjsbkasdbdsbkdjs",)
+
       // home: Messages()
       // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
       home: BottomNavigation(),
       // home: ViewProfile()
       // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
-//       home: BottomNavigation(),
+      home: BottomNavigation(),
 
       // home: Proved(),
       // FirebaseAuth.instance.signOut();
