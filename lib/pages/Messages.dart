@@ -43,8 +43,8 @@ class _MessagesState extends State<Messages> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 List<Map<String, dynamic>>? filteredUsers =
-                    await FirebaseApi.searchUsers(userSearchController.text);
-                // await FirebaseApi.returnAllUsers();
+                    // await FirebaseApi.searchUsers(userSearchController.text);
+                await FirebaseApi.returnAllUsers();
 
                 setState(() => widget.searchResultUsers = filteredUsers);
               }
@@ -126,34 +126,35 @@ class _MessagesState extends State<Messages> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: showSearchResults()
+        body: 
+        // showSearchResults()
 
-        // FutureBuilder(
-        //     future: FirebaseApi.returnAllUsers(),
-        //     builder: (BuildContext context, AsyncSnapshot? snapshot) {
-        //       if (snapshot!.connectionState == ConnectionState.waiting) {
-        //         return SizedBox(
-        //           height: MediaQuery.of(context).size.height / 1.3,
-        //           child: Center(
-        //             child: CircularProgressIndicator(),
-        //           ),
-        //         );
-        //       }
-        //       if (snapshot != null) {
-        //         return ListView(
-        //           children: [
-        //             for (var user in snapshot.data)
-        //               Message(
-        //                 user: user,
-        //                 Time: "2 sec",
-        //                 posttext: "",
-        //               )
-        //           ],
-        //         );
-        //       } else {
-        //         return Text("");
-        //       }
-        //     }),
+        FutureBuilder(
+            future: FirebaseApi.returnAllUsers(),
+            builder: (BuildContext context, AsyncSnapshot? snapshot) {
+              if (snapshot!.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              if (snapshot != null) {
+                return ListView(
+                  children: [
+                    for (var user in snapshot.data)
+                      Message(
+                        user: user,
+                        Time: "2 sec",
+                        posttext: "",
+                      )
+                  ],
+                );
+              } else {
+                return Text("");
+              }
+            }),
         );
   }
 }
