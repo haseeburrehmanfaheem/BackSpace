@@ -60,8 +60,7 @@ class Pending extends StatelessWidget {
                   return Column(
                     children: <Widget>[
                       for (var post in posts)
-                        if ((post["subspace"] == null ||
-                                post["subspace"] == "") &&
+                        if ((post["subspace"] == "") &&
                             (post["approved"] == false))
 
                           // displaying in newsfeed ////////////////////////////
