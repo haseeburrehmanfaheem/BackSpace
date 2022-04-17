@@ -106,7 +106,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
 addDataToPost(emailID, imageURL, content, context, myDateTime) async {
   var ref = await FirebaseFirestore.instance.collection("Posts");
-
+  
 
   ref.add({
     "email": emailID,
