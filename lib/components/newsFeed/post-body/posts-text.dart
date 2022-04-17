@@ -13,7 +13,9 @@ class PostBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
           child: Text(
             postSummary,
+            style: TextStyle(color: Colors.black.withOpacity(0.7)),
           ),
+          
         ));
 
   }

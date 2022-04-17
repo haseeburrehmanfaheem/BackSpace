@@ -164,7 +164,7 @@ class _MyDrawer extends State<MyDrawer> {
                       snapshot.data ?? " ",
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.black.withOpacity(.50),
+                        color: Colors.black,
                       ),
                     );
                   } else {
@@ -172,7 +172,7 @@ class _MyDrawer extends State<MyDrawer> {
                       "Loading data...",
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.black.withOpacity(.50),
+                        color: Colors.black,
                       ),
                     );
                   }
@@ -202,6 +202,7 @@ class _MyDrawer extends State<MyDrawer> {
                 s!,
                 style: TextStyle(
                   fontSize: 16,
+                  color: Colors.black.withOpacity(.50),
                 ),
               ),
             ),

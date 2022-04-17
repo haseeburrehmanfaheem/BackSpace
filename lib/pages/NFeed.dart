@@ -434,7 +434,7 @@ class _PostscommentState extends State<Postscomment> {
                   );
                 }),
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
+              padding: EdgeInsets.only(bottom: 8.0),
               child: Form(
                 key: formGlobalKey,
                 child: TextFormField(
