@@ -44,153 +44,110 @@ class FindWork extends StatelessWidget {
         foregroundColor: Colors.black,
       ),
       body: Center(
-        //     child: StreamBuilder(
-        //   stream: FirebaseFirestore.instance
-        //       .collection("Posts")
-        //       .where("subspace", isEqualTo: "work")
-        //       .snapshots(),
-        //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //     // print(widget.chatID);
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return SizedBox(
-        //         height: MediaQuery.of(context).size.height / 1.3,
-        //         child: Center(
-        //           child: CircularProgressIndicator(),
-        //         ),
-        //       );
-        //     }
-        //     if (snapshot.hasError) {
-        //       return Text("Something went wrong");
-        //     }
-        //     return ListView(
-        //       // shrinkWrap: true,
-        //       children:
-        //           snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
-        //         Map<String, dynamic> post =
-        //             document.data()! as Map<String, dynamic>;
-        //         var query = FirebaseFirestore.instance
-        //             .collection("UserData")
-        //             .where("email", isEqualTo: post["email"])
-        //             .snapshots();
-
-        //         return StreamBuilder<QuerySnapshot>(
-        //           stream: query,
-        //           builder: (context, AsyncSnapshot snapshot1) {
-        //             if (!snapshot.hasData) return Text("Loading...");
-
-        //             // right here is where you need to put the widget that you
-        //             // want to create for the history entries in snapshot.data...
-        //             return Text(
-        //                 "${post["content"]} ${snapshot1.data.docs[0]["username"]} ${post.documentID}");
-        //             // return Text("hello");
-        //             //  return workPost(
-        //             //   userName: post["username"],
-        //             //   userimage: post["userImageURL"],
-        //             //   time: "5 min",
-        //             //   postcontent: post["content"],
-        //             //   // PostImg: post["postImageURL"],
-        //             //   // likes: post["likes"],
-        //             //   postID: post["postID"],
-        //             //   userAbout: post["userAbout"]
-        //             //   // functionalComment: true,
-        //             //   );
-        //           },
-        //         );
-        //         // return Text("HAHA");
-
-        //         // return senderOrReceiver(message);
-        //       }).toList(),
-        //     );
-        //   },
-        // )
-
-//         child: StreamBuilder(
-//         stream: FirebaseFirestore.instance.collection("Posts").snapshots(),
-//         //       // .where("subspace", isEqualTo: "work")
-//         //       .snapshots(),
-//           builder: (context,AsyncSnapshot snapshot1) {
-//         return StreamBuilder(
-//         stream: FirebaseFirestore.instance.collection("UserData").snapshots(),
-//       builder: (context, AsyncSnapshot snapshot2) {
-//         // print(widget.chatID);
-//             if (snapshot1.connectionState == ConnectionState.waiting) {
-//               return SizedBox(
-//                 height: MediaQuery.of(context).size.height / 1.3,
-//                 child: Center(
-//                   child: CircularProgressIndicator(),
-//                 ),
-//               );
-//             }
-//             if (snapshot1.hasError) {
-//               return Text("Something went wrong");
-//             }
-//             return ListView(
-//               // shrinkWrap: true,
-//               children:
-//                   snapshot1.data.docs.map<Widget>((DocumentSnapshot document) {
-//                 Map<String, dynamic> post =
-//                     document.data() as Map<String, dynamic>;
-//                 // return Text("HAHA");
-//                 return workPost(
-//                     userName: post["username"],
-//                     userimage: post["userImageURL"],
-//                     time: "5 min",
-//                     postcontent: post["content"],
-//                     // PostImg: post["postImageURL"],
-//                     // likes: post["likes"],
-//                     postID: post["postID"],
-//                     userAbout: post["userAbout"]
-//                     // functionalComment: true,
-//                     );
-//                 // return senderOrReceiver(message);
-//               }).toList(),
-//             );
-//         // do some stuff with both streams here
-//       },
-//     );
-//   },
-// )
-
-        child: FutureBuilder(
-            future: completePost(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
-              final posts = snapshot.data;
-              return ListView(
-                children: <Widget>[
-                  for (var post in posts)
-                    if (post["subspace"] ==
-                        "work") // displaying in find work ////////////////////////////
-                      workPost(
-                          userName: post["username"],
-                          userimage: post["userImageURL"],
-                          time: post["created_at"],
-                          postcontent: post["content"],
-                          // PostImg: post["postImageURL"],
-                          // likes: post["likes"],
-                          postID: post["postID"],
-                          userAbout: post["userAbout"]
-                          // functionalComment: true,
-                          ),
-                ],
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("Posts")
+              .where("subspace", isEqualTo: "work")
+              .orderBy("created_at", descending: true)
+              .snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
-            }),
+            }
 
-        // ListView(
-        //   children: [
-        //     Post(
-        //         userName: "Bill Gates",
-        //         userimage: "assets/images/bill-gates.jpg",
-        //         time: "3 min",
-        //         postcontent: "new cmd lie fsgd nf odfg iajfd htr ghfh",
-        //         postID: "xyz"),
-        //   ],
-        // )
+            // print(widget.chatID);
+            else if (snapshot.connectionState == ConnectionState.waiting) {
+              // return Text("leading");
 
-        // ,
-        // Text('Hello World'),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            if (snapshot.hasError) {
+              return Text("Something went wrong");
+            }
+
+            return ListView(
+              shrinkWrap: true,
+              // primary: false,
+              physics: BouncingScrollPhysics(),
+              children:
+                  snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+                Map<String, dynamic> post =
+                    document.data()! as Map<String, dynamic>;
+                var query = FirebaseFirestore.instance
+                    .collection("UserData")
+                    .where("email", isEqualTo: post["email"])
+                    .snapshots();
+
+                return StreamBuilder<QuerySnapshot>(
+                  stream: query,
+                  builder: (context, AsyncSnapshot snapshot1) {
+                    if (!snapshot1.hasData) return Text("");
+                    // CircularProgressIndicator();
+                    return workPost(
+                        userName: snapshot1.data.docs[0]["username"],
+                        userimage: snapshot1.data.docs[0]["imageURL"],
+                        time: post["created_at"],
+                        postcontent: post["content"],
+                        // PostImg: post["postImageURL"],
+                        // likes: post["likes"],
+                        postID: document.id,
+                        userAbout: snapshot1.data.docs[0]["about"]
+                        // functionalComment: true,
+                        );
+
+                    // Post(
+                    //   userName: snapshot1.data.docs[0]["username"],
+                    //   userimage: snapshot1.data.docs[0]["imageURL"],
+                    //   time: post["created_at"],
+                    //   postcontent: post["content"],
+                    //   PostImg: post["imageURL"],
+                    //   likes: post["likes"],
+                    //   postID: document.id,
+                    //   functionalComment: true,
+                    //   userAbout: snapshot1.data.docs[0]["about"],
+                    // );
+                  },
+                );
+              }).toList(),
+            );
+          },
+        ),
+        // child: FutureBuilder(
+        //     future: completePost(),
+        //     builder: (context, AsyncSnapshot snapshot) {
+        //       if (!snapshot.hasData) {
+        //         return CircularProgressIndicator();
+        //       }
+        //       final posts = snapshot.data;
+        //       return ListView(
+        //         children: <Widget>[
+        //           for (var post in posts)
+        //             if (post["subspace"] ==
+        //                 "work") // displaying in find work ////////////////////////////
+        //               workPost(
+        //                   userName: post["username"],
+        //                   userimage: post["userImageURL"],
+        //                   time: post["created_at"],
+        //                   postcontent: post["content"],
+        //                   // PostImg: post["postImageURL"],
+        //                   // likes: post["likes"],
+        //                   postID: post["postID"],
+        //                   userAbout: post["userAbout"]
+        //                   // functionalComment: true,
+        //                   ),
+        //         ],
+        //       );
+        //     }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -230,7 +187,9 @@ class workPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 10,),
+      margin: EdgeInsets.only(
+        top: 10,
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
