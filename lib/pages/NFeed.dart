@@ -80,6 +80,7 @@ class Feed extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("Posts")
             .where("subspace", isEqualTo: "")
+            .orderBy("created_at", descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -127,7 +128,7 @@ class Feed extends StatelessWidget {
                   return Post(
                     userName: snapshot1.data.docs[0]["username"],
                     userimage: snapshot1.data.docs[0]["imageURL"],
-                    time: "5 min",
+                    time: post["created_at"],
                     postcontent: post["content"],
                     PostImg: post["imageURL"],
                     likes: post["likes"],
@@ -203,7 +204,7 @@ newPage(context) {
 class Post extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   final int likes;
@@ -266,7 +267,7 @@ class PostFooter extends StatefulWidget {
 
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   final bool functionalComment;
@@ -353,7 +354,7 @@ class Postscomment extends StatefulWidget {
   var post_id;
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String? PostImg;
   final String postcontent;
   Postscomment(
