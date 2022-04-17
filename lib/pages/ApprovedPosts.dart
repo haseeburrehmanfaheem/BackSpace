@@ -48,9 +48,10 @@ class Proved extends StatelessWidget {
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.40),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 }
                 // else if()
                 final posts = snapshot.data;
@@ -171,7 +172,7 @@ class _PostFooter extends State<PostFooter> {
           //color: Colors.green,
           child: Text(
             "Reject",
-            style: TextStyle(fontSize: 16.0, color: Colors.red),
+            style: TextStyle(fontSize: 14.0, color: Colors.red),
           ),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
@@ -179,7 +180,7 @@ class _PostFooter extends State<PostFooter> {
               color: Colors.red,
             ),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () {
             DeletePostFromDB(widget.docid);

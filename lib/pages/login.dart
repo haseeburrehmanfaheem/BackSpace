@@ -130,7 +130,7 @@ class _LoginState extends State<Login> {
                             // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
-                                  showLoaderDialog(context);
+                              // showLoaderDialog(context);
                               login(emailController.text,
                                   passwordController.text, context);
                               //  Navigator.pushReplacement(
@@ -214,6 +214,7 @@ class _LoginState extends State<Login> {
 
 login(emailAddress, password, context) async {
   try {
+    showLoaderDialog(context);
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: emailAddress, password: password);
     final roles = await getUserData(emailAddress);
@@ -221,6 +222,7 @@ login(emailAddress, password, context) async {
     final blocked = roles.docs[0]["blocked"];
     // showLoaderDialog(context);
     if (temp == "user") {
+      // showLoaderDialog(context);
       if (blocked) {
         Fluttertoast.showToast(
             msg: "The User is blocked", gravity: ToastGravity.TOP);
@@ -230,6 +232,7 @@ login(emailAddress, password, context) async {
             context, MaterialPageRoute(builder: (_) => BottomNavigation()));
       }
     } else if (temp == "admin") {
+      // showLoaderDialog(context);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => Proved()));
     }
@@ -238,6 +241,7 @@ login(emailAddress, password, context) async {
     print('The user has been logged in');
     print(temp);
   } on FirebaseAuthException catch (e) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
     if (e.code == 'user-not-found') {
       Fluttertoast.showToast(
           msg: "These credentials do not match our records",
@@ -266,18 +270,20 @@ getUserData(email) async {
 //   var s = ref.docs[0];
 //   return s;
 // }
-showLoaderDialog(BuildContext context){
-    AlertDialog alert=AlertDialog(
-      content: new Row(
-        children: [
-          CircularProgressIndicator(),
-          Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
-        ],),
-    );
-    showDialog(barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return alert;
-      },
-    );
-  }
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

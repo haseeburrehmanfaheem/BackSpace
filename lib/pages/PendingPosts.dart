@@ -48,7 +48,8 @@ class Pending extends StatelessWidget {
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
                     return Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.40),
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
@@ -170,7 +171,7 @@ class _PostFooter extends State<PostFooter> {
           //color: Colors.green,
           child: Text(
             "Approve",
-            style: TextStyle(fontSize: 16.0, color: Colors.green),
+            style: TextStyle(fontSize: 14.0, color: Colors.green),
           ),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
@@ -178,7 +179,7 @@ class _PostFooter extends State<PostFooter> {
               color: Colors.green,
             ),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           onPressed: () {
             print(widget.id);
@@ -195,7 +196,7 @@ class _PostFooter extends State<PostFooter> {
               //color: Colors.green,
               child: Text(
                 "Reject",
-                style: TextStyle(fontSize: 16.0, color: Colors.red),
+                style: TextStyle(fontSize: 14.0, color: Colors.red),
               ),
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
@@ -203,8 +204,8 @@ class _PostFooter extends State<PostFooter> {
                   color: Colors.red,
                 ),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
               onPressed: () {
                 DeletePostFromDB(widget.id);
