@@ -10,76 +10,73 @@ class SubSpace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        drawer: MyDrawer(),
-        appBar: AppBar(
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: new Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      drawer: MyDrawer(),
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: new Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-          title: const Text('Sub Space'),
-          actions: [
-            const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Icon(Icons.search, color: Colors.black)),
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: IconButton(
-                  icon: Icon(Icons.notifications_outlined),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Noti()),
-                    );
-                  },
-                ))
-          ],
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Padding(
-            //     child: Text("Joined Subspaces",
-            //         textAlign: TextAlign.left,
-            //         style: TextStyle(
-            //           fontSize: 24,
-            //         )),
-            //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)
-            //     ),
-            FutureBuilder(
-                future: getallsubspaces(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                  final subspaces = snapshot.data;
-                  return ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      for (var each in subspaces)
-                        // Text("data")
-                        SimpleCard2(
-                          userName: each["name"],
-                          imagePath: each["imageURL"],
-                        )
-                    ],
+        title: const Text('Sub Space'),
+        actions: [
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(Icons.search, color: Colors.black)),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: IconButton(
+                icon: Icon(Icons.notifications_outlined),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Noti()),
                   );
-                }),
+                },
+              ))
+        ],
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Padding(
+          //     child: Text("Joined Subspaces",
+          //         textAlign: TextAlign.left,
+          //         style: TextStyle(
+          //           fontSize: 24,
+          //         )),
+          //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)
+          //     ),
+          FutureBuilder(
+              future: getallsubspaces(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.40),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final subspaces = snapshot.data;
+                return ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    for (var each in subspaces)
+                      // Text("data")
+                      SimpleCard2(
+                        userName: each["name"],
+                        imagePath: each["imageURL"],
+                      )
+                  ],
+                );
+              }),
 
-            // SimpleCard2(userName: "Gaming", imagePath: "/images/gaming.jpg"),
-          ],
-        ),
+          // SimpleCard2(userName: "Gaming", imagePath: "/images/gaming.jpg"),
+        ],
       ),
     );
   }
@@ -100,7 +97,16 @@ class SimpleCard2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SubSpaceChat(
+                      name: "Gaming",
+                      image: "assets/images/bill-gates.jpg",
+                      about: "Gaming is all about adkjbadkjsbkasdbdsbkdjs",
+                    )))
+      },
       child: SizedBox(
           height: 80,
           child: Card(
