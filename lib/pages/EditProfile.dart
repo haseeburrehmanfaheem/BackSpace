@@ -160,36 +160,7 @@ class MyCustomForm extends StatelessWidget {
             },
           ),
 
-          //  Stack(
-          //   children: [
-          //     buildImage("hehe"),
-          //     Positioned(bottom: 0, right: 0.5, child: buildEditIcon()),
-          //   ],
-          // ),
-          //
-          // ClipOval(
-          //   child: Material(
-          //     color: Colors.transparent,
-          //     child: Ink.image(
-          //       image: NetworkImage(
-          //           "https://firebasestorage.googleapis.com/v0/b/backspace-current.appspot.com/o/UserImages%2Fdefault.png?alt=media&token=dc5d36d7-0cb9-4b94-a36d-2f58bf776be5"),
-          //       fit: BoxFit.cover,
-          //       width: 128,
-          //       height: 128,
-          //       child: InkWell(),
-          //     ),
-          //   ),
-          // )
 
-          // MaterialButton(
-          //   child: const Text(
-          //     "Upload",
-          //     style: TextStyle(fontSize: 10.0),
-          //   ),
-          //   onPressed: () {},
-          //   shape:
-          //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          // ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -285,20 +256,7 @@ class MyCustomForm extends StatelessWidget {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => EditProfile()));
 
-              // print("hello world");
-              // String val = "";
-              // if (formkey1.currentState!.validate() &&
-              //     formkey2.currentState!.validate() &&
-              //     formkey3.currentState!.validate() &&
-              //     formkey4.currentState!.validate()) {
-              //   // Future<dynamic>
-              //   // String val =
-              //   signUp(
-              //       emailController.text,
-              //       password1Controller.text,
-              //       nameController.text,
-              //       context);
-              // }
+
             },
             color: Colors.black,
             shape:
@@ -335,9 +293,4 @@ Future<void> UpdateNameAbout(name, about) async {
       .get();
   ref.docs[0].reference.update({'about': about, 'username': name});
 
-  // final ref = FirebaseDatabase.instance.reference();
-  // print("Hello");
-  // if(ref)
-  // print(ref.docs[0]["username"]);
-  // var s = ref.docs[0].reference.update({'about': "cuntttttttttt world hehe!!"});
 }

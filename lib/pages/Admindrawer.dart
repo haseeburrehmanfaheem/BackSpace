@@ -22,18 +22,13 @@ class _AdminDrawer extends State<AdminDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 100,
-      // margin: const EdgeInsets.only(top: 50),
-      // height: MediaQuery.of(context).size.height * 0.92,
-      // height: EdgeInsets.only({double top: 50.0, double bottom: 0.0}),
-      // width: 50,
+
 
       child: Drawer(
         child: ListView(
           // padding: EdgeInsets.zero,
           padding: EdgeInsets.only(top: 20),
-          // padding: EdgeInsets.only(top: 10),
-          // margin: EdgeInsets.all(80),
+          
           children: <Widget>[
             ListTile(
                 leading: const Icon(Icons.pending_actions_outlined),

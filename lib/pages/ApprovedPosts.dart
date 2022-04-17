@@ -62,12 +62,8 @@ class Proved extends StatelessWidget {
                 return Column(
                   children: <Widget>[
                     for (var post in posts)
-                      if ((post["subspace"] == null ||
-                              post["subspace"] == "") &&
+                      if ((post["subspace"] == "") &&
                           (post["approved"] == true))
-
-                        // displaying in newsfeed ////////////////////////////
-                        // Text("data")
                         AdminPost(
                           userName: post["username"],
                           userimage: post["userImageURL"],
@@ -76,29 +72,9 @@ class Proved extends StatelessWidget {
                           PostImg: post["postImageURL"],
                           docid: post["postID"],
                         ),
-
-                    // Post(
-                    //   userName: post["username"],
-                    //   userimage: post["userImageURL"],
-                    //   time: "5 min",
-                    //   postcontent: post["content"],
-                    //   PostImg: post["postImageURL"],
-                    //   likes: post["likes"],
-                    //   postID: post["postID"],
-                    //   functionalComment: true,
-                    //   userAbout: post["userAbout"],
-                    // ),
                   ],
                 );
               })
-
-          // Post(
-          //   userName: "Haseeb",
-          //   userimage: "assets/images/bill-gates.jpg",
-          //   time: "4 min",
-          //   Posttxt: "Apun Eeeeenstance create kare lai",
-          //   //PostImg: "assets/images/Map.png",
-          // )
         ],
       ),
     );
@@ -138,11 +114,6 @@ class AdminPost extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 5),
             child: PostBody(postSummary: Posttxt),
-            // child:
-            //     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            //   Text(Posttxt,
-            //       style: const TextStyle(fontWeight: FontWeight.w500)),
-            // ]),
           ),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
           Divider(height: 1),

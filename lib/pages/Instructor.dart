@@ -95,50 +95,6 @@ class Instructors extends StatelessWidget {
               );
             },
           )
-          // Padding(
-          //     // child: Text("Search Results",
-          //     //     textAlign: TextAlign.left,
-          //     //     style: TextStyle(
-          //     //       fontSize: 24,
-          //     //     )),
-          //     padding: EdgeInsets.only(top: 20, left: 10, bottom: 10)),
-          // FutureBuilder(
-          //     future: getAllInstructors(),
-          //     builder: (context, AsyncSnapshot snapshot) {
-          //       if (!snapshot.hasData) {
-          //         return Center(child: CircularProgressIndicator());
-          //       }
-          //       final instructors = snapshot.data;
-          //       return ListView(
-          //         shrinkWrap: true,
-          //         // ListView.builder(itemBuilder: itemBuilder)
-          //         children: <Widget>[
-          //           for (var instructor in instructors)
-          //             SimpleCard(
-          //               userName: instructor["name"],
-          //               imagePath: instructor["pictureURL"],
-          //               rating: Rating(
-          //                   initialRating: instructor["rating"].toDouble()),
-          //               instructorID: instructor["id"],
-          //               initialRating: instructor["rating"].toDouble(),
-          //               // context:context ,
-          //             )
-          //         ],
-          //       );
-          //     }),
-
-          // SimpleCard(
-          //     userName: "Bill Gates",
-          //     imagePath: "assets/images/bill-gates.jpg",
-          //     rating: Rating(initialRating: 3.5)),
-          // SimpleCard(
-          //     userName: "Wajih Hassan",
-          //     imagePath: "assets/images/user1jpg.jpg",
-          //     rating: Rating(initialRating: 4.0)),
-          // SimpleCard(
-          //     userName: "Zartash Uzmi",
-          //     imagePath: "assets/images/user2.jpg",
-          //     rating: Rating(initialRating: 3.5)),
         ],
       ),
     );

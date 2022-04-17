@@ -115,50 +115,12 @@ class FindWork extends StatelessWidget {
                         userAbout: snapshot1.data.docs[0]["about"]
                         // functionalComment: true,
                         );
-
-                    // Post(
-                    //   userName: snapshot1.data.docs[0]["username"],
-                    //   userimage: snapshot1.data.docs[0]["imageURL"],
-                    //   time: post["created_at"],
-                    //   postcontent: post["content"],
-                    //   PostImg: post["imageURL"],
-                    //   likes: post["likes"],
-                    //   postID: document.id,
-                    //   functionalComment: true,
-                    //   userAbout: snapshot1.data.docs[0]["about"],
-                    // );
                   },
                 );
               }).toList(),
             );
           },
         ),
-        // child: FutureBuilder(
-        //     future: completePost(),
-        //     builder: (context, AsyncSnapshot snapshot) {
-        //       if (!snapshot.hasData) {
-        //         return CircularProgressIndicator();
-        //       }
-        //       final posts = snapshot.data;
-        //       return ListView(
-        //         children: <Widget>[
-        //           for (var post in posts)
-        //             if (post["subspace"] ==
-        //                 "work") // displaying in find work ////////////////////////////
-        //               workPost(
-        //                   userName: post["username"],
-        //                   userimage: post["userImageURL"],
-        //                   time: post["created_at"],
-        //                   postcontent: post["content"],
-        //                   // PostImg: post["postImageURL"],
-        //                   // likes: post["likes"],
-        //                   postID: post["postID"],
-        //                   userAbout: post["userAbout"]
-        //                   // functionalComment: true,
-        //                   ),
-        //         ],
-        //       );
-        //     }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -215,61 +177,12 @@ class workPost extends StatelessWidget {
           PostBody(postSummary: postcontent),
           // if (PostImg != null && PostImg != "") Image.network(PostImg!),
           Divider(height: 1),
-          // PostFooter(
-          //   likes: likes,
-          //   post_id: postID,
-          //   userName: userName,
-          //   userimage: userimage,
-          //   time: time,
-          //   PostImg: PostImg,
-          //   postcontent: postcontent,
-          //   functionalComment: functionalComment,
-          // ),
         ],
       ),
     );
   }
 }
 
-// Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>GetAllPostsContent() async {
-//   var posts = await FirebaseFirestore.instance.collection("Posts").get();
-
-//   return posts.docs;
-// }
-
-// completePost() async {
-//   final posts = await GetAllPostsContent();
-//   List<Map<String, dynamic>> completePosts = [];
-//   for (var post in posts) {
-//     final postWithUserData = await mapUserToPost(post);
-//     completePosts.add(postWithUserData);
-//   }
-//   return completePosts;
-// }
-
-// mapUserToPost(post) async {
-//   final userData = await getUserData(post["email"]);
-//   Map<String, dynamic> postsMap = {
-//     "username": userData.docs[0]["username"],
-//     "userImageURL": userData.docs[0]["imageURL"],
-//     "subspace": post["subspace"],
-//     "content": post["content"],
-//     "created_at": post["created_at"],
-//     "email": post["email"],
-//     "likes": post["likes"],
-//     "postImageURL": post["imageURL"],
-//     "postID": post.id
-//   };
-//   // print(post.id);
-//   return postsMap;
-// }
-
-// getUserData(email) async {
-//   return await FirebaseFirestore.instance
-//       .collection("UserData")
-//       .where("email", isEqualTo: email)
-//       .get();
-// }
 
 Widget findWorkSearchBuilder(collection, fieldName, query) {
   return FutureBuilder(

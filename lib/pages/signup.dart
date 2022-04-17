@@ -277,13 +277,7 @@ Widget makeInput(
           ),
           controller: controllerObj,
           validator: (value) {
-            // final FirebaseAuth auth = FirebaseAuth.instance;
-            // final user = auth.currentUser;
-            // final emailid = user!.email;
-            // String emailID = user.email;
-            // print(emailid);
 
-            // final User user = await FirebaseAuth.instance.currentUser;
             if (label == "Confirm Password") {
               if (value == null || value.isEmpty) {
                 return 'Please enter the password again';
@@ -317,10 +311,7 @@ Widget makeInput(
             }
             // return null;
           },
-          // onSaved: (value) {
-          //   controllerObj.text = value!;
-          // },
-          //  onSaved: (val)=>_password=val,
+          
         ),
       ),
       SizedBox(

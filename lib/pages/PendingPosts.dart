@@ -74,27 +74,11 @@ class Pending extends StatelessWidget {
                             postid: post["postID"],
                           ),
 
-                      // Post(
-                      //   userName: post["username"],
-                      //   userimage: post["userImageURL"],
-                      //   time: "5 min",
-                      //   postcontent: post["content"],
-                      //   PostImg: post["postImageURL"],
-                      //   likes: post["likes"],
-                      //   postID: post["postID"],
-                      //   functionalComment: true,
-                      //   userAbout: post["userAbout"],
-                      // ),
+
                     ],
                   );
                 })
-            // Post(
-            //   userName: "Aswad",
-            //   userimage: "assets/images/bill-gates.jpg",
-            //   time: "3 min",
-            //   Posttxt: "Stop littering pls :(",
-            //   PostImg: "assets/images/keys.jpg",
-            // )
+            
           ],
         ));
   }

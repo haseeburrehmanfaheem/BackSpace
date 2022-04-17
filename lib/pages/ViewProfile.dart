@@ -42,7 +42,6 @@ class _ViewProfileState extends State<ViewProfile> {
         ),
       ),
       body: Profile(username: widget.username, userimageURL: widget.userimageURL, userAbout: widget.userAbout),
-      // Text(widget.username + widget.userimageURL),Profile(widget.username, widget.userimageURL) ,
     );
   }
 }
@@ -83,7 +82,7 @@ class _ProfileState extends State<Profile> {
             children:  [
               Padding(
                 padding: EdgeInsets.all(12.0),
-                child: 
+                child:
                 // Text(widget.username),
                 Text(widget.username, style: TextStyle(fontSize: 25,),),
               ),
@@ -107,7 +106,7 @@ class _ProfileState extends State<Profile> {
                     icon: Icon(Icons.message),
                     label: const Text('Message', style: TextStyle( color: Colors.black, fontSize: 14, ),),
                     onPressed: () {
-                      
+
                     },
                 ),
               )
@@ -127,7 +126,7 @@ class _ProfileState extends State<Profile> {
               alignment: Alignment.centerLeft,
               child: Text(
                 widget.userAbout
-                // DemoValues.postSummary,
+                
               ),
             ),
           )
@@ -136,15 +135,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-
-
-// Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUserAbout(email) async {
-//   var ref = await FirebaseFirestore.instance
-//       .collection("UserData")
-//       .where("email", isEqualTo: email)
-//       .get();
-
-//   var s = ref.docs[0];
-//   return s;
-// }

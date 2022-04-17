@@ -50,7 +50,7 @@ class _AddPostPageState extends State<AddPostPage> {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: MaterialButton(
                 onPressed: () async {
-                  // if (_formKey.currentState!.validate()){}
+                  
                   String? URL = "";
                   final users = FirebaseAuth.instance.currentUser;
                   String? emailID = users?.email;
@@ -116,10 +116,6 @@ addDataToPost(emailID, imageURL, content, context, myDateTime) async {
     "subspace": "",
     "approved": false
   }).then((value) async {
-    // print(value.id);
-    // var comments_table =
-    //     await FirebaseFirestore.instance.collection("Comments");
-    // comments_table.add({"email": });
   }).catchError((error) => print("Failed to add user: $error"));
   return;
 }

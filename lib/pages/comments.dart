@@ -76,13 +76,7 @@ class CommentsDisplay extends StatelessWidget {
                       )),
                 ],
               ),
-              // Padding(
-              //   padding: EdgeInsets.only(right: 15, top: 5),
-              //   child: Text(
-              //     Time,
-              //     style: const TextStyle(fontWeight: FontWeight.w500),
-              //   ),
-              // ),
+              
             ],
           ),
         ),

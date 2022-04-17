@@ -303,12 +303,7 @@ class Sender extends StatelessWidget {
               ),
             ),
 
-            // BubbleSpecialThree(
-            //   text: postText,
-            //   color: Color(0xFFE8E8EE),
-            //   tail: false,
-            //   isSender: false,
-            // ),
+
           ],
         ));
   }
@@ -341,70 +336,7 @@ class Reciever extends StatelessWidget {
             ),
           ),
         ));
-    // child: BubbleSpecialThree(
-    //   text: postText,
-    //   color: Color(0xFF323232),
-    //   tail: false,
-    //   textStyle: TextStyle(color: Colors.white, fontSize: 16),
-    // ));
+
   }
 }
 
-// Container(
-//             // margin: EdgeInsets.all(),
-//             color: Colors.white,
-//             child: Form(
-//               key: formGlobalKey,
-
-//               child: Container(
-//                 margin: EdgeInsets.all(15),
-//                 child: TextFormField(
-//                   controller: commentController,
-
-//                   onTap: () {},
-//                   validator: (value) {
-//                     if (value == null || value.isEmpty) {
-//                       return 'Enter some Text';
-//                     }
-//                     return null;
-//                   },
-//                   decoration: InputDecoration(
-//                     enabledBorder: OutlineInputBorder(
-//                       borderSide: BorderSide(
-//                           color: Colors.white,
-//                            ),
-//                           borderRadius: BorderRadius.circular(25.0),
-//                       ),
-//                     hintText: "Add Comment",
-//                     fillColor: Colors.grey.withOpacity(0.3),
-//                     // fromRGBO(249, 249, 250, 1),
-
-//                     filled: true,
-//                     isDense: true,
-//                     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-
-//                     suffixIcon: IconButton(
-//                       icon: Icon(Icons.arrow_forward),
-//                       onPressed: () async {
-//                         if (formGlobalKey.currentState!.validate()) {
-//                           // print(commentController.text);
-//                           await updateCommentInDB(
-//                               commentController.text, widget.post_id);
-//                           commentController.clear();
-//                           // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-//                         }
-//                       },
-//                     ),
-
-
-//                     border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(50.0),
-
-//                       // borderSide: BorderSide(color: Colors.white)
-
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
