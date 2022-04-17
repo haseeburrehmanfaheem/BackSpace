@@ -68,9 +68,9 @@ class SubSpace extends StatelessWidget {
                     for (var each in subspaces)
                       // Text("data")
                       SimpleCard2(
-                        userName: each["name"],
-                        imagePath: each["imageURL"],
-                      )
+                          userName: each["name"],
+                          imagePath: each["imageURL"],
+                          about: each["description"])
                   ],
                 );
               }),
@@ -85,11 +85,13 @@ class SubSpace extends StatelessWidget {
 class SimpleCard2 extends StatelessWidget {
   final String? userName;
   final String? imagePath;
+  final String? about;
   // final context;
 
   SimpleCard2({
     this.userName,
     this.imagePath,
+    this.about,
 
     // required this.context,
   });
@@ -102,9 +104,9 @@ class SimpleCard2 extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => SubSpaceChat(
-                      name: "Gaming",
-                      image: "assets/images/bill-gates.jpg",
-                      about: "Gaming is all about adkjbadkjsbkasdbdsbkdjs",
+                      name: this.userName!,
+                      image: this.imagePath!,
+                      about: this.about!,
                     )))
       },
       child: SizedBox(
