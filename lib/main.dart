@@ -1,10 +1,15 @@
+import 'package:backspace/helper/demo_values.dart';
 import 'package:backspace/pages/AddEvent.dart';
 import 'package:backspace/pages/ApprovedPosts.dart';
 import 'package:backspace/pages/Chat.dart';
 import 'package:backspace/pages/EditProfile.dart';
+import 'package:backspace/pages/Messages.dart';
 import 'package:backspace/pages/ViewProfile.dart';
 import 'package:backspace/pages/homepage.dart';
 import 'package:backspace/pages/newsfeed.dart';
+import 'package:backspace/pages/Subspace.dart';
+
+import 'package:backspace/pages/subspacechat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -109,9 +114,15 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Backspace',
       debugShowCheckedModeBanner: false,
+
+      home: SubSpaceChat(name: "Gaming", image: DemoValues.postImage3, about: "Gaming is all about adkjbadkjsbkasdbdsbkdjs",)
+      // home: Messages()
+      // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
+      // home: BottomNavigation(),
       // home: ViewProfile()
       // home: signed_in ? (is_admin ? Proved() : BottomNavigation()) : Home(),
-      home: BottomNavigation(),
+//       home: BottomNavigation(),
+
       // home: Proved(),
       // FirebaseAuth.instance.signOut();
     );
