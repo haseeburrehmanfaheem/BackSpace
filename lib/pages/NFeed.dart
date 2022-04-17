@@ -135,6 +135,7 @@ class Feed extends StatelessWidget {
                     postID: document.id,
                     functionalComment: true,
                     userAbout: snapshot1.data.docs[0]["about"],
+                    email: snapshot1.data.docs[0]["email"]
                   );
                 },
               );
@@ -211,6 +212,7 @@ class Post extends StatelessWidget {
   final String postID;
   final bool functionalComment;
   final String userAbout;
+  final String? email;
 
   const Post(
       {required this.userName,
@@ -221,7 +223,8 @@ class Post extends StatelessWidget {
       required this.likes,
       required this.postID,
       required this.functionalComment,
-      required this.userAbout});
+      required this.userAbout,
+      this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +241,7 @@ class Post extends StatelessWidget {
             username: userName,
             postTime: time,
             userabout: userAbout,
+            delete: email,
           ),
           PostBody(postSummary: postcontent),
           if (PostImg != null && PostImg != "") Image.network(PostImg!),
