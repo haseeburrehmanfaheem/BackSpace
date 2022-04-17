@@ -83,7 +83,7 @@ class Feed extends StatelessWidget {
           child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("Posts")
-            .where("subspace", isEqualTo: null)
+            .where("subspace", isEqualTo: "")
             .orderBy("created_at", descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
