@@ -1,10 +1,12 @@
 import 'package:backspace/pages/ViewProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lit_relative_date_time/controller/relative_date_format.dart';
+import 'package:lit_relative_date_time/model/relative_date_time.dart';
 
 class UserIconName extends StatelessWidget {
   final String userImage;
-  final String postTime;
+  final Timestamp postTime;
   final String username;
   final String? userabout;
   // ignore: use_key_in_widget_constructors
@@ -55,8 +57,17 @@ class UserIconName extends StatelessWidget {
       trailing: Padding(
         padding: EdgeInsets.only(right: 15),
         child: Text(
-          postTime,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          RelativeDateFormat(
+                        Localizations.localeOf(context),
+                      ).format(
+                        RelativeDateTime(
+                          dateTime: DateTime.now(),
+                          other: DateTime.parse(
+                            postTime.toDate().toString(),
+                          ),
+                        ),
+                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
         ),
       ),
     );

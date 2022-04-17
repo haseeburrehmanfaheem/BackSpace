@@ -65,7 +65,7 @@ class Pending extends StatelessWidget {
                           AdminPost2(
                             userName: post["username"],
                             userimage: post["userImageURL"],
-                            time: "3 min",
+                            time: post["created_at"],
                             Posttxt: post["content"],
                             PostImg: post["postImageURL"],
                             postid: post["postID"],
@@ -100,7 +100,7 @@ class Pending extends StatelessWidget {
 class AdminPost2 extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String Posttxt;
   final String? PostImg;
   final String postid;

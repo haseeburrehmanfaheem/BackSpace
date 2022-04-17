@@ -166,7 +166,7 @@ class FindWork extends StatelessWidget {
                       workPost(
                           userName: post["username"],
                           userimage: post["userImageURL"],
-                          time: "5 min",
+                          time: post["created_at"],
                           postcontent: post["content"],
                           // PostImg: post["postImageURL"],
                           // likes: post["likes"],
@@ -207,7 +207,7 @@ class FindWork extends StatelessWidget {
 class workPost extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   // final String? PostImg;
   final String postcontent;
   // final int likes;

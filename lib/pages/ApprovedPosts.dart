@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../components/newsFeed/post-body/posts-text.dart';
@@ -66,7 +67,7 @@ class Proved extends StatelessWidget {
                         AdminPost(
                           userName: post["username"],
                           userimage: post["userImageURL"],
-                          time: "3 min",
+                          time: post["created_at"],
                           Posttxt: post["content"],
                           PostImg: post["postImageURL"],
                           docid: post["postID"],
@@ -103,7 +104,7 @@ class Proved extends StatelessWidget {
 class AdminPost extends StatelessWidget {
   final String userName;
   final String userimage;
-  final String time;
+  final Timestamp time;
   final String Posttxt;
   final String? PostImg;
   String docid;
