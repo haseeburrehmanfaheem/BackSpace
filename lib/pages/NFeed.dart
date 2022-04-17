@@ -743,7 +743,7 @@ Widget postSearchBuilder(collection, fieldName, query) {
                 return Post(
                   userName: user["username"],
                   userimage: user["imageURL"],
-                  time: "5 min",
+                  time: post["created_at"],
                   postcontent: post["content"],
                   PostImg: post["imageURL"],
                   likes: post["likes"],
