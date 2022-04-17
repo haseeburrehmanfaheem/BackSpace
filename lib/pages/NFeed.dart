@@ -467,7 +467,7 @@ class _PostscommentState extends State<Postscomment> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     hintText: "Add Comment",
-                    fillColor: Colors.grey.withOpacity(0.3),
+                    fillColor: Colors.grey.withOpacity(0.2),
                     // fromRGBO(249, 249, 250, 1),
 
                     filled: true,
@@ -627,34 +627,37 @@ class AddPostFormState extends State<AddPostForm> {
             children: <Widget>[
               Expanded(
                 // child: Container(
-                // color: Colors.white,
-                child: Form(
-                  key: _formKey,
-                  // child: Container(
-                  //  margin: EdgeInsets.all(15),
-                  child: TextFormField(
-                    controller: widget.postcontentController,
-                    onTap: () {},
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter Text';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      // enabledBorder: OutlineInputBorder(
-                      // borderSide: BorderSide(
-                      //     color: Colors.white,
-                      //     ),
-                      // borderRadius: BorderRadius.circular(50.0),
-                      // ),
-                      hintText: widget.hintText,
-                      fillColor: const Color(0xfff9f9fa),
-                      filled: true,
-                      // isDense: true,
-                      // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
+                  // color: Colors.white,
+                  child: Form(
+                    key: _formKey,
+                    // child: Container(
+                      //  margin: EdgeInsets.all(15),
+                      child: TextFormField(
+                        controller: widget.postcontentController,
+                        onTap: () {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter Text';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white,
+                              ),
+                          borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          hintText: widget.hintText,
+                          fillColor: Colors.grey.withOpacity(0.2),
+                          filled: true,
+                          isDense: true,
+                          contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
+
                       ),
                     ),
                   ),

@@ -330,9 +330,17 @@ class AddReviewForm extends StatelessWidget {
                   return null;
                 },
                 decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white,
+                           ),
+                          borderRadius: BorderRadius.circular(25.0),
+                      ),
                   hintText: "Add Review",
-                  fillColor: const Color(0xfff9f9fa),
+                  fillColor: Colors.grey.withOpacity(0.2),
                   filled: true,
+                  isDense: true,
+                  contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
