@@ -38,54 +38,55 @@ class CommentsDisplay extends StatelessWidget {
         //clipBehavior: Clip.antiAlias,
         // child:
         Column(children: [
-      const Padding(padding: EdgeInsets.only(top: 10, left: 0)),
       Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Padding(padding: EdgeInsets.only(left: 10)),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(userImg),
-                  radius: 30,
-                ),
-                Padding(
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      right: MediaQuery.of(context).size.width / 10,
-                    ),
-                    // EdgeInsets.only(left: 10, top: 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(name,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w600)),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
-                          child: Text(posttext,
-                              // maxLines: 4,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Padding(padding: EdgeInsets.only(left: 15)),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(userImg),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(
+                        left: 10,
+                        right: MediaQuery.of(context).size.width / 10,
+                      ),
+                      // EdgeInsets.only(left: 10, top: 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(name,
                               style:
-                                  const TextStyle(fontWeight: FontWeight.w500)),
-                        ),
-                      ],
-                    )),
-              ],
-            ),
-            // Padding(
-            //   padding: EdgeInsets.only(right: 15, top: 5),
-            //   child: Text(
-            //     Time,
-            //     style: const TextStyle(fontWeight: FontWeight.w500),
-            //   ),
-            // ),
-          ],
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Text(posttext,
+                                // maxLines: 4,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14)),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+              // Padding(
+              //   padding: EdgeInsets.only(right: 15, top: 5),
+              //   child: Text(
+              //     Time,
+              //     style: const TextStyle(fontWeight: FontWeight.w500),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
-      const Padding(padding: EdgeInsets.only(bottom: 10)),
       Divider(height: 1),
     ]
             // )

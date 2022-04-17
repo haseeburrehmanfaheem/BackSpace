@@ -44,7 +44,6 @@ class Feed extends StatelessWidget {
         ),
         title: const Text('News Feed'),
         actions: [
-          
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 0),
               child: IconButton(
@@ -84,13 +83,13 @@ class Feed extends StatelessWidget {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.3,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
+            return SizedBox(
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
 
           // print(widget.chatID);
           else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -226,7 +225,9 @@ class Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 10,),
+      margin: EdgeInsets.only(
+        top: 10,
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
@@ -299,8 +300,7 @@ class _PostFooter extends State<PostFooter> {
       children: [
         IconButton(
           icon: const Icon(Icons.thumb_up_alt_outlined),
-          color: 
-          pressAttention ? Colors.blue : Colors.black,
+          color: pressAttention ? Colors.blue : Colors.black,
           onPressed: () {
             clicked_once = !clicked_once;
             updatelikesintable(widget.likes, widget.post_id, !clicked_once);
@@ -341,13 +341,9 @@ class _PostFooter extends State<PostFooter> {
   updateLikes() {
     setState(() => {
           if (clicked_once)
-            {
-              widget.likes = widget.likes + 1,
-              pressAttention = !pressAttention
-            }
+            {widget.likes = widget.likes + 1, pressAttention = !pressAttention}
           else
-            {widget.likes = widget.likes - 1,
-            pressAttention = !pressAttention}
+            {widget.likes = widget.likes - 1, pressAttention = !pressAttention}
         });
   }
 }
@@ -381,6 +377,7 @@ class _PostscommentState extends State<Postscomment> {
   Widget build(BuildContext context) {
     // print()
     return Scaffold(
+      backgroundColor: Color(0xffDADADA),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -412,6 +409,7 @@ class _PostscommentState extends State<Postscomment> {
               // IMPORTANT ___________________________________________________________________________________________
               userAbout: "",
             ),
+            Padding(padding: EdgeInsets.only(top: 10)),
             // CommentsDisplay(userImg: "assets/images/bill-gates.jpg", name: "Zeerak", Time: "2 sec", posttext: "Bhai SE ka kaam kab khatam hona? sdfsdf sfs sfsdfsfsfs  sdfdsfsfs sfsfsfsfs sfsfsfsfsfs"),
             // DisplayComments(comments, profileImage, name),
             FutureBuilder(
@@ -433,43 +431,42 @@ class _PostscommentState extends State<Postscomment> {
                     ],
                   );
                 }),
-            Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
-              child: Form(
-                key: formGlobalKey,
-                child: TextFormField(
-                  controller: commentController,
-                  onTap: () {},
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter some Text';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Add Comment",
-                    fillColor: const Color(0xfff9f9fa),
-                    filled: true,
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: () async {
-                        if (formGlobalKey.currentState!.validate()) {
-                          // print(commentController.text);
-                          await updateCommentInDB(
-                              commentController.text, widget.post_id);
-                          commentController.clear();
-                          // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
-                        }
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Form(
+          key: formGlobalKey,
+          child: TextFormField(
+            controller: commentController,
+            onTap: () {},
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Enter some Text';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              hintText: "Add Comment",
+              fillColor: const Color(0xfff9f9fa),
+              filled: true,
+              suffixIcon: IconButton(
+                icon: Icon(Icons.arrow_forward),
+                onPressed: () async {
+                  if (formGlobalKey.currentState!.validate()) {
+                    // print(commentController.text);
+                    await updateCommentInDB(
+                        commentController.text, widget.post_id);
+                    commentController.clear();
+                    // Navigator.pushReplacement(context,Postscomment(likes: widget.likes, post_id: widget.post_id, userName: widget.userName, userimage: widget.userimage, time: widget.time, PostImg: widget.PostImg, postcontent: widget.postcontent))
+                  }
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
