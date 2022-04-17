@@ -23,10 +23,10 @@ class FindWork extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        title: const Text('Find Work', style: TextStyle(fontFamily: "Poppins")),
+        title: const Text('Find Work'),
         actions: [
           const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),

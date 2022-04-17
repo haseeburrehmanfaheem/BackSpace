@@ -121,7 +121,7 @@ class _LoginState extends State<Login> {
                         padding: const EdgeInsets.only(top: 3, left: 3),
                         child: MaterialButton(
                           minWidth: double.infinity,
-                          height: 50,
+                          height: 60,
                           onPressed: () {
                             // print("hello world");
                             // if()
@@ -130,6 +130,7 @@ class _LoginState extends State<Login> {
                             // print(formkey1.currentState!.validate());
                             if (formkey1.currentState!.validate() &&
                                 formkey2.currentState!.validate()) {
+                                  showLoaderDialog(context);
                               login(emailController.text,
                                   passwordController.text, context);
                               //  Navigator.pushReplacement(
@@ -218,11 +219,13 @@ login(emailAddress, password, context) async {
     final roles = await getUserData(emailAddress);
     final temp = roles.docs[0]["roles"];
     final blocked = roles.docs[0]["blocked"];
+    // showLoaderDialog(context);
     if (temp == "user") {
       if (blocked) {
         Fluttertoast.showToast(
             msg: "The User is blocked", gravity: ToastGravity.TOP);
       } else {
+        // showLoaderDialog(context);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => BottomNavigation()));
       }
@@ -263,3 +266,18 @@ getUserData(email) async {
 //   var s = ref.docs[0];
 //   return s;
 // }
+showLoaderDialog(BuildContext context){
+    AlertDialog alert=AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+        ],),
+    );
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }

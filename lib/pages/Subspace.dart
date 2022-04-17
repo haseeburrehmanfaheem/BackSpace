@@ -26,7 +26,7 @@ class SubSpace extends StatelessWidget {
           title: const Text('Sub Space'),
           actions: [
             const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Icon(Icons.search, color: Colors.black)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -58,7 +58,10 @@ class SubSpace extends StatelessWidget {
                 future: getallsubspaces(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
+                    return Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   }
                   final subspaces = snapshot.data;
                   return ListView(

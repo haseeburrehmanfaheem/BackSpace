@@ -127,7 +127,7 @@ class SignupPage extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 3, left: 3),
                         child: MaterialButton(
                           minWidth: double.infinity,
-                          height: 50,
+                          height: 60,
                           onPressed: () {
                             print("hello world");
                             // String val = "";
@@ -135,6 +135,7 @@ class SignupPage extends StatelessWidget {
                                 formkey2.currentState!.validate() &&
                                 formkey3.currentState!.validate() &&
                                 formkey4.currentState!.validate()) {
+                                  showLoaderDialog(context);
                               // Future<dynamic>
                               // String val =
                               signUp(

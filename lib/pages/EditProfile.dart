@@ -25,7 +25,7 @@ class EditProfile extends StatelessWidget {
           onPressed: () => Navigator.pop(context, false),
         ),
         title:
-            const Text('Edit Profile', style: TextStyle(fontFamily: "Poppins")),
+            const Text('Edit Profile'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
