@@ -316,7 +316,7 @@ Widget findWorkSearchBuilder(collection, fieldName, query) {
               return workPost(
                 userName: user["username"],
                 userimage: user["imageURL"],
-                time: "5 min",
+                time: post["created_at"],
                 postcontent: post["content"],
                 postID: post["ItemID"],
                 userAbout: user["about"],

@@ -279,7 +279,7 @@ Widget pendingPostSearchBuilder(collection, fieldName, query) {
               return AdminPost2(
                 userName: user["username"],
                 userimage: user["imageURL"],
-                time: "3 min",
+                time: post["created_at"],
                 Posttxt: post["content"],
                 PostImg: post["imageURL"],
                 postid: post["ItemID"],

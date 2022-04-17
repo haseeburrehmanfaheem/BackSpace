@@ -242,7 +242,7 @@ Widget approvedPostSearchBuilder(collection, fieldName, query) {
               return AdminPost(
                 userName: user["username"],
                 userimage: user["imageURL"],
-                time: "3 min",
+                time: post["created_at"],
                 Posttxt: post["content"],
                 PostImg: post["imageURL"],
                 docid: post["ItemID"],
