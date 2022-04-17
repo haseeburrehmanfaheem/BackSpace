@@ -7,7 +7,9 @@ import 'package:backspace/pages/newsfeed.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/route_manager.dart';
 
+import '../api/firebase-api.dart';
 import 'InstructorProfile.dart';
+import 'NFeed.dart';
 
 class Instructors extends StatelessWidget {
   const Instructors({Key? key}) : super(key: key);
@@ -26,9 +28,19 @@ class Instructors extends StatelessWidget {
         ),
         title: const Text('Instructors'),
         actions: [
-          const Padding(
+          Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(Icons.search, color: Colors.black)),
+              child: IconButton(
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(
+                          collection: "Instructor",
+                          fieldName: "name",
+                          build: instructorSearchBuilder),
+                    );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -227,6 +239,50 @@ class Rating extends StatelessWidget {
           onRatingUpdate: (rating) {},
         ));
   }
+}
+
+Widget instructorSearchBuilder(collection, fieldName, query) {
+  return FutureBuilder(
+    future: FirebaseApi.searchCollection(collection, fieldName, query),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 1.3,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+      if (snapshot.hasError) {
+        return Text("Something went wrong");
+      }
+      if (snapshot.data.isEmpty) {
+        return Column(
+          children: const [
+            SizedBox(height: 100),
+            Center(
+              child: Text("No Results Found",
+                  style: TextStyle(fontSize: 20, color: Colors.black)),
+            )
+          ],
+        );
+      }
+      return ListView(
+        shrinkWrap: true,
+        children: snapshot.data.map<Widget>((instructor) {
+          return SimpleCard(
+            userName: instructor["name"],
+            imagePath: instructor["pictureURL"],
+            rating: Rating(initialRating: instructor["rating"].toDouble()),
+            instructorID: instructor["id"],
+            initialRating: instructor["rating"].toDouble(),
+            // context:context ,
+          );
+          // return senderOrReceiver(message);
+        }).toList(),
+      );
+    },
+  );
 }
 
 getAllInstructors() async {

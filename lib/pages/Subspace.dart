@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import 'package:backspace/pages/subspacechat.dart';
 import 'package:backspace/pages/Instructor.dart';
+import '../api/firebase-api.dart';
+import 'NFeed.dart';
 
 class SubSpace extends StatelessWidget {
   const SubSpace({Key? key}) : super(key: key);
@@ -22,9 +24,19 @@ class SubSpace extends StatelessWidget {
         ),
         title: const Text('Sub Space'),
         actions: [
-          const Padding(
+          Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(Icons.search, color: Colors.black)),
+              child: IconButton(
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(
+                          collection: "SubSpace",
+                          fieldName: "name",
+                          build: subspaceSearchBuilder),
+                    );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -129,4 +141,41 @@ class SimpleCard2 extends StatelessWidget {
 getallsubspaces() async {
   var subspaces = await FirebaseFirestore.instance.collection("SubSpace").get();
   return subspaces.docs;
+}
+
+Widget subspaceSearchBuilder(collection, fieldName, query) {
+  return FutureBuilder(
+      future: FirebaseApi.searchCollection(collection, fieldName, query),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.data.isEmpty) {
+          return Column(
+            children: const [
+              SizedBox(height: 100),
+              Center(
+                child: Text("No Results Found",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
+              )
+            ],
+          );
+        }
+        final subspaces = snapshot.data;
+        return ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            for (var each in subspaces)
+              SimpleCard2(
+                  userName: each["name"],
+                  imagePath: each["imageURL"],
+                  about: each["description"])
+          ],
+        );
+      });
 }

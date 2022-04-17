@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../api/firebase-api.dart';
 import 'Admindrawer.dart';
+import 'NFeed.dart';
 
 class Block extends StatelessWidget {
   const Block({Key? key}) : super(key: key);
@@ -23,14 +25,16 @@ class Block extends StatelessWidget {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
-                icon: Icon(Icons.search), onPressed: () {},
-                // onPressed: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => Noti()),
-                //   );
-                // },
-              ))
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(
+                          collection: "UserData",
+                          fieldName: "username",
+                          build: blockUserSearchBuilder),
+                    );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
         ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -186,4 +190,43 @@ blockuserinDB(email, blockkarna) async {
       .get();
 
   ref.docs[0].reference.update({'blocked': blockkarna ? true : false});
+}
+
+Widget blockUserSearchBuilder(collection, fieldName, query) {
+  return FutureBuilder(
+      future: FirebaseApi.searchCollection(
+          collection, fieldName, query, "roles", "user"),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.data.isEmpty) {
+          return Column(
+            children: const [
+              SizedBox(height: 100),
+              Center(
+                child: Text("No Results Found",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
+              )
+            ],
+          );
+        }
+        final users = snapshot.data;
+        return ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            for (var user in users)
+              BlockUser(
+                  userImage: user["imageURL"],
+                  username: user["username"],
+                  blocked: user["blocked"],
+                  email: user["email"]),
+          ],
+        );
+      });
 }

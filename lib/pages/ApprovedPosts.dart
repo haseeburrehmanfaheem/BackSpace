@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../api/firebase-api.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 import 'Admindrawer.dart';
@@ -29,14 +31,16 @@ class Proved extends StatelessWidget {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
-                icon: Icon(Icons.search), onPressed: () {},
-                // onPressed: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => Noti()),
-                //   );
-                // },
-              ))
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(
+                          collection: "Posts",
+                          fieldName: "content",
+                          build: approvedPostSearchBuilder),
+                    );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
         ],
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -48,9 +52,10 @@ class Proved extends StatelessWidget {
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return Padding(
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.40),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 }
                 // else if()
                 final posts = snapshot.data;
@@ -190,4 +195,62 @@ class _PostFooter extends State<PostFooter> {
       ],
     );
   }
+}
+
+Widget approvedPostSearchBuilder(collection, fieldName, query) {
+  return FutureBuilder(
+    future: FirebaseApi.searchCollection(
+        collection, fieldName, query, "approved", true),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 1.3,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+      if (snapshot.data.isEmpty) {
+        return Column(
+          children: const [
+            SizedBox(height: 100),
+            Center(
+              child: Text("No Results Found",
+                  style: TextStyle(fontSize: 20, color: Colors.black)),
+            )
+          ],
+        );
+      }
+      return ListView(
+        shrinkWrap: true,
+        children: snapshot.data.map<Widget>((post) {
+          return FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection("UserData")
+                .where("email", isEqualTo: post["email"])
+                .get(),
+            builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              final user = userSnapshot.data.docs[0].data();
+              return AdminPost(
+                userName: user["username"],
+                userimage: user["imageURL"],
+                time: "3 min",
+                Posttxt: post["content"],
+                PostImg: post["imageURL"],
+                docid: post["ItemID"],
+              );
+            },
+          );
+        }).toList(),
+      );
+    },
+  );
 }

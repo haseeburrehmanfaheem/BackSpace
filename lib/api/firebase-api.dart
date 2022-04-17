@@ -18,15 +18,26 @@ class FirebaseApi {
   }
 
   static Future<List<Map<String, dynamic>>?> searchCollection(
-    collection,
-    fieldName,
-    searchString,
-  ) async {
+    String collection,
+    String fieldName,
+    String searchString, [
+    String? field,
+    fieldCategory,
+  ]) async {
     /* Remember to check for exceptions In case any error with getting snapshot */
     try {
-      final QuerySnapshot allItems =
-          await FirebaseFirestore.instance.collection(collection).get();
+      QuerySnapshot allItems;
+      if (field != null) {
+        allItems = await FirebaseFirestore.instance
+            .collection(collection)
+            .where(field, isEqualTo: fieldCategory)
+            .get();
+      } else {
+        allItems =
+            await FirebaseFirestore.instance.collection(collection).get();
+      }
 
+      print(allItems.docs);
       /* Map List of DocumentSnapshot Objects to a List of key value pairs*/
       final allItemsMap = allItems.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
