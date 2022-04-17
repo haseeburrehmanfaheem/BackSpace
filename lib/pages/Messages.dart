@@ -54,7 +54,11 @@ class _MessagesState extends State<Messages> {
               if (_formKey.currentState!.validate()) {
                 List<Map<String, dynamic>>? filteredUsers =
                     // await FirebaseApi.returnAllUsers();
-                    await FirebaseApi.searchUsers(userSearchController.text);
+                    await FirebaseApi.searchCollection(
+                  "UserData",
+                  "username",
+                  userSearchController.text,
+                );
                 searchUsed = "search";
                 setState(() => widget.searchResultUsers = filteredUsers);
               }
@@ -174,7 +178,7 @@ class _MessagesState extends State<Messages> {
                                 ),
                               );
                             }
-                            if (snapshot.hasError) {
+                            if (usersSnapshot.hasError) {
                               return Text("Something went wrong");
                             }
                             final user = usersSnapshot.data.docs[0].data();

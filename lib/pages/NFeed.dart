@@ -18,6 +18,7 @@ import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:sticky_float_button/sticky_float_button.dart';
 
+import '../api/firebase-api.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 
@@ -393,7 +394,6 @@ class _PostscommentState extends State<Postscomment> {
               fontSize: 18,
             )),
       ),
-
       body: Column(
         children: [
           Expanded(
@@ -444,12 +444,10 @@ class _PostscommentState extends State<Postscomment> {
             color: Colors.white,
             child: Form(
               key: formGlobalKey,
-              
               child: Container(
                 margin: EdgeInsets.all(15),
                 child: TextFormField(
                   controller: commentController,
-
                   onTap: () {},
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -460,14 +458,14 @@ class _PostscommentState extends State<Postscomment> {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.white,
-                           ),
-                          borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.white,
                       ),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
                     hintText: "Add Comment",
                     fillColor: Colors.grey.withOpacity(0.3),
                     // fromRGBO(249, 249, 250, 1),
-                    
+
                     filled: true,
                     isDense: true,
                     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -485,12 +483,10 @@ class _PostscommentState extends State<Postscomment> {
                       },
                     ),
 
-                    
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0),
-                      
-                      // borderSide: BorderSide(color: Colors.white)
 
+                      // borderSide: BorderSide(color: Colors.white)
                     ),
                   ),
                 ),
@@ -627,38 +623,38 @@ class AddPostFormState extends State<AddPostForm> {
             children: <Widget>[
               Expanded(
                 // child: Container(
-                  // color: Colors.white,
-                  child: Form(
-                    key: _formKey,
-                    // child: Container(
-                      //  margin: EdgeInsets.all(15),
-                      child: TextFormField(
-                        controller: widget.postcontentController,
-                        onTap: () {},
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter Text';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          // enabledBorder: OutlineInputBorder(
-                          // borderSide: BorderSide(
-                          //     color: Colors.white,
-                          //     ),
-                          // borderRadius: BorderRadius.circular(50.0),
-                          // ),
-                          hintText: widget.hintText,
-                          fillColor: const Color(0xfff9f9fa),
-                          filled: true,
-                          // isDense: true,
-                          // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
+                // color: Colors.white,
+                child: Form(
+                  key: _formKey,
+                  // child: Container(
+                  //  margin: EdgeInsets.all(15),
+                  child: TextFormField(
+                    controller: widget.postcontentController,
+                    onTap: () {},
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      // enabledBorder: OutlineInputBorder(
+                      // borderSide: BorderSide(
+                      //     color: Colors.white,
+                      //     ),
+                      // borderRadius: BorderRadius.circular(50.0),
+                      // ),
+                      hintText: widget.hintText,
+                      fillColor: const Color(0xfff9f9fa),
+                      filled: true,
+                      // isDense: true,
+                      // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
-                    // ),
+                    ),
+                  ),
+                  // ),
                   // ),
                 ),
               ),
@@ -709,11 +705,68 @@ class MyDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) => Center(
-        child: Text(
-          query,
-          style: const TextStyle(
-            fontSize: 20,
+        child: FutureBuilder(
+          future: FirebaseApi.searchCollection(
+            "Posts",
+            "content",
+            query,
           ),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            print("LOOK here");
+            print(snapshot.data.isEmpty);
+            if (snapshot.data.isEmpty) {
+              return Column(
+                children: const [
+                  SizedBox(height: 100),
+                  Center(
+                    child: Text("No Results Found",
+                        style: TextStyle(fontSize: 20, color: Colors.black)),
+                  )
+                ],
+              );
+            }
+            return ListView(
+              children: snapshot.data.map<Widget>((post) {
+                return FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection("UserData")
+                      .where("email", isEqualTo: post["email"])
+                      .get(),
+                  builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+                    if (userSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.3,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    final user = userSnapshot.data.docs[0].data();
+                    return Post(
+                      userName: user["username"],
+                      userimage: user["imageURL"],
+                      time: "5 min",
+                      postcontent: post["content"],
+                      PostImg: post["imageURL"],
+                      likes: post["likes"],
+                      postID: post["ItemID"],
+                      functionalComment: true,
+                      userAbout: user["about"],
+                    );
+                  },
+                );
+              }).toList(),
+            );
+          },
         ),
       );
   // TODO: implement buildResults
