@@ -256,7 +256,7 @@ class _ChatState extends State<Chat> {
                       currentUser,
                       widget.receiver,
                     );
-                    _messageContentController.text = '';
+                    _messageContentController.clear();
                     img = null;
                   },
                   icon: const Icon(Icons.send)),
@@ -355,7 +355,7 @@ class Reciever extends StatelessWidget {
 //             color: Colors.white,
 //             child: Form(
 //               key: formGlobalKey,
-              
+
 //               child: Container(
 //                 margin: EdgeInsets.all(15),
 //                 child: TextFormField(
@@ -378,7 +378,7 @@ class Reciever extends StatelessWidget {
 //                     hintText: "Add Comment",
 //                     fillColor: Colors.grey.withOpacity(0.3),
 //                     // fromRGBO(249, 249, 250, 1),
-                    
+
 //                     filled: true,
 //                     isDense: true,
 //                     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -396,10 +396,10 @@ class Reciever extends StatelessWidget {
 //                       },
 //                     ),
 
-                    
+
 //                     border: OutlineInputBorder(
 //                       borderRadius: BorderRadius.circular(50.0),
-                      
+
 //                       // borderSide: BorderSide(color: Colors.white)
 
 //                     ),
