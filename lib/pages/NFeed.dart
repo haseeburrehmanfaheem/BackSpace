@@ -470,7 +470,7 @@ class _PostscommentState extends State<Postscomment> {
                           borderRadius: BorderRadius.circular(25.0),
                       ),
                     hintText: "Add Comment",
-                    fillColor: Colors.grey.withOpacity(0.3),
+                    fillColor: Colors.grey.withOpacity(0.2),
                     // fromRGBO(249, 249, 250, 1),
                     
                     filled: true,
@@ -647,17 +647,17 @@ class AddPostFormState extends State<AddPostForm> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          // enabledBorder: OutlineInputBorder(
-                          // borderSide: BorderSide(
-                          //     color: Colors.white,
-                          //     ),
-                          // borderRadius: BorderRadius.circular(50.0),
-                          // ),
+                          enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white,
+                              ),
+                          borderRadius: BorderRadius.circular(50.0),
+                          ),
                           hintText: widget.hintText,
-                          fillColor: const Color(0xfff9f9fa),
+                          fillColor: Colors.grey.withOpacity(0.2),
                           filled: true,
-                          // isDense: true,
-                          // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                          isDense: true,
+                          contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),

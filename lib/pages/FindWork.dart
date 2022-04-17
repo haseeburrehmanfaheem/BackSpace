@@ -14,7 +14,7 @@ class FindWork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffDADADA),
       drawer: MyDrawer(),
       appBar: AppBar(
         leading: Builder(
