@@ -12,9 +12,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
+import 'package:lit_relative_date_time/lit_relative_date_time.dart';
 
 class Messages extends StatefulWidget {
   Messages({Key? key}) : super(key: key);
+  // ignore: avoid_init_to_null
   List<Map<String, dynamic>>? searchResultUsers = [];
   @override
   State<Messages> createState() => _MessagesState();
@@ -22,6 +24,7 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   final _formKey = GlobalKey<FormState>();
+  String searchUsed = "";
   final TextEditingController userSearchController = TextEditingController();
 
   Widget userSearchFormWidget() {
@@ -29,22 +32,30 @@ class _MessagesState extends State<Messages> {
       key: _formKey,
       child: TextFormField(
         controller: userSearchController,
+        onChanged: (text) {
+          if (text == "") {
+            searchUsed = "";
+            widget.searchResultUsers = [];
+            setState(() => {});
+          }
+        },
         validator: (value) {
           return (value == null || value.isEmpty)
               ? 'Please enter some text'
               : null;
         },
         decoration: InputDecoration(
-          hintText: "Add Post",
-          fillColor: const Color(0xfff9f9fa),
+          hintText: "Search Users",
+          fillColor: Colors.white,
           filled: true,
           suffixIcon: IconButton(
-            icon: Icon(Icons.arrow_forward),
+            icon: Icon(Icons.search_outlined),
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 List<Map<String, dynamic>>? filteredUsers =
-                    await FirebaseApi.returnAllUsers();
-                // await FirebaseApi.searchUsers(userSearchController.text);
+                    // await FirebaseApi.returnAllUsers();
+                    await FirebaseApi.searchUsers(userSearchController.text);
+                searchUsed = "search";
                 setState(() => widget.searchResultUsers = filteredUsers);
               }
             },
@@ -73,7 +84,6 @@ class _MessagesState extends State<Messages> {
                   for (var user in widget.searchResultUsers!)
                     Message(
                       user: user,
-                      Time: "2 sec",
                       posttext: "",
                     ),
                 ],
@@ -93,7 +103,6 @@ class _MessagesState extends State<Messages> {
                 for (var user in snapshot.data)
                   Message(
                     user: user,
-                    Time: "2 sec",
                     posttext: "",
                   )
               ],
@@ -125,45 +134,82 @@ class _MessagesState extends State<Messages> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: FutureBuilder(
-          future: FirebaseApi.returnAllUsers(),
-          builder: (BuildContext context, AsyncSnapshot? snapshot) {
-            if (snapshot!.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.3,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-            if (snapshot != null) {
-              return ListView(
-                children: [
-                  for (var user in snapshot.data)
-                    Message(
-                      user: user,
-                      Time: "2 sec",
-                      posttext: "",
-                    )
-                ],
-              );
-            } else {
-              return Text("");
-            }
-          }),
+      body: searchUsed == ""
+          ? StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('chat').snapshots(),
+              builder: (BuildContext context, AsyncSnapshot? snapshot) {
+                if (snapshot!.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (snapshot != null) {
+                  return ListView(
+                    children: snapshot.data.docs
+                        .map<Widget>((DocumentSnapshot document) {
+                      Map<String, dynamic> chat =
+                          document.data()! as Map<String, dynamic>;
+                      return FutureBuilder(
+                          future: FirebaseFirestore.instance
+                              .collection("UserData")
+                              .where("email",
+                                  isEqualTo: chat["user1"] ==
+                                          FirebaseAuth
+                                              .instance.currentUser?.email
+                                      ? chat["user2"]
+                                      : chat["user1"])
+                              .get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot usersSnapshot) {
+                            if (usersSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height / 1.3,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                            if (snapshot.hasError) {
+                              return Text("Something went wrong");
+                            }
+                            final user = usersSnapshot.data.docs[0].data();
+                            return Message(
+                                user: user,
+                                time: chat["last_message_time"],
+                                posttext: chat["last_messsage"]);
+                          });
+                    }).toList(),
+                  );
+                } else {
+                  return Text("");
+                }
+              })
+          : showSearchResults(),
     );
   }
 }
 
 class Message extends StatelessWidget {
   final user;
-  final String Time;
+  final Timestamp? time;
   final String posttext;
   // ignore: use_key_in_widget_constructors
-  const Message(
-      {required this.user, required this.Time, required this.posttext});
+  const Message({required this.user, this.time, required this.posttext});
+
   @override
   Widget build(BuildContext context) {
+    RelativeDateTime _relativeDateTime = RelativeDateTime(
+        dateTime: DateTime.now(),
+        other: DateTime.parse(time!.toDate().toString()));
+
+    RelativeDateFormat _relativeDateFormatter = RelativeDateFormat(
+      Localizations.localeOf(context),
+    );
     return Container(
         //clipBehavior: Clip.antiAlias,
         child: Column(children: [
@@ -210,7 +256,7 @@ class Message extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(right: 15, top: 5),
               child: Text(
-                Time,
+                _relativeDateFormatter.format(_relativeDateTime),
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),

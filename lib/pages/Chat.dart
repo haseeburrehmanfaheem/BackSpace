@@ -9,7 +9,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
 import '../api/firebase-api.dart';
+import '../helper/helper.dart';
 import 'Notification.dart';
+
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_10.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_2.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_3.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_5.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_7.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_8.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_9.dart';
 
 class Chat extends StatefulWidget {
   final receiver;
@@ -37,8 +51,15 @@ class _ChatState extends State<Chat> {
 
   Widget senderOrReceiver(message) {
     return message["sent_by"] == currentUser?.email
-        ? Reciever(postText: message["message_content"])
-        : Sender(postText: message["message_content"]);
+        ? Reciever(
+            postText: message["message_content"],
+            postImage: message["message_image"],
+          )
+        : Sender(
+            // userImage: widget.receiver["imageURL"],
+            postText: message["message_content"],
+            postImage: message["message_image"],
+          );
   }
 
   sendMessage(message, imageURL, currentUser, receiver) async {
@@ -161,11 +182,18 @@ class _ChatState extends State<Chat> {
             icon: Icon(Icons.chevron_left),
             onPressed: () => Navigator.pop(context, false),
           ),
-          title: Text(widget.receiver["username"], style: TextStyle()),
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(widget.receiver["imageURL"]),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+              ),
+              Text(widget.receiver["username"], style: TextStyle()),
+            ],
+          ),
           actions: [
-            const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.search, color: Colors.black)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: IconButton(
@@ -181,8 +209,7 @@ class _ChatState extends State<Chat> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: 
-        Stack(children: [
+        body: Stack(children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.80,
             child: StreamBuilder(
@@ -205,8 +232,8 @@ class _ChatState extends State<Chat> {
                   return Text("Something went wrong");
                 }
                 return ListView(
-                  children:
-                      snapshot.data.docs.map<Widget>((DocumentSnapshot document) {
+                  children: snapshot.data.docs
+                      .map<Widget>((DocumentSnapshot document) {
                     Map<String, dynamic> message =
                         document.data()! as Map<String, dynamic>;
                     return senderOrReceiver(message);
@@ -247,8 +274,10 @@ class _ChatState extends State<Chat> {
 class Sender extends StatelessWidget {
   final String? userImage;
   final String postText;
+  final String postImage;
   // ignore: use_key_in_widget_constructors
-  const Sender({this.userImage, required this.postText});
+  const Sender(
+      {this.userImage, required this.postText, required this.postImage});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -258,12 +287,28 @@ class Sender extends StatelessWidget {
             // CircleAvatar(
             //   backgroundImage: NetworkImage(userImage!),
             // ),
-            BubbleSpecialThree(
-              text: postText,
-              color: Color(0xFFE8E8EE),
-              tail: false,
-              isSender: false,
+            ChatBubble(
+              clipper: ChatBubbleClipper5(type: BubbleType.sendBubble),
+              alignment: Alignment.topRight,
+              margin: EdgeInsets.only(top: 20),
+              backGroundColor: Color(0xFFE8E8EE),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: checkImageAndText(postImage, postText, "sender"),
+                ),
+              ),
             ),
+
+            // BubbleSpecialThree(
+            //   text: postText,
+            //   color: Color(0xFFE8E8EE),
+            //   tail: false,
+            //   isSender: false,
+            // ),
           ],
         ));
   }
@@ -271,17 +316,36 @@ class Sender extends StatelessWidget {
 
 class Reciever extends StatelessWidget {
   final String postText;
+  final String? userImage;
+  final String postImage;
+
   // ignore: use_key_in_widget_constructors
-  const Reciever({required this.postText});
+  const Reciever(
+      {required this.postText, this.userImage, required this.postImage});
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(top: 5),
-        child: BubbleSpecialThree(
-          text: postText,
-          color: Color(0xFF323232),
-          tail: false,
-          textStyle: TextStyle(color: Colors.white, fontSize: 16),
+        child: ChatBubble(
+          clipper: ChatBubbleClipper5(type: BubbleType.receiverBubble),
+          alignment: Alignment.topRight,
+          margin: EdgeInsets.only(top: 20),
+          backGroundColor: Color(0xFF323232),
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.7,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: checkImageAndText(postImage, postText, "receiver"),
+            ),
+          ),
         ));
+    // child: BubbleSpecialThree(
+    //   text: postText,
+    //   color: Color(0xFF323232),
+    //   tail: false,
+    //   textStyle: TextStyle(color: Colors.white, fontSize: 16),
+    // ));
   }
 }

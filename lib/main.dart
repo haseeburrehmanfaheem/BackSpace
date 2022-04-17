@@ -8,6 +8,9 @@ import 'package:backspace/pages/newsfeed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:lit_relative_date_time/lit_relative_date_time.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'; // new
@@ -101,6 +104,18 @@ class MyApp extends StatelessWidget {
       }
     });
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      // Set the supported locales according to the localizations you have
+      // implmented on your application.
+      supportedLocales: const [
+        Locale('en'), // English, no country code
+        Locale('de'), // German, no country code
+        Locale('ru'), // Russian, no country code
+      ],
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context)
