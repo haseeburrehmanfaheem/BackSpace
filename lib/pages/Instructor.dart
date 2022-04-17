@@ -27,7 +27,7 @@ class Instructors extends StatelessWidget {
         title: const Text('Instructors'),
         actions: [
           const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(Icons.search, color: Colors.black)),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

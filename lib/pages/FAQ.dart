@@ -15,7 +15,7 @@ class FAQ extends StatelessWidget {
               icon: Icon(Icons.chevron_left),
               onPressed: () => Navigator.pop(context, false),
             ),
-            title: const Text('FAQs', style: TextStyle()),
+            title: const Text('FAQs'),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
           ),

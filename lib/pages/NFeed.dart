@@ -44,8 +44,9 @@ class Feed extends StatelessWidget {
         ),
         title: const Text('News Feed'),
         actions: [
+          
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 0),
               child: IconButton(
                   onPressed: () {
                     showSearch(
@@ -277,6 +278,7 @@ class PostFooter extends StatefulWidget {
 
 class _PostFooter extends State<PostFooter> {
   bool clicked_once = false;
+  bool pressAttention = false;
   @override
   Widget build(BuildContext context) {
     var x = widget.likes;
@@ -286,6 +288,8 @@ class _PostFooter extends State<PostFooter> {
       children: [
         IconButton(
           icon: const Icon(Icons.thumb_up_alt_outlined),
+          color: 
+          pressAttention ? Colors.blue : Colors.black,
           onPressed: () {
             clicked_once = !clicked_once;
             updatelikesintable(widget.likes, widget.post_id, !clicked_once);
@@ -326,9 +330,13 @@ class _PostFooter extends State<PostFooter> {
   updateLikes() {
     setState(() => {
           if (clicked_once)
-            {widget.likes = widget.likes + 1}
+            {
+              widget.likes = widget.likes + 1,
+              pressAttention = !pressAttention
+            }
           else
-            {widget.likes = widget.likes - 1}
+            {widget.likes = widget.likes - 1,
+            pressAttention = !pressAttention}
         });
   }
 }

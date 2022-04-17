@@ -35,7 +35,7 @@ class _MessagesState extends State<Messages> {
               : null;
         },
         decoration: InputDecoration(
-          hintText: "Add Post",
+          hintText: "Search Users",
           fillColor: const Color(0xfff9f9fa),
           filled: true,
           suffixIcon: IconButton(
