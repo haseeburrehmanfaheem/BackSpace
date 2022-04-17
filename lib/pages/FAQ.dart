@@ -16,7 +16,7 @@ class FAQ extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
-        body: const TextFAQ());
+        body: SingleChildScrollView(child: TextFAQ()));
   }
 }
 
