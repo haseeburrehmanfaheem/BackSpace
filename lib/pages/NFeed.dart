@@ -622,13 +622,12 @@ class AddPostFormState extends State<AddPostForm> {
             // mainAxisSize: MainAxisSize.min, // added line
             children: <Widget>[
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(right: 0),
-                  color: Colors.white,
+                // child: Container(
+                  // color: Colors.white,
                   child: Form(
                     key: _formKey,
-                    child: Container(
-                       margin: EdgeInsets.all(0),
+                    // child: Container(
+                      //  margin: EdgeInsets.all(15),
                       child: TextFormField(
                         controller: widget.postcontentController,
                         onTap: () {},
@@ -639,24 +638,24 @@ class AddPostFormState extends State<AddPostForm> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white,
-                              ),
-                          borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          hintText: widget.hintText,
-                          fillColor: Colors.grey.withOpacity(0.3),
-                          filled: true,
-                          isDense: true,
-                          contentPadding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                          // border: OutlineInputBorder(
-                          //   // borderRadius: BorderRadius.circular(25.0),
+                          // enabledBorder: OutlineInputBorder(
+                          // borderSide: BorderSide(
+                          //     color: Colors.white,
+                          //     ),
+                          // borderRadius: BorderRadius.circular(50.0),
                           // ),
+                          hintText: widget.hintText,
+                          fillColor: const Color(0xfff9f9fa),
+                          filled: true,
+                          // isDense: true,
+                          // contentPadding: EdgeInsets.fromLTRB(30, 30, 0, 0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    // ),
+                  // ),
                 ),
               ),
               if (widget.showImagesIcons)
