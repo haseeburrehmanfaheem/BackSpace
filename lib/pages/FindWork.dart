@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:backspace/pages/newsfeed.dart';
 
+import '../api/firebase-api.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 import 'NFeed.dart';
@@ -25,9 +26,19 @@ class FindWork extends StatelessWidget {
         ),
         title: const Text('Find Work'),
         actions: [
-          const Padding(
+          Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(Icons.search, color: Colors.black)),
+              child: IconButton(
+                  onPressed: () {
+                    showSearch(
+                      context: context,
+                      delegate: MyDelegate(
+                          collection: "Posts",
+                          fieldName: "content",
+                          build: findWorkSearchBuilder),
+                    );
+                  },
+                  icon: Icon(Icons.search, color: Colors.black))),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: IconButton(
@@ -220,13 +231,11 @@ class workPost extends StatelessWidget {
   }
 }
 
-
 // Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>GetAllPostsContent() async {
 //   var posts = await FirebaseFirestore.instance.collection("Posts").get();
 
 //   return posts.docs;
 // }
-
 
 // completePost() async {
 //   final posts = await GetAllPostsContent();
@@ -261,3 +270,61 @@ class workPost extends StatelessWidget {
 //       .where("email", isEqualTo: email)
 //       .get();
 // }
+
+Widget findWorkSearchBuilder(collection, fieldName, query) {
+  return FutureBuilder(
+    future: FirebaseApi.searchCollection(
+        collection, fieldName, query, "subspace", "work"),
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 1.3,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+      if (snapshot.data.isEmpty) {
+        return Column(
+          children: const [
+            SizedBox(height: 100),
+            Center(
+              child: Text("No Results Found",
+                  style: TextStyle(fontSize: 20, color: Colors.black)),
+            )
+          ],
+        );
+      }
+      return ListView(
+        shrinkWrap: true,
+        children: snapshot.data.map<Widget>((post) {
+          return FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection("UserData")
+                .where("email", isEqualTo: post["email"])
+                .get(),
+            builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.waiting) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.3,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              final user = userSnapshot.data.docs[0].data();
+              return workPost(
+                userName: user["username"],
+                userimage: user["imageURL"],
+                time: "5 min",
+                postcontent: post["content"],
+                postID: post["ItemID"],
+                userAbout: user["about"],
+              );
+            },
+          );
+        }).toList(),
+      );
+    },
+  );
+}

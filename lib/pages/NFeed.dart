@@ -18,6 +18,7 @@ import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:sticky_float_button/sticky_float_button.dart';
 
+import '../api/firebase-api.dart';
 import '../components/newsFeed/post-body/posts-text.dart';
 import '../components/newsFeed/post-header/user-icon-name.dart';
 
@@ -50,7 +51,10 @@ class Feed extends StatelessWidget {
                   onPressed: () {
                     showSearch(
                       context: context,
-                      delegate: MyDelegate(),
+                      delegate: MyDelegate(
+                          collection: "Posts",
+                          fieldName: "content",
+                          build: postSearchBuilder),
                     );
                     // Navigator.push(
                     //   context,
@@ -690,7 +694,78 @@ class AddPostFormState extends State<AddPostForm> {
   }
 }
 
+Widget postSearchBuilder(collection, fieldName, query) {
+  return Center(
+    child: FutureBuilder(
+      future: FirebaseApi.searchCollection(
+        collection,
+        fieldName,
+        query,
+      ),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height / 1.3,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.data.isEmpty) {
+          return Column(
+            children: const [
+              SizedBox(height: 100),
+              Center(
+                child: Text("No Results Found",
+                    style: TextStyle(fontSize: 20, color: Colors.black)),
+              )
+            ],
+          );
+        }
+        return ListView(
+          shrinkWrap: true,
+          children: snapshot.data.map<Widget>((post) {
+            return FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection("UserData")
+                  .where("email", isEqualTo: post["email"])
+                  .get(),
+              builder: (BuildContext context, AsyncSnapshot userSnapshot) {
+                if (userSnapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                final user = userSnapshot.data.docs[0].data();
+                return Post(
+                  userName: user["username"],
+                  userimage: user["imageURL"],
+                  time: "5 min",
+                  postcontent: post["content"],
+                  PostImg: post["imageURL"],
+                  likes: post["likes"],
+                  postID: post["ItemID"],
+                  functionalComment: true,
+                  userAbout: user["about"],
+                );
+              },
+            );
+          }).toList(),
+        );
+      },
+    ),
+  );
+}
+
 class MyDelegate extends SearchDelegate {
+  final String collection;
+  final String fieldName;
+  final Function build;
+  MyDelegate(
+      {required this.collection, required this.fieldName, required this.build});
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
       onPressed: () => close(context, null), icon: Icon(Icons.arrow_back));
@@ -710,14 +785,8 @@ class MyDelegate extends SearchDelegate {
       ];
 
   @override
-  Widget buildResults(BuildContext context) => Center(
-        child: Text(
-          query,
-          style: const TextStyle(
-            fontSize: 20,
-          ),
-        ),
-      );
+  Widget buildResults(BuildContext context) =>
+      build(collection, fieldName, query);
   // TODO: implement buildResults
   // throw UnimplementedError();
 

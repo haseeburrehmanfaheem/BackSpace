@@ -17,21 +17,38 @@ class FirebaseApi {
     }
   }
 
-  static Future<List<Map<String, dynamic>>?> searchUsers(searchString) async {
+  static Future<List<Map<String, dynamic>>?> searchCollection(
+    String collection,
+    String fieldName,
+    String searchString, [
+    String? field,
+    fieldCategory,
+  ]) async {
     /* Remember to check for exceptions In case any error with getting snapshot */
     try {
-      final QuerySnapshot allUsers =
-          await FirebaseFirestore.instance.collection("UserData").get();
+      QuerySnapshot allItems;
+      if (field != null) {
+        allItems = await FirebaseFirestore.instance
+            .collection(collection)
+            .where(field, isEqualTo: fieldCategory)
+            .get();
+      } else {
+        allItems =
+            await FirebaseFirestore.instance.collection(collection).get();
+      }
 
+      print(allItems.docs);
       /* Map List of DocumentSnapshot Objects to a List of key value pairs*/
-      final allUsersMap = allUsers.docs.map((DocumentSnapshot doc) {
+      final allItemsMap = allItems.docs.map((DocumentSnapshot doc) {
         Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+        data["ItemID"] = doc.id;
         return data;
       }).toList();
 
       /* Filter out matching users */
-      return allUsersMap
-          .where((user) => user["username"]
+
+      return allItemsMap
+          .where((item) => item[fieldName]
               .toLowerCase()
               .contains(searchString.toLowerCase()))
           .toList();
@@ -57,20 +74,15 @@ class FirebaseApi {
     /* Getting chat ID for messages */
     try {
       String chatID = "${emailUser1}_$emailUser2";
-      print("Ye sai hay?");
-      print(chatID);
       var chat =
           await FirebaseFirestore.instance.collection("chat").doc(chatID).get();
       if (!chat.exists) {
-        print("Going in if $chatID wrong");
         chatID = "${emailUser2}_$emailUser1";
         chat = await FirebaseFirestore.instance
             .collection("chat")
             .doc(chatID)
             .get();
       }
-      print("Aithe wekh");
-      print(chat.exists);
       return chatID;
     } on Exception catch (e) {
       print("Error occured while getting chatID");
