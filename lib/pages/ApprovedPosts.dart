@@ -47,7 +47,10 @@ class Proved extends StatelessWidget {
               future: completePost(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                 }
                 // else if()
                 final posts = snapshot.data;
@@ -116,7 +119,7 @@ class AdminPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 12),
+      margin: EdgeInsets.only(top: 10),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
@@ -167,7 +170,7 @@ class _PostFooter extends State<PostFooter> {
         OutlinedButton(
           //color: Colors.green,
           child: Text(
-            "Delete",
+            "Reject",
             style: TextStyle(fontSize: 16.0, color: Colors.red),
           ),
           style: OutlinedButton.styleFrom(

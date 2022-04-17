@@ -47,7 +47,10 @@ class Pending extends StatelessWidget {
                 future: completePost(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
+                    return Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.40),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   }
                   final posts = snapshot.data;
                   return Column(
@@ -113,7 +116,7 @@ class AdminPost2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(top: 15),
+      margin: EdgeInsets.only(top: 10),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
@@ -191,7 +194,7 @@ class _PostFooter extends State<PostFooter> {
             child: OutlinedButton(
               //color: Colors.green,
               child: Text(
-                "Remove",
+                "Reject",
                 style: TextStyle(fontSize: 16.0, color: Colors.red),
               ),
               style: OutlinedButton.styleFrom(
@@ -200,7 +203,8 @@ class _PostFooter extends State<PostFooter> {
                   color: Colors.red,
                 ),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                    ),
               ),
               onPressed: () {
                 DeletePostFromDB(widget.id);

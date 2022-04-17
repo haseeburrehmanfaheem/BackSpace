@@ -53,6 +53,27 @@ class TextFAQ extends StatelessWidget {
                 color: Color(0xff79747E)),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Text(
+            "What is my post not appearing in the newfeed?",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+          child: Text(
+            "In order for the most to appear on the Newsfeed it must be approved. If you can not see your post then that means it did not adhere to the community guidelines and was disapproved by the moderators.",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff79747E)),
+          ),
+        ),
       ],
     );
   }

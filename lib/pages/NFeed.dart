@@ -83,8 +83,17 @@ class Feed extends StatelessWidget {
             .where("subspace", isEqualTo: "")
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          // print(widget.chatID);
           if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+
+          // print(widget.chatID);
+          else if (snapshot.connectionState == ConnectionState.waiting) {
             // return Text("leading");
 
             SizedBox(
@@ -114,7 +123,8 @@ class Feed extends StatelessWidget {
               return StreamBuilder<QuerySnapshot>(
                 stream: query,
                 builder: (context, AsyncSnapshot snapshot1) {
-                  if (!snapshot1.hasData) return Text("loading");
+                  if (!snapshot1.hasData) return Text("");
+                  // CircularProgressIndicator();
                   return Post(
                     userName: snapshot1.data.docs[0]["username"],
                     userimage: snapshot1.data.docs[0]["imageURL"],
@@ -216,6 +226,7 @@ class Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.only(top: 10,),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [

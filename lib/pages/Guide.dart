@@ -18,10 +18,7 @@ class Guide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Welcome to Flutter',
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
@@ -61,7 +58,6 @@ class Guide extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
