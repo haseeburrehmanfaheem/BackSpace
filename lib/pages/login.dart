@@ -126,9 +126,7 @@ class _LoginState extends State<Login> {
                               // showLoaderDialog(context);
                               login(emailController.text,
                                   passwordController.text, context);
-
                             }
-
                           },
                           color: Colors.black,
                           shape: RoundedRectangleBorder(
@@ -154,9 +152,7 @@ class _LoginState extends State<Login> {
                           child: const Text("Don't have an account?"),
                         ),
                         TextButton(
-
                           onPressed: () {
-
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -229,7 +225,6 @@ getUserData(email) async {
       .where("email", isEqualTo: email)
       .get();
 }
-
 
 showLoaderDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
