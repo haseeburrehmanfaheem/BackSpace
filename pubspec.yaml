@@ -41,7 +41,7 @@ dependencies:
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.13
   google_fonts: ^2.3.1
-  provider: ^6.0.2
+  provider: ^6.0.3
   # 2 added below
   fluttertoast: ^8.0.9
   cloud_firestore: ^3.1.11
@@ -64,6 +64,8 @@ dependencies:
   lit_relative_date_time: ^1.2.0
   async: ^2.8.2
   rxdart: ^0.27.3
+  animated_splash_screen: ^1.3.0
+
 
 dev_dependencies:
   flutter_test:
@@ -93,6 +95,7 @@ flutter:
   assets:
     - assets/widgets/
     - assets/images/
+    - assets/images/dazzle.png
     - assets/images/keys.jpg
     - assets/images/user1.jpeg
     - assets/images/article1.jpg
