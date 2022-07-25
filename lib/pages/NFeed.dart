@@ -139,6 +139,8 @@ class Feed extends StatelessWidget {
                       likes: post["likes"],
                       postID: document.id,
                       functionalComment: true,
+
+                      
                       userAbout: snapshot1.data.docs[0]["about"],
                       email: snapshot1.data.docs[0]["email"]);
                 },
