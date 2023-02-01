@@ -33,7 +33,13 @@ Administrators do not have the option to sign up and can log in with the followi
 
 
 
-![image](https://i.imgur.com/7ymDs44.jpg)
+<!-- <img src="https://i.imgur.com/7ymDs44.jpg" width=25% height=25%>
+<img src="https://i.imgur.com/clwZ0Rt.jpg" width=25% height=25%>
+<img src="https://i.imgur.com/tewzm71.jpg" width=25% height=25%>
+<img src="https://i.imgur.com/f5YuClt.jpg" width=25% height=25%>
+<img src="https://i.imgur.com/xs4neg1.jpg" width=25% height=25%>
+<img src="https://i.imgur.com/xs4neg1.jpg" width=25% height=25%> -->
 
-![image](https://i.imgur.com/clwZ0Rt.jpg)
+
+
 
