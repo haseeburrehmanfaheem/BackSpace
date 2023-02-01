@@ -33,5 +33,7 @@ Administrators do not have the option to sign up and can log in with the followi
 
 
 
-![image](https://imgur.com/7ymDs44)
+![image](https://i.imgur.com/7ymDs44.jpg)
+
+![image](https://i.imgur.com/clwZ0Rt.jpg)
 
