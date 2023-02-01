@@ -8,3 +8,27 @@ BackSpace is an android application created with the purpose of providing studen
 - access to up-to-date information using subgroups
 - And much more
 
+
+Download the application on Android using the following [link](https://appsenjoy.com/en/oiy0DWveny1ukGc/file)
+
+
+## User Credentials
+
+There are two types of users for our application:
+
+### Students
+Students can either sign up or log in with the following credentials:
+
+| username | password |
+|----------|----------|
+| 23100044@lums.edu.pk | 123456 |
+| 23100256@lums.edu.pk | 12345678 |
+
+### Administrators
+Administrators do not have the option to sign up and can log in with the following credentials:
+
+| username | password |
+|----------|----------|
+| 12345678@lums.edu.pk | 123456 |
+
+
