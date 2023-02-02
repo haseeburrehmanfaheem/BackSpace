@@ -8,8 +8,9 @@ BackSpace is an android application created with the purpose of providing studen
 - access to up-to-date information using subgroups
 - And much more
 
+View the prototype of the application on Figma using the following [link](https://www.figma.com/proto/cw6zDdVIwEIlNkG9Quuwe3/BackSpace?node-id=2%3A101&scaling=scale-down&page-id=0%3A1&starting-point-node-id=2%3A101).
 
-Download the application on Android using the following [link](https://appsenjoy.com/en/oiy0DWveny1ukGc/file)
+Download the application on Android using the following [link](https://appsenjoy.com/en/oiy0DWveny1ukGc/file).
 
 
 ## User Credentials
